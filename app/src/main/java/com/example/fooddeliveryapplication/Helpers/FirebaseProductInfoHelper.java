@@ -15,7 +15,7 @@ import java.util.List;
 
 public class FirebaseProductInfoHelper {
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReferenceBooks;
+    private DatabaseReference mReferenceComment;
     private List<Comment> comments = new ArrayList<>();
 
 
@@ -25,14 +25,14 @@ public class FirebaseProductInfoHelper {
         void DataIsUpdated();
         void DataIsDeleted();
     }
-    public FirebaseProductInfoHelper(){
+    public FirebaseProductInfoHelper(String productBranch){
         mDatabase = FirebaseDatabase.getInstance();
-        mReferenceBooks = mDatabase.getReference("/Comments/product1");
+        mReferenceComment = mDatabase.getReference("/Comments/"+productBranch);
     }
 
     public void readComments(final DataStatus dataStatus)
     {
-        mReferenceBooks.addValueEventListener(new ValueEventListener() {
+        mReferenceComment.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 comments.clear();

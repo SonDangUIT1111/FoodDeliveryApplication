@@ -7,11 +7,17 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Adapters.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfoImageAdapter;
+import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
+import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
@@ -24,21 +30,35 @@ public class ProductInfoActivity extends AppCompatActivity {
 
     ViewPager pagerProductImage;
     TabLayout tabDots;
+    ImageButton btnBack;
+    ImageButton btnAddFavourite;
+    TextView txtNameProduct;
+    TextView txtPriceProduct;
+    TextView txtDescription;
+    Button btnAddToCart;
     RatingBar ratingBar;
     RecyclerView recComment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
-
+        //ToDo received input from search product navigate to here
 
         // find view by id
+        btnBack = (ImageButton) findViewById(R.id.btnBack);
+        btnAddFavourite = (ImageButton) findViewById(R.id.btnAddFavourite);
         pagerProductImage = (ViewPager) findViewById(R.id.pagerProductImage);
         tabDots = (TabLayout) findViewById(R.id.tabDots);
+        txtNameProduct = (TextView) findViewById(R.id.txtNameProduct);
+        txtDescription = (TextView) findViewById(R.id.txtDesciption);
+        txtPriceProduct = (TextView) findViewById(R.id.txtDesciption);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         recComment = (RecyclerView) findViewById(R.id.recComment);
+        btnAddToCart = (Button) findViewById(R.id.btnAddToCart);
 
         // set up default value
+
+        //Todo setText for the product name and price and image
         tabDots.setupWithViewPager(pagerProductImage, true);
         ratingBar.setRating(Float.parseFloat("4.5"));
 
@@ -52,8 +72,11 @@ public class ProductInfoActivity extends AppCompatActivity {
         pagerProductImage.setAdapter(adapterPager);
 
 
+
+
         // set Adapter for comment recycler view
-        new FirebaseProductInfoHelper().readComments(new FirebaseProductInfoHelper.DataStatus() {
+        //todo import product name branch in to this declare
+        new FirebaseProductInfoHelper("product2").readComments(new FirebaseProductInfoHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Comment> commentList, List<String> keys) {
                 CommentRecyclerViewAdapter adapter = new CommentRecyclerViewAdapter(ProductInfoActivity.this,commentList,keys);
@@ -71,5 +94,39 @@ public class ProductInfoActivity extends AppCompatActivity {
             @Override
             public void DataIsDeleted() {}
         });
+
+
+
+        //add to cart process
+        //todo add to cart button
+        final int[] positionOfCart = new int[1];
+        final String[] key = new String[1];
+        new FirebaseArtToCartHelper().readCarts(new FirebaseArtToCartHelper.DataStatus() {
+
+            @Override
+            public void DataIsLoaded(List<Cart> carts, List<String> keys) {
+                for (int i = 0;i<carts.size();i++){
+                    if (carts.get(i).getUserId().equals("user1"))
+                    {
+                        positionOfCart[0] = i;
+                    }
+                }
+                key[0] = keys.get(positionOfCart[0]);
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {}
+
+            @Override
+            public void DataIsDeleted() {}
+
+        });
+        new FirebaseArtToCartHelper("/Carts/"+key[0]).addCarts();
     }
 }
