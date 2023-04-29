@@ -19,19 +19,16 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecyclerViewAdapter.ViewHolder> {
-    private static FirebaseUser user;
-    private FirebaseAuth mAuth;
     private Context mContext;
     private List<Comment> commentList;
     private List<String> mKeys;
+
 
     public CommentRecyclerViewAdapter( Context mContext, List<Comment> commentList, List<String> mKeys) {
         this.mContext = mContext;
         this.commentList = commentList;
         this.mKeys = mKeys;
 
-//        mAuth = FirebaseAuth.getInstance();
-//        user = mAuth.getCurrentUser();
     }
 
     @NonNull

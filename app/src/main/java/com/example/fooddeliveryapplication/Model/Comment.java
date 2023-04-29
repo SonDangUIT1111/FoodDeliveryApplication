@@ -6,6 +6,9 @@ public class Comment {
     public String publisherId;
     public float ratingStar;
 
+    public Comment() {
+    }
+
     public Comment(String commentDetail, String commentId, String publisherId, float ratingStar) {
         this.commentDetail = commentDetail;
         this.commentId = commentId;

@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 
 import com.example.fooddeliveryapplication.Adapters.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfoImageAdapter;
+import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
@@ -52,22 +53,23 @@ public class ProductInfoActivity extends AppCompatActivity {
 
 
         // set Adapter for comment recycler view
-        List<Comment> list = new ArrayList<>();
-        list.add(new Comment("Ngon","12","78",Float.parseFloat("4.8")));
-        list.add(new Comment("Oke","13","77",Float.parseFloat("4")));
-        list.add(new Comment("Bình thường","14","79",Float.parseFloat("3.8")));
-        list.add(new Comment("Ngon","12","78",Float.parseFloat("4.8")));
-        list.add(new Comment("Oke","13","77",Float.parseFloat("4")));
-        list.add(new Comment("Bình thường","14","79",Float.parseFloat("3.8")));
-        list.add(new Comment("Ngon","12","78",Float.parseFloat("4.8")));
-        list.add(new Comment("Oke","13","77",Float.parseFloat("4")));
-        list.add(new Comment("Bình thường","14","79",Float.parseFloat("3.8")));
-        list.add(new Comment("Ngon","12","78",Float.parseFloat("4.8")));
-        list.add(new Comment("Oke","13","77",Float.parseFloat("4")));
-        list.add(new Comment("Bình thường","14","79",Float.parseFloat("3.8")));
-        CommentRecyclerViewAdapter adapter = new CommentRecyclerViewAdapter(this,list,null);
-        recComment.setHasFixedSize(true);
-        recComment.setLayoutManager(new LinearLayoutManager(this));
-        recComment.setAdapter(adapter);
+        new FirebaseProductInfoHelper().readComments(new FirebaseProductInfoHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Comment> commentList, List<String> keys) {
+                CommentRecyclerViewAdapter adapter = new CommentRecyclerViewAdapter(ProductInfoActivity.this,commentList,keys);
+                recComment.setHasFixedSize(true);
+                recComment.setLayoutManager(new LinearLayoutManager(ProductInfoActivity.this));
+                recComment.setAdapter(adapter);
+            }
+
+            @Override
+            public void DataIsInserted() {}
+
+            @Override
+            public void DataIsUpdated() {}
+
+            @Override
+            public void DataIsDeleted() {}
+        });
     }
 }
