@@ -12,12 +12,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Cart;
+import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
@@ -71,7 +73,39 @@ public class ProductInfoActivity extends AppCompatActivity {
         adapterPager.insertImageUrl(imageUrl);
         pagerProductImage.setAdapter(adapterPager);
 
+        // load data
+        final int[] positionOfCart = new int[1];
+        positionOfCart[0] = -1;
+        final String[] key = new String[1];
+        final boolean[] flag = {false};
+        new FirebaseArtToCartHelper().readCarts(new FirebaseArtToCartHelper.DataStatus() {
 
+            @Override
+            public void DataIsLoaded(List<Cart> carts, List<String> keys) {
+                for (int i = 0;i<carts.size();i++){
+                    if (carts.get(i).getUserId().equals("justadd1"))
+                    {
+                        Toast.makeText(ProductInfoActivity.this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+                        positionOfCart[0] = i;
+                        key[0] = keys.get(i);
+                        break;
+                    }
+                }
+                flag[0] = true;
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {}
+
+            @Override
+            public void DataIsDeleted() {}
+
+        });
 
 
         // set Adapter for comment recycler view
@@ -99,34 +133,58 @@ public class ProductInfoActivity extends AppCompatActivity {
 
         //add to cart process
         //todo add to cart button
-        final int[] positionOfCart = new int[1];
-        final String[] key = new String[1];
-        new FirebaseArtToCartHelper().readCarts(new FirebaseArtToCartHelper.DataStatus() {
-
+        btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void DataIsLoaded(List<Cart> carts, List<String> keys) {
-                for (int i = 0;i<carts.size();i++){
-                    if (carts.get(i).getUserId().equals("user1"))
-                    {
-                        positionOfCart[0] = i;
-                    }
+            public void onClick(View v) {
+                if (positionOfCart[0] == -1)
+                {
+                    updateCart(false);
+
                 }
-                key[0] = keys.get(positionOfCart[0]);
-
+                else updateCart(true);
             }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {}
-
-            @Override
-            public void DataIsDeleted() {}
-
         });
-        new FirebaseArtToCartHelper("/Carts/"+key[0]).addCarts();
+    }
+    public void updateCart(boolean value)
+    {
+        if (value == false)
+        {
+            Cart cart = new Cart();
+            CartInfo cartInfo = new CartInfo();
+            cartInfo.productId = "1221";
+            cartInfo.amount = 2;
+            cartInfo.price = "100230 VND";
+            List<CartInfo> cartInfos = new ArrayList<>();
+            cartInfos.add(cartInfo);
+            cart.cartInfos = cartInfos;
+            cart.totalAmount = 8;
+            cart.totalPrice = "1000vnd";
+            cart.userId = "justadd1";
+            cart.cartId = "k";
+            new FirebaseArtToCartHelper().addCarts(cart, new FirebaseArtToCartHelper.DataStatus() {
+                @Override
+                public void DataIsLoaded(List<Cart> carts, List<String> keys) {
+
+                }
+
+                @Override
+                public void DataIsInserted() {
+                    Toast.makeText(ProductInfoActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void DataIsUpdated() {
+
+                }
+
+                @Override
+                public void DataIsDeleted() {
+
+                }
+            });
+        }
+        else {
+            Toast.makeText(this, "Da ton tai", Toast.LENGTH_SHORT).show();
+        }
     }
 }

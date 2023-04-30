@@ -39,6 +39,7 @@ public class FirebaseArtToCartHelper {
 
     public void readCarts(final DataStatus dataStatus)
     {
+
         mReferenceCart.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -47,7 +48,8 @@ public class FirebaseArtToCartHelper {
                 for (DataSnapshot keyNode : snapshot.getChildren())
                 {
                     keys.add(keyNode.getKey());
-                    Cart cart = keyNode.getValue(Cart.class);
+                    Cart cart = new Cart();
+                    cart.userId = keyNode.child("userId").getValue(String.class);
                     carts.add(cart);
 
                 }
