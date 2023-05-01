@@ -3,17 +3,21 @@ package com.example.fooddeliveryapplication.Model;
 public class CartInfo {
     public int amount;
     public String cartInfoId;
-    public String price;
     public String productId;
+    public String productName;
+    public String productImage;
+    public int productPrice;
 
     public CartInfo() {
     }
 
-    public CartInfo(int amount, String cartInfoId, String price, String productId) {
+    public CartInfo(int amount, String cartInfoId, String productId, String productName, String productImage, int productPrice) {
         this.amount = amount;
         this.cartInfoId = cartInfoId;
-        this.price = price;
         this.productId = productId;
+        this.productName = productName;
+        this.productImage = productImage;
+        this.productPrice = productPrice;
     }
 
     public int getAmount() {
@@ -32,19 +36,35 @@ public class CartInfo {
         this.cartInfoId = cartInfoId;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public String getProductId() {
         return productId;
     }
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
     }
 }

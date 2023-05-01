@@ -8,6 +8,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Model.Comment;
+import com.example.fooddeliveryapplication.Model.CommentDetail;
 import com.example.fooddeliveryapplication.R;
 
 import androidx.annotation.NonNull;
@@ -20,11 +21,11 @@ import java.util.List;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecyclerViewAdapter.ViewHolder> {
     private Context mContext;
-    private List<Comment> commentList;
+    private List<CommentDetail> commentList;
     private List<String> mKeys;
 
 
-    public CommentRecyclerViewAdapter( Context mContext, List<Comment> commentList, List<String> mKeys) {
+    public CommentRecyclerViewAdapter(Context mContext, List<CommentDetail> commentList, List<String> mKeys) {
         this.mContext = mContext;
         this.commentList = commentList;
         this.mKeys = mKeys;
@@ -40,10 +41,10 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
 
     @Override
     public void onBindViewHolder(@NonNull CommentRecyclerViewAdapter.ViewHolder holder, int position) {
-        Comment comment = commentList.get(position);
-        holder.txtRecCommentUsername.setText(comment.publisherId);
-        holder.txtRecCommentComment.setText(comment.commentDetail);
-        holder.recCommentRatingBar.setRating(comment.ratingStar);
+        CommentDetail comment = commentList.get(position);
+        holder.txtRecCommentUsername.setText(comment.getPublisherName());
+        holder.txtRecCommentComment.setText(comment.getCommentDetail());
+        holder.recCommentRatingBar.setRating(comment.getRatingStar());
     }
 
     @Override

@@ -6,18 +6,20 @@ public class Cart {
     public String cartId;
     public List<CartInfo> cartInfos;
     public int totalAmount;
-    public String totalPrice;
+    public int totalPrice;
     public String userId;
+    public String userName;
 
     public Cart() {
     }
 
-    public Cart(String cartId, List<CartInfo> cartInfos, int totalAmount, String totalPrice, String userId) {
+    public Cart(String cartId, List<CartInfo> cartInfos, int totalAmount, int totalPrice, String userId, String userName) {
         this.cartId = cartId;
         this.cartInfos = cartInfos;
         this.totalAmount = totalAmount;
         this.totalPrice = totalPrice;
         this.userId = userId;
+        this.userName = userName;
     }
 
     public String getCartId() {
@@ -44,11 +46,11 @@ public class Cart {
         this.totalAmount = totalAmount;
     }
 
-    public String getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(String totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -58,5 +60,13 @@ public class Cart {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -1,50 +1,42 @@
 package com.example.fooddeliveryapplication.Model;
 
+import java.util.List;
+
 public class Comment {
-    public String commentDetail;
-    public String commentId;
-    public String publisherId;
-    public float ratingStar;
+    public String productId;
+    public String productName;
+    public List<CommentDetail> commentList;
+
+    public Comment(String productId, String productName, List<CommentDetail> commentList) {
+        this.productId = productId;
+        this.productName = productName;
+        this.commentList = commentList;
+    }
 
     public Comment() {
     }
 
-    public Comment(String commentDetail, String commentId, String publisherId, float ratingStar) {
-        this.commentDetail = commentDetail;
-        this.commentId = commentId;
-        this.publisherId = publisherId;
-        this.ratingStar = ratingStar;
+    public String getProductId() {
+        return productId;
     }
 
-    public String getCommentDetail() {
-        return commentDetail;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-    public void setCommentDetail(String commentDetail) {
-        this.commentDetail = commentDetail;
+    public String getProductName() {
+        return productName;
     }
 
-    public String getCommentId() {
-        return commentId;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId;
+    public List<CommentDetail> getCommentList() {
+        return commentList;
     }
 
-    public String getPublisherId() {
-        return publisherId;
-    }
-
-    public void setPublisherId(String publisherId) {
-        this.publisherId = publisherId;
-    }
-
-    public float getRatingStar() {
-        return ratingStar;
-    }
-
-    public void setRatingStar(float ratingStar) {
-        this.ratingStar = ratingStar;
+    public void setCommentList(List<CommentDetail> commentList) {
+        this.commentList = commentList;
     }
 }
