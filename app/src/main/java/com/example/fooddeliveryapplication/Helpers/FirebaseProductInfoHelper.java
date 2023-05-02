@@ -28,6 +28,7 @@ public class FirebaseProductInfoHelper {
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
+
     }
     public FirebaseProductInfoHelper(String productBranch){
         productId = productBranch;
