@@ -26,8 +26,10 @@ import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ProductInfoActivity extends AppCompatActivity {
 
@@ -44,7 +46,8 @@ public class ProductInfoActivity extends AppCompatActivity {
 
     String productId;
     String productName;
-    String productPrice;
+    int productPrice;
+    String productDescription;
     Float ratingStar;
     String productImage1;
     String productImage2;
@@ -59,13 +62,14 @@ public class ProductInfoActivity extends AppCompatActivity {
         //ToDo received input from search product navigate to here
         productId = "product1";
         productName = "Súp gà ngô kem";
-        productPrice = "50.000";
+        productPrice = 50000;
         productImage1 = "https://cuahang.takyfood.com.vn/vnt_upload/news/01_2019/mon-ngon-10/sup-ga-ngo/sup-ga-ngo-kem-11.jpg";
         productImage2 = "https://huongsen.vn/wp-content/uploads/2019/06/sup-ngo-kem-3.jpg";
         productImage3 = "https://bepnhamo.vn/wp-content/uploads/2022/04/cach-nau-sup-ga-thap-cam-e1532943924981.jpg";
         ratingStar = Float.parseFloat("4.2");
         userName = "Đặng Thái Sơn";
-        userId = "user1";
+        productDescription = "Súp gà ngô kem thơm ngon bổ dưỡng";
+        userId = "user3";
 
 
         // find view by id
@@ -75,7 +79,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         tabDots = (TabLayout) findViewById(R.id.tabDots);
         txtNameProduct = (TextView) findViewById(R.id.txtNameProduct);
         txtDescription = (TextView) findViewById(R.id.txtDesciption);
-        txtPriceProduct = (TextView) findViewById(R.id.txtDesciption);
+        txtPriceProduct = (TextView) findViewById(R.id.txtPriceProduct);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         recComment = (RecyclerView) findViewById(R.id.recComment);
         btnAddToCart = (Button) findViewById(R.id.btnAddToCart);
@@ -83,6 +87,9 @@ public class ProductInfoActivity extends AppCompatActivity {
         // set up default value
 
         //Todo setText for the product name and price and image
+        txtNameProduct.setText(productName);
+        txtPriceProduct.setText(String.valueOf(productPrice)+" VNĐ");
+        txtDescription.setText(productDescription);
         tabDots.setupWithViewPager(pagerProductImage, true);
         ratingBar.setRating(ratingStar);
 
@@ -110,23 +117,20 @@ public class ProductInfoActivity extends AppCompatActivity {
 
 
         // load data
-        final int[] positionOfCart = new int[1];
-        positionOfCart[0] = -1;
-        final String[] key = new String[1];
-        final boolean[] flag = {false};
-        new FirebaseArtToCartHelper().readCarts(new FirebaseArtToCartHelper.DataStatus() {
+        final boolean[] isCartExists = new boolean[1];
+        final boolean[] isProductExists = new boolean[1];
+        final String[] keyOfCart = {""};
+        final String[] keyOfProduct = {""};
+        final Cart[] currentCart = {new Cart()};
+        new FirebaseArtToCartHelper().readCarts(userId, productId, new FirebaseArtToCartHelper.DataStatus() {
 
             @Override
-            public void DataIsLoaded(List<Cart> carts, List<String> keys) {
-                for (int i = 0;i<carts.size();i++){
-                    if (carts.get(i).getUserId().equals(userName))
-                    {
-                        positionOfCart[0] = i;
-                        key[0] = keys.get(i);
-                        break;
-                    }
-                }
-                flag[0] = true;
+            public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+                isCartExists[0] = isExistsCart;
+                isProductExists[0] = isExistsProduct;
+                keyOfCart[0] = keyCart;
+                keyOfProduct[0] = keyProduct;
+                currentCart[0] = cart;
             }
 
             @Override
@@ -135,16 +139,41 @@ public class ProductInfoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void DataIsUpdated() {}
+            public void DataIsUpdated() {
+
+            }
 
             @Override
-            public void DataIsDeleted() {}
+            public void DataIsDeleted() {
 
+            }
         });
 
 
+
         // set Adapter for comment recycler view
-        //todo import product name branch in to this declare
+        setCommentRecView();
+
+
+        //add to cart process
+        btnAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo take amount from user input
+                updateCart(isCartExists[0],isProductExists[0],keyOfCart[0],keyOfProduct[0],currentCart[0],1);
+            }
+        });
+    }
+
+
+
+
+
+
+    // DEFINE FUNCTION
+
+    public void setCommentRecView()
+    {
         new FirebaseProductInfoHelper(productId).readComments(new FirebaseProductInfoHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<CommentDetail> commentList, List<String> keys) {
@@ -164,62 +193,117 @@ public class ProductInfoActivity extends AppCompatActivity {
             public void DataIsDeleted() {}
         });
 
-
-
-        //add to cart process
-        //todo add to cart button
-//        btnAddToCart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (positionOfCart[0] == -1)
-//                {
-//                    updateCart(false);
-//
-//                }
-//                else updateCart(true);
-//            }
-//        });
     }
-//    public void updateCart(boolean value)
-//    {
-//        if (value == false)
-//        {
-//            Cart cart = new Cart();
-//            CartInfo cartInfo = new CartInfo();
-//            cartInfo.productId = productName;
-//            cartInfo.amount = 1;
-//            cartInfo.price = productPrice;
-//            List<CartInfo> cartInfos = new ArrayList<>();
-//            cartInfos.add(cartInfo);
-//            cart.cartInfos = cartInfos;
-//            cart.totalAmount = 1;
-//            cart.totalPrice = productPrice;
-//            cart.userId = userName;
-//            cart.cartId = "cartId";
-//            new FirebaseArtToCartHelper().addCarts(cart, new FirebaseArtToCartHelper.DataStatus() {
-//                @Override
-//                public void DataIsLoaded(List<Cart> carts, List<String> keys) {
-//
-//                }
-//
-//                @Override
-//                public void DataIsInserted() {
-//                    Toast.makeText(ProductInfoActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                @Override
-//                public void DataIsUpdated() {
-//
-//                }
-//
-//                @Override
-//                public void DataIsDeleted() {
-//
-//                }
-//            });
-//        }
-//        else {
-//            Toast.makeText(this, "Da ton tai", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    public void updateCart(boolean isCartExists, boolean isProductExists,String keyCart,String keyProduct,Cart currentCart,int amount)
+    {   // truong hop user moi tao chua co gio hang
+        if (isCartExists == false)
+        {
+            Cart cart = new Cart();
+            CartInfo cartInfo = new CartInfo();
+            cartInfo.productId = productId;
+            cartInfo.amount = amount;
+            cartInfo.productPrice = productPrice;
+            cartInfo.productName = productName;
+            cartInfo.productImage = productImage1;
+            cartInfo.cartInfoId = "cartInfoId";
+            List<CartInfo> cartInfos = new ArrayList<>();
+            cartInfos.add(cartInfo);
+            cart.cartInfos = cartInfos;
+            cart.totalAmount = amount;
+            cart.totalPrice = productPrice*amount;
+            cart.userId = userId;
+            cart.userName = userName;
+            cart.cartId = "cartId";
+            new FirebaseArtToCartHelper().addCarts(cart, new FirebaseArtToCartHelper.DataStatus() {
+                @Override
+                public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+
+                }
+
+                @Override
+                public void DataIsInserted() {
+                    Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void DataIsUpdated() {}
+
+                @Override
+                public void DataIsDeleted() {}
+            });
+        }
+        else {
+            // truong hop chua co san pham hien tai trong gio hang
+            if (isProductExists == false)
+            {
+                CartInfo cartInfo = new CartInfo();
+                cartInfo.productId = productId;
+                cartInfo.amount = amount;
+                cartInfo.productPrice = productPrice;
+                cartInfo.productName = productName;
+                cartInfo.productImage = productImage1;
+                cartInfo.cartInfoId = "cartInfoId";
+                List<CartInfo> cartInfos = currentCart.cartInfos;
+                cartInfos.add(cartInfo);
+                currentCart.cartInfos = cartInfos;
+                currentCart.totalAmount = currentCart.totalAmount + amount;
+                currentCart.totalPrice = currentCart.totalPrice + amount*productPrice;
+                new FirebaseArtToCartHelper().updateCart(keyCart, currentCart, new FirebaseArtToCartHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+                        Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+            else {  // truong hop da co san pham hien tai trong gio hang
+                for (int i = 0;i<currentCart.cartInfos.size();i++)
+                {
+                    if (currentCart.cartInfos.get(i).productId.equals(productId))
+                    {
+                        currentCart.cartInfos.get(i).amount = currentCart.cartInfos.get(i).amount + amount;
+                        currentCart.totalAmount = currentCart.totalAmount + amount;
+                        currentCart.totalPrice = currentCart.totalPrice + amount * productPrice;
+                        break;
+                    }
+                }
+                new FirebaseArtToCartHelper().updateCart(keyCart, currentCart, new FirebaseArtToCartHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+                        Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+        }
+    }
+
 }

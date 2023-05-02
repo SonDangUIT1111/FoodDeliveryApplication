@@ -18,10 +18,9 @@ import java.util.List;
 public class FirebaseArtToCartHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceCart;
-    private List<Cart> carts = new ArrayList<>();
 
     public interface DataStatus{
-        void DataIsLoaded(List<Cart> carts, List<String> keys);
+        void DataIsLoaded(Cart cart, String keyCart, String keyProduct,boolean isExistsCart,boolean isExistsProduct);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -37,23 +36,44 @@ public class FirebaseArtToCartHelper {
     }
 
 
-    public void readCarts(final DataStatus dataStatus)
+    public void readCarts(String userId,String productId,final DataStatus dataStatus)
     {
 
         mReferenceCart.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                carts.clear();
-                List<String> keys = new ArrayList<>();
+                String keyProduct = "";
+                String keyCart = "";
+                Cart cart = new Cart();
+                List<CartInfo> cartInfos = new ArrayList<>();
+                boolean isExistsCart = false;
+                boolean isExistsProduct = false;
                 for (DataSnapshot keyNode : snapshot.getChildren())
                 {
-                    keys.add(keyNode.getKey());
-                    Cart cart = new Cart();
-                    cart.userId = keyNode.child("userId").getValue(String.class);
-                    carts.add(cart);
-
+                    if (keyNode.child("userId").getValue(String.class).equals(userId))
+                    {
+                        DataSnapshot snapShotList = keyNode.child("cartInfos");
+                        for (DataSnapshot snapShotChild :snapShotList.getChildren()){
+                            if (snapShotChild.child("productId").getValue(String.class).equals(productId))
+                            {
+                                keyProduct = snapShotChild.getKey();
+                                isExistsProduct = true;
+                            }
+                            CartInfo cartInfo = snapShotChild.getValue(CartInfo.class);
+                            cartInfos.add(cartInfo);
+                        }
+                        isExistsCart = true;
+                        keyCart = keyNode.getKey();
+                        cart.cartInfos = cartInfos;
+                        cart.cartId = keyNode.child("cartId").getValue(String.class);
+                        cart.userName = keyNode.child("userName").getValue(String.class);
+                        cart.userId = keyNode.child("userId").getValue(String.class);
+                        cart.totalPrice = keyNode.child("totalPrice").getValue(int.class);
+                        cart.totalAmount = keyNode.child("totalAmount").getValue(int.class);
+                        break;
+                    }
                 }
-                dataStatus.DataIsLoaded(carts,keys);
+                dataStatus.DataIsLoaded(cart,keyCart,keyProduct,isExistsCart,isExistsProduct);
             }
 
             @Override
@@ -62,6 +82,7 @@ public class FirebaseArtToCartHelper {
             }
         });
     }
+
     public void addCarts(Cart cart, final DataStatus dataStatus)
     {
         String key = mReferenceCart.push().getKey();
@@ -72,5 +93,14 @@ public class FirebaseArtToCartHelper {
                         dataStatus.DataIsInserted();
                     }
                 });
+    }
+    public void updateCart(String keyCart,Cart cart, final DataStatus dataStatus)
+    {
+        mReferenceCart.child(keyCart).setValue(cart).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                dataStatus.DataIsUpdated();
+            }
+        });
     }
 }
