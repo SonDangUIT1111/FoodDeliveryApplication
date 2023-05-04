@@ -12,6 +12,7 @@ import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class DeliveryManagementActivity extends AppCompatActivity {
+    String userId;
 
     TabLayout tabLayoutDelivery;
     ViewPager2 viewPagerStatus;
@@ -21,10 +22,13 @@ public class DeliveryManagementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_management);
 
+        //get input
+        userId = "user2";
+
         // find view by id
         tabLayoutDelivery = (TabLayout) findViewById(R.id.tabLayoutDelivery);
         viewPagerStatus = (ViewPager2) findViewById(R.id.viewPagerStatus);
-        statusPagerAdapter = new StatusManagementPagerAdapter(this);
+        statusPagerAdapter = new StatusManagementPagerAdapter(this,userId);
         viewPagerStatus.setAdapter(statusPagerAdapter);
 
 

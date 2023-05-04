@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.R;
 import android.content.Context;
@@ -19,6 +20,14 @@ import java.util.List;
 public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusOrderRecyclerViewAdapter.ViewHolder> {
     Context mContext;
     List<Bill> billList;
+    private List<String> mKeys;
+
+    public StatusOrderRecyclerViewAdapter(Context mContext, List<Bill> billList, List<String> mKeys) {
+        this.mContext = mContext;
+        this.billList = billList;
+        this.mKeys = mKeys;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,6 +38,35 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Bill bill = billList.get(position);
+        holder.txtOrderId.setText(bill.getBillId());
+        holder.txtStatus.setText(bill.getOrderStatus());
+        holder.txtDateOfOrder.setText(bill.getOrderDate());
+        holder.txtOrderTotal.setText(String.valueOf(bill.getTotalPrice()));
+
+
+        holder.imgProductImage = new ImageView(mContext);
+        holder.imgProductImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        if (bill.getBillInfos().size() > 0)
+        {
+            Glide.with(holder.imgProductImage.getContext())
+                    .asBitmap()
+                    .load(bill.billInfos.get(0).productImage)
+                    .into(holder.imgProductImage);
+        }
+
+        if (bill.orderStatus.equals("Confirm"))
+        {
+            holder.btnChangeStatus.setText("Shipping");
+            //todo logic for btn
+        }
+        else if (bill.orderStatus.equals("Shipping"))
+        {
+            holder.btnChangeStatus.setText("Completed");
+            //todo logic for btn
+        }
+        else {
+            holder.btnChangeStatus.setVisibility(View.GONE);
+        }
     }
 
 
@@ -45,6 +83,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         public TextView txtDateOfOrder;
         public TextView txtOrderTotal;
         public Button btnChangeStatus;
+        public String key;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProductImage = itemView.findViewById(R.id.imgProductImage);

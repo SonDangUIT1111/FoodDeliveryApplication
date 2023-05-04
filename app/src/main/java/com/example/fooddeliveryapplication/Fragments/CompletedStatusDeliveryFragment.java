@@ -12,6 +12,11 @@ import com.example.fooddeliveryapplication.R;
 
 public class CompletedStatusDeliveryFragment extends Fragment {
 
+    String userId;
+    public CompletedStatusDeliveryFragment(String Id) {
+        userId = Id;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
