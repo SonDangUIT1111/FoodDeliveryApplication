@@ -2,9 +2,6 @@ package com.example.fooddeliveryapplication.Helpers;
 
 import androidx.annotation.NonNull;
 
-import com.example.fooddeliveryapplication.Model.Cart;
-import com.example.fooddeliveryapplication.Model.Favourite;
-import com.example.fooddeliveryapplication.Model.FavouriteDetail;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +18,7 @@ public class FirebaseFavouriteInfoProductHelper {
 
 
     public interface DataStatus{
-        void DataIsLoaded(Favourite favourite,String keyFavourite,String keyFavouriteDetail,boolean isFavouriteExists, boolean isFavouriteDetailExists);
+        void DataIsLoaded(boolean isFavouriteExists, boolean isFavouriteDetailExists);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -29,7 +26,7 @@ public class FirebaseFavouriteInfoProductHelper {
 
     public FirebaseFavouriteInfoProductHelper() {
         mDatabase = FirebaseDatabase.getInstance();
-        mReferenceFavourite = mDatabase.getReference("Favourites");
+        mReferenceFavourite = mDatabase.getReference("Favorites");
     }
     public void readFavourite(String productId,String userId,final FirebaseFavouriteInfoProductHelper.DataStatus dataStatus)
     {
@@ -38,34 +35,14 @@ public class FirebaseFavouriteInfoProductHelper {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean isFavouriteExists = false;
                 boolean isFavouriteDetailExists = false;
-                String keyFavourite = "";
-                String keyFavouriteDetail = "";
-                Favourite favourite = new Favourite();
-                for (DataSnapshot keyNode : snapshot.getChildren())
+                if (snapshot.child(userId).exists())
                 {
-                    if (keyNode.child("userId").getValue(String.class).equals(userId))
-                    {
-                        List<FavouriteDetail> details = new ArrayList<>();
-                        DataSnapshot snapshotList = keyNode.child("favouriteList");
-                        for (DataSnapshot keyChildNode : snapshotList.getChildren())
-                        {
-                            if (keyChildNode.child("productId").getValue(String.class).equals(productId)) {
-                                isFavouriteDetailExists = true;
-                                keyFavouriteDetail = keyChildNode.getKey();
-                            }
-                            FavouriteDetail detail = keyChildNode.getValue(FavouriteDetail.class);
-                            details.add(detail);
-                        }
-                        favourite.favouriteList = details;
-                        favourite.userName = keyNode.child("userName").getValue(String.class);
-                        favourite.userId = keyNode.child("userId").getValue(String.class);
-                        keyFavourite = keyNode.getKey();
-                        isFavouriteExists = true;
-                        break;
-                    }
-                    else continue;
+                    isFavouriteExists = true;
+                    if (snapshot.child(userId).child(productId).exists())
+                        isFavouriteDetailExists = true;
                 }
-                dataStatus.DataIsLoaded(favourite,keyFavourite,keyFavouriteDetail,isFavouriteExists,isFavouriteDetailExists);
+
+                dataStatus.DataIsLoaded(isFavouriteExists,isFavouriteDetailExists);
             }
 
             @Override
@@ -75,10 +52,9 @@ public class FirebaseFavouriteInfoProductHelper {
         });
     }
 
-    public void addFavourite(Favourite favourite, final FirebaseArtToCartHelper.DataStatus dataStatus)
+    public void addFavourite(String userId,String productId, final FirebaseFavouriteInfoProductHelper.DataStatus dataStatus)
     {
-        String key = mReferenceFavourite.push().getKey();
-        mReferenceFavourite.child(key).setValue(favourite)
+        mReferenceFavourite.child(userId).child(productId).setValue(true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -87,12 +63,12 @@ public class FirebaseFavouriteInfoProductHelper {
                 });
     }
 
-    public void updateFavourite(String keyFavourite,Favourite favourite, final FirebaseArtToCartHelper.DataStatus dataStatus)
+    public void removeFavourite(String userId,String productId, final FirebaseFavouriteInfoProductHelper.DataStatus dataStatus)
     {
-        mReferenceFavourite.child(keyFavourite).setValue(favourite).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mReferenceFavourite.child(userId).child(productId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                dataStatus.DataIsUpdated();
+                dataStatus.DataIsDeleted();
             }
         });
     }

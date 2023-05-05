@@ -21,8 +21,6 @@ import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
-import com.example.fooddeliveryapplication.Model.Favourite;
-import com.example.fooddeliveryapplication.Model.FavouriteDetail;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -68,7 +66,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         ratingStar = Float.parseFloat("4.2");
         userName = "Đặng Thái Sơn";
         productDescription = "Súp gà ngô kem thơm ngon bổ dưỡng";
-        userId = "randomUserId3";
+        userId = "randomUserId2";
 
 
         // find view by id
@@ -117,8 +115,6 @@ public class ProductInfoActivity extends AppCompatActivity {
         // load data cart
         final boolean[] isCartExists = new boolean[1];
         final boolean[] isProductExists = new boolean[1];
-        final String[] keyOfCart = {""};
-        final String[] keyOfProduct = {""};
         final Cart[] currentCart = {new Cart()};
         final CartInfo[] currentCartInfo = {new CartInfo()};
         new FirebaseArtToCartHelper(userId,productId).readCarts(new FirebaseArtToCartHelper.DataStatus() {
@@ -151,7 +147,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         setCommentRecView();
 
         // load data favourite
-        //loadDataFavourite();
+        loadDataFavourite();
 
         //add to cart process
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
@@ -278,156 +274,133 @@ public class ProductInfoActivity extends AppCompatActivity {
             }
         }
     }
-//
-//    public void loadDataFavourite()
-//    {
-//        final String[] keyOfFavourite = new String[1];
-//        final String[] keyOfFavouriteDetail = new String[1];
-//        final boolean[] isExistsFavourite = new boolean[1];
-//        final boolean[] isExistsFavouriteDetail = new boolean[1];
-//        final Favourite[] currentFavourite = {new Favourite()};
-//        new FirebaseFavouriteInfoProductHelper().readFavourite(productId, userId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
-//
-//
-//            @Override
-//            public void DataIsLoaded(Favourite favourite, String keyFavourite, String keyFavouriteDetail, boolean isFavouriteExists, boolean isFavouriteDetailExists) {
-//                if (isFavouriteDetailExists == true)
-//                {
-//                    btnAddFavourite.setVisibility(View.GONE);
-//                    btnCancelFavourite.setVisibility(View.VISIBLE);
-//                }
-//                else {
-//                    btnAddFavourite.setVisibility(View.VISIBLE);
-//                    btnCancelFavourite.setVisibility(View.GONE);
-//                }
-//                keyOfFavourite[0] = keyFavourite;
-//                keyOfFavouriteDetail[0] = keyFavouriteDetail;
-//                isExistsFavourite[0] = isFavouriteExists;
-//                isExistsFavouriteDetail[0] = isFavouriteDetailExists;
-//                currentFavourite[0] = favourite;
-//            }
-//
-//            @Override
-//            public void DataIsInserted() {
-//
-//            }
-//
-//            @Override
-//            public void DataIsUpdated() {
-//
-//            }
-//
-//            @Override
-//            public void DataIsDeleted() {
-//
-//            }
-//        });
-//        btnAddFavourite.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // truong hop new user
-//                if (isExistsFavourite[0] == false)
-//                {
-//                    Favourite favourite = new Favourite();
-//                    List<FavouriteDetail> details = new ArrayList<>();
-//                    FavouriteDetail detail = new FavouriteDetail();
-//                    detail.productId = productId;
-//                    detail.productName = productName;
-//                    detail.productImage = productImage1;
-//                    detail.ratingStar = ratingStar;
-//                    details.add(detail);
-//                    favourite.userId = userId;
-//                    favourite.userName = userName;
-//                    new FirebaseFavouriteInfoProductHelper().addFavourite(favourite, new FirebaseArtToCartHelper.DataStatus() {
-//                        @Override
-//                        public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
-//
-//                        }
-//
-//                        @Override
-//                        public void DataIsInserted() {
-//                            Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void DataIsUpdated() {
-//
-//                        }
-//
-//                        @Override
-//                        public void DataIsDeleted() {
-//
-//                        }
-//                    });
-//                }
-//                else {
-//                    if (isExistsFavouriteDetail[0] == false)
-//                    {
-//                        FavouriteDetail detail = new FavouriteDetail();
-//                        detail.productId = productId;
-//                        detail.productName = productName;
-//                        detail.productImage = productImage1;
-//                        detail.ratingStar = ratingStar;
-//                        currentFavourite[0].favouriteList.add(detail);
-//                        new FirebaseFavouriteInfoProductHelper().updateFavourite(keyOfFavourite[0], currentFavourite[0], new FirebaseArtToCartHelper.DataStatus() {
-//                            @Override
-//                            public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
-//
-//                            }
-//
-//                            @Override
-//                            public void DataIsInserted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void DataIsUpdated() {
-//                                Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void DataIsDeleted() {
-//
-//                            }
-//                        });
-//                    }
-//                }
-//            }
-//        });
-//
-//        btnCancelFavourite.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                for (int i =0;i < currentFavourite[0].favouriteList.size();i++)
-//                {
-//                    if (currentFavourite[0].favouriteList.get(i).productId.equals(productId)) {
-//                        currentFavourite[0].favouriteList.remove(i);
-//                        break;
-//                    }
-//                }
-//                new FirebaseFavouriteInfoProductHelper().updateFavourite(keyOfFavourite[0], currentFavourite[0], new FirebaseArtToCartHelper.DataStatus() {
-//                    @Override
-//                    public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
-//
-//                    }
-//
-//                    @Override
-//                    public void DataIsInserted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void DataIsUpdated() {
-//                        Toast.makeText(ProductInfoActivity.this, "Đã xóa khỏi danh mục yêu thích", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void DataIsDeleted() {
-//
-//                    }
-//                });
-//            }
-//        });
-//    }
+
+    public void loadDataFavourite()
+    {
+        final boolean[] isExistsFavourite = new boolean[1];
+        final boolean[] isExistsFavouriteDetail = new boolean[1];
+        new FirebaseFavouriteInfoProductHelper().readFavourite(productId, userId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
+
+
+            @Override
+            public void DataIsLoaded(boolean isFavouriteExists, boolean isFavouriteDetailExists) {
+                if (isFavouriteDetailExists == true)
+                {
+                    btnAddFavourite.setVisibility(View.GONE);
+                    btnCancelFavourite.setVisibility(View.VISIBLE);
+                }
+                else {
+                    btnAddFavourite.setVisibility(View.VISIBLE);
+                    btnCancelFavourite.setVisibility(View.GONE);
+                }
+                isExistsFavourite[0] = isFavouriteExists;
+                isExistsFavouriteDetail[0] = isFavouriteDetailExists;
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+        btnAddFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // truong hop new user
+                if (isExistsFavourite[0] == false)
+                {
+
+                    new FirebaseFavouriteInfoProductHelper().addFavourite(userId,productId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
+
+                        @Override
+                        public void DataIsLoaded(boolean isFavouriteExists, boolean isFavouriteDetailExists) {
+                            
+                        }
+
+                        @Override
+                        public void DataIsInserted() {
+                            Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void DataIsUpdated() {
+
+                        }
+
+                        @Override
+                        public void DataIsDeleted() {
+
+                        }
+                    });
+                }
+                else {
+                    if (isExistsFavouriteDetail[0] == false)
+                    {
+                        new FirebaseFavouriteInfoProductHelper().addFavourite(userId,productId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
+
+
+                            @Override
+                            public void DataIsLoaded(boolean isFavouriteExists, boolean isFavouriteDetailExists) {
+                                
+                            }
+
+                            @Override
+                            public void DataIsInserted() {
+                                Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void DataIsUpdated() {
+                            
+                            }
+
+                            @Override
+                            public void DataIsDeleted() {
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        btnCancelFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new FirebaseFavouriteInfoProductHelper().removeFavourite(userId,productId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
+
+
+                    @Override
+                    public void DataIsLoaded(boolean isFavouriteExists, boolean isFavouriteDetailExists) {
+                        
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+                        Toast.makeText(ProductInfoActivity.this, "Đã xóa khỏi danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
 
 }
