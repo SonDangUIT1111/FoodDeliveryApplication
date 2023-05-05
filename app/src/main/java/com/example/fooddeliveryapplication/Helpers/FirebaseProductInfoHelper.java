@@ -1,12 +1,8 @@
 package com.example.fooddeliveryapplication.Helpers;
 
-import android.provider.ContactsContract;
-
 import androidx.annotation.NonNull;
 
 import com.example.fooddeliveryapplication.Model.Comment;
-import com.example.fooddeliveryapplication.Model.CommentDetail;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,11 +16,11 @@ public class FirebaseProductInfoHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceComment;
     private String productId;
-    private List<CommentDetail> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 
 
     public interface DataStatus{
-        void DataIsLoaded(List<CommentDetail> comments, List<String> keys);
+        void DataIsLoaded(List<Comment> comments, List<String> keys);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -33,7 +29,7 @@ public class FirebaseProductInfoHelper {
     public FirebaseProductInfoHelper(String productBranch){
         productId = productBranch;
         mDatabase = FirebaseDatabase.getInstance();
-        mReferenceComment = mDatabase.getReference("/Comments");
+        mReferenceComment = mDatabase.getReference("/Comments/"+productBranch);
     }
 
     public void readComments(final DataStatus dataStatus)
@@ -45,18 +41,8 @@ public class FirebaseProductInfoHelper {
                 List<String> keys = new ArrayList<>();
                 for (DataSnapshot keyNode : snapshot.getChildren())
                 {
+                    comments.add(keyNode.getValue(Comment.class));
                     keys.add(keyNode.getKey());
-                    if (keyNode.child("productId").getValue(String.class).equals(productId))
-                    {
-                        DataSnapshot snapshotList = keyNode.child("commentList");
-                        for (DataSnapshot keyChildNode : snapshotList.getChildren())
-                        {
-                            CommentDetail detail = keyChildNode.getValue(CommentDetail.class);
-                            comments.add(detail);
-                        }
-                        break;
-                    }
-                    else continue;
                 }
                 dataStatus.DataIsLoaded(comments,keys);
             }

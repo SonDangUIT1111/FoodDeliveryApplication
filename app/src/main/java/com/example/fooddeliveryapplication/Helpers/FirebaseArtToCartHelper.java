@@ -18,62 +18,61 @@ import java.util.List;
 public class FirebaseArtToCartHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceCart;
+    String userId;
+    String productId;
 
     public interface DataStatus{
-        void DataIsLoaded(Cart cart, String keyCart, String keyProduct,boolean isExistsCart,boolean isExistsProduct);
+        void DataIsLoaded(Cart cart,CartInfo cartInfo,boolean isExistsCart,boolean isExistsProduct);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
     }
 
+    public FirebaseArtToCartHelper(String user, String product) {
+        userId = user;
+        productId = product;
+        mDatabase = FirebaseDatabase.getInstance();
+        mReferenceCart = mDatabase.getReference();
+    }
     public FirebaseArtToCartHelper() {
         mDatabase = FirebaseDatabase.getInstance();
-        mReferenceCart = mDatabase.getReference("Carts");
-    }
-    public FirebaseArtToCartHelper(String path) {
-        mDatabase = FirebaseDatabase.getInstance();
-        mReferenceCart = mDatabase.getReference(path);
+        mReferenceCart = mDatabase.getReference();
     }
 
 
-    public void readCarts(String userId,String productId,final DataStatus dataStatus)
+    public void readCarts(final DataStatus dataStatus)
     {
 
         mReferenceCart.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String keyProduct = "";
-                String keyCart = "";
-                Cart cart = new Cart();
-                List<CartInfo> cartInfos = new ArrayList<>();
                 boolean isExistsCart = false;
                 boolean isExistsProduct = false;
-                for (DataSnapshot keyNode : snapshot.getChildren())
+                Cart cart = new Cart();
+                CartInfo cartInfo = new CartInfo();
+                for (DataSnapshot keyNode: snapshot.child("Carts").getChildren())
                 {
                     if (keyNode.child("userId").getValue(String.class).equals(userId))
                     {
-                        DataSnapshot snapShotList = keyNode.child("cartInfos");
-                        for (DataSnapshot snapShotChild :snapShotList.getChildren()){
-                            if (snapShotChild.child("productId").getValue(String.class).equals(productId))
-                            {
-                                keyProduct = snapShotChild.getKey();
-                                isExistsProduct = true;
-                            }
-                            CartInfo cartInfo = snapShotChild.getValue(CartInfo.class);
-                            cartInfos.add(cartInfo);
-                        }
                         isExistsCart = true;
-                        keyCart = keyNode.getKey();
-                        cart.cartInfos = cartInfos;
-                        cart.cartId = keyNode.child("cartId").getValue(String.class);
-                        cart.userName = keyNode.child("userName").getValue(String.class);
-                        cart.userId = keyNode.child("userId").getValue(String.class);
-                        cart.totalPrice = keyNode.child("totalPrice").getValue(int.class);
-                        cart.totalAmount = keyNode.child("totalAmount").getValue(int.class);
+                        cart = keyNode.getValue(Cart.class);
                         break;
                     }
                 }
-                dataStatus.DataIsLoaded(cart,keyCart,keyProduct,isExistsCart,isExistsProduct);
+                if (isExistsCart == true)
+                {
+                    for (DataSnapshot keyNode: snapshot.child("CartInfos").child(cart.getCartId()).getChildren())
+                    {
+                        if (keyNode.child("productId").getValue(String.class).equals(productId))
+                        {
+                            isExistsProduct = true;
+                            cartInfo = keyNode.getValue(CartInfo.class);
+                            break;
+                        }
+                    }
+                }
+
+                dataStatus.DataIsLoaded(cart,cartInfo,isExistsCart,isExistsProduct);
             }
 
             @Override
@@ -83,10 +82,20 @@ public class FirebaseArtToCartHelper {
         });
     }
 
-    public void addCarts(Cart cart, final DataStatus dataStatus)
+    public void addCarts(Cart cart,CartInfo cartInfo, final DataStatus dataStatus)
     {
-        String key = mReferenceCart.push().getKey();
-        mReferenceCart.child(key).setValue(cart)
+        String key = mReferenceCart.child("Carts").push().getKey();
+        cart.setCartId(key);
+        mReferenceCart.child("Carts").child(key).setValue(cart)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        dataStatus.DataIsInserted();
+                    }
+                });
+        String keyInfo = mReferenceCart.child("CartInfos").child(cart.getCartId()).push().getKey();
+        cartInfo.setCartInfoId(keyInfo);
+        mReferenceCart.child("CartInfos").child(cart.getCartId()).child(keyInfo).setValue(cartInfo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -94,13 +103,34 @@ public class FirebaseArtToCartHelper {
                     }
                 });
     }
-    public void updateCart(String keyCart,Cart cart, final DataStatus dataStatus)
+    public void updateCart(Cart cart,CartInfo cartInfo,boolean isExistsProduct, final DataStatus dataStatus)
     {
-        mReferenceCart.child(keyCart).setValue(cart).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mReferenceCart.child("Carts").child(cart.getCartId()).setValue(cart).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 dataStatus.DataIsUpdated();
             }
         });
+        if (isExistsProduct)
+        {
+            mReferenceCart.child("CartInfos").child(cart.getCartId()).child(cartInfo.getCartInfoId()).setValue(cartInfo)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            dataStatus.DataIsUpdated();
+                        }
+                    });
+        }
+        else {
+            String key = mReferenceCart.child("CartInfos").child(cart.getCartId()).push().getKey();
+            cartInfo.setCartInfoId(key);
+            mReferenceCart.child("CartInfos").child(cart.getCartId()).child(key).setValue(cartInfo)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            dataStatus.DataIsInserted();
+                        }
+                    });
+        }
     }
 }

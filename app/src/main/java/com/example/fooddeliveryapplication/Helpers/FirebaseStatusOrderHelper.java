@@ -1,12 +1,9 @@
 package com.example.fooddeliveryapplication.Helpers;
 
-import android.provider.ContactsContract;
-
 import androidx.annotation.NonNull;
 
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
-import com.example.fooddeliveryapplication.Model.CommentDetail;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,11 +50,11 @@ public class FirebaseStatusOrderHelper {
                             billInfos.add(snapChild.getValue(BillInfo.class));
                         }
                         Bill bill = new Bill();
-                        bill.orderStatus = "Confirm";
-                        bill.billInfos = billInfos;
-                        bill.billId = keyNode.child("billId").getValue(String.class);
-                        bill.orderDate = keyNode.child("orderDate").getValue(String.class);
-                        bill.totalPrice = keyNode.child("totalPrice").getValue(int.class);
+//                        bill.orderStatus = "Confirm";
+//                        bill.billInfos = billInfos;
+//                        bill.billId = keyNode.child("billId").getValue(String.class);
+//                        bill.orderDate = keyNode.child("orderDate").getValue(String.class);
+//                        bill.totalPrice = keyNode.child("totalPrice").getValue(int.class);
                         bills.add(bill);
                         keys.add(keyNode.getKey());
                     }

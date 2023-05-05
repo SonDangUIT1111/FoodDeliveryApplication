@@ -46,27 +46,27 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
         holder.imgProductImage = new ImageView(mContext);
         holder.imgProductImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        if (bill.getBillInfos().size() > 0)
-        {
-            Glide.with(holder.imgProductImage.getContext())
-                    .asBitmap()
-                    .load(bill.billInfos.get(0).productImage)
-                    .into(holder.imgProductImage);
-        }
-
-        if (bill.orderStatus.equals("Confirm"))
-        {
-            holder.btnChangeStatus.setText("Shipping");
-            //todo logic for btn
-        }
-        else if (bill.orderStatus.equals("Shipping"))
-        {
-            holder.btnChangeStatus.setText("Completed");
-            //todo logic for btn
-        }
-        else {
-            holder.btnChangeStatus.setVisibility(View.GONE);
-        }
+//        if (bill.getBillInfos().size() > 0)
+//        {
+//            Glide.with(mContext)
+//                    .asBitmap()
+//                    .load(bill.billInfos.get(0).productImage)
+//                    .into(holder.imgProductImage);
+//        }
+//
+//        if (bill.orderStatus.equals("Confirm"))
+//        {
+//            holder.btnChangeStatus.setText("Shipping");
+//            //todo logic for btn
+//        }
+//        else if (bill.orderStatus.equals("Shipping"))
+//        {
+//            holder.btnChangeStatus.setText("Completed");
+//            //todo logic for btn
+//        }
+//        else {
+//            holder.btnChangeStatus.setVisibility(View.GONE);
+//        }
     }
 
 

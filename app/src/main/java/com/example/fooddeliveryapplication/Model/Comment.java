@@ -3,40 +3,50 @@ package com.example.fooddeliveryapplication.Model;
 import java.util.List;
 
 public class Comment {
-    public String productId;
-    public String productName;
-    public List<CommentDetail> commentList;
+   String commentDetail;
+   String commentId;
+   String publisherId;
+   float rating;
 
-    public Comment(String productId, String productName, List<CommentDetail> commentList) {
-        this.productId = productId;
-        this.productName = productName;
-        this.commentList = commentList;
+    public Comment(String commentDetail, String commentId, String publisherId, float rating) {
+        this.commentDetail = commentDetail;
+        this.commentId = commentId;
+        this.publisherId = publisherId;
+        this.rating = rating;
     }
 
     public Comment() {
     }
 
-    public String getProductId() {
-        return productId;
+    public String getCommentDetail() {
+        return commentDetail;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setCommentDetail(String commentDetail) {
+        this.commentDetail = commentDetail;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getCommentId() {
+        return commentId;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
     }
 
-    public List<CommentDetail> getCommentList() {
-        return commentList;
+    public String getPublisherId() {
+        return publisherId;
     }
 
-    public void setCommentList(List<CommentDetail> commentList) {
-        this.commentList = commentList;
+    public void setPublisherId(String publisherId) {
+        this.publisherId = publisherId;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

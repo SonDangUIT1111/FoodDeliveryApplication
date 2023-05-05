@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,17 +21,13 @@ import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
-import com.example.fooddeliveryapplication.Model.CommentDetail;
 import com.example.fooddeliveryapplication.Model.Favourite;
 import com.example.fooddeliveryapplication.Model.FavouriteDetail;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.File;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ProductInfoActivity extends AppCompatActivity {
 
@@ -64,7 +59,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
         //ToDo received input from search product navigate to here
-        productId = "product2";
+        productId = "randomProductId2";
         productName = "Súp gà ngô kem";
         productPrice = 50000;
         productImage1 = "https://cuahang.takyfood.com.vn/vnt_upload/news/01_2019/mon-ngon-10/sup-ga-ngo/sup-ga-ngo-kem-11.jpg";
@@ -73,7 +68,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         ratingStar = Float.parseFloat("4.2");
         userName = "Đặng Thái Sơn";
         productDescription = "Súp gà ngô kem thơm ngon bổ dưỡng";
-        userId = "user2";
+        userId = "randomUserId3";
 
 
         // find view by id
@@ -125,15 +120,15 @@ public class ProductInfoActivity extends AppCompatActivity {
         final String[] keyOfCart = {""};
         final String[] keyOfProduct = {""};
         final Cart[] currentCart = {new Cart()};
-        new FirebaseArtToCartHelper().readCarts(userId, productId, new FirebaseArtToCartHelper.DataStatus() {
+        final CartInfo[] currentCartInfo = {new CartInfo()};
+        new FirebaseArtToCartHelper(userId,productId).readCarts(new FirebaseArtToCartHelper.DataStatus() {
 
             @Override
-            public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+            public void DataIsLoaded(Cart cart,CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
                 isCartExists[0] = isExistsCart;
                 isProductExists[0] = isExistsProduct;
-                keyOfCart[0] = keyCart;
-                keyOfProduct[0] = keyProduct;
                 currentCart[0] = cart;
+                currentCartInfo[0] = cartInfo;
             }
 
             @Override
@@ -156,14 +151,14 @@ public class ProductInfoActivity extends AppCompatActivity {
         setCommentRecView();
 
         // load data favourite
-        loadDataFavourite();
+        //loadDataFavourite();
 
         //add to cart process
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //todo take amount from user input
-                updateCart(isCartExists[0],isProductExists[0],keyOfCart[0],keyOfProduct[0],currentCart[0],1);
+                updateCart(isCartExists[0],isProductExists[0],currentCart[0],currentCartInfo[0],1);
             }
         });
     }
@@ -176,7 +171,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     {
         new FirebaseProductInfoHelper(productId).readComments(new FirebaseProductInfoHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<CommentDetail> commentList, List<String> keys) {
+            public void DataIsLoaded(List<Comment> commentList, List<String> keys) {
                 CommentRecyclerViewAdapter adapter = new CommentRecyclerViewAdapter(ProductInfoActivity.this,commentList,keys);
                 recComment.setHasFixedSize(true);
                 recComment.setLayoutManager(new LinearLayoutManager(ProductInfoActivity.this));
@@ -194,29 +189,21 @@ public class ProductInfoActivity extends AppCompatActivity {
         });
 
     }
-    public void updateCart(boolean isCartExists, boolean isProductExists,String keyCart,String keyProduct,Cart currentCart,int amount)
+    public void updateCart(boolean isCartExists, boolean isProductExists,Cart currentCart,CartInfo currentCartInfo,int amount)
     {   // truong hop user moi tao chua co gio hang
         if (isCartExists == false)
         {
             Cart cart = new Cart();
+            cart.setTotalPrice(productPrice*amount);
+            cart.setTotalAmount(amount);
+            cart.setUserId(userId);
             CartInfo cartInfo = new CartInfo();
-            cartInfo.productId = productId;
-            cartInfo.amount = amount;
-            cartInfo.productPrice = productPrice;
-            cartInfo.productName = productName;
-            cartInfo.productImage = productImage1;
-            cartInfo.cartInfoId = "cartInfoId";
-            List<CartInfo> cartInfos = new ArrayList<>();
-            cartInfos.add(cartInfo);
-            cart.cartInfos = cartInfos;
-            cart.totalAmount = amount;
-            cart.totalPrice = productPrice*amount;
-            cart.userId = userId;
-            cart.userName = userName;
-            cart.cartId = "cartId";
-            new FirebaseArtToCartHelper().addCarts(cart, new FirebaseArtToCartHelper.DataStatus() {
+            cartInfo.setAmount(amount);
+            cartInfo.setProductId(productId);
+            new FirebaseArtToCartHelper().addCarts(cart,cartInfo, new FirebaseArtToCartHelper.DataStatus() {
+
                 @Override
-                public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+                public void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
 
                 }
 
@@ -237,31 +224,24 @@ public class ProductInfoActivity extends AppCompatActivity {
             if (isProductExists == false)
             {
                 CartInfo cartInfo = new CartInfo();
-                cartInfo.productId = productId;
-                cartInfo.amount = amount;
-                cartInfo.productPrice = productPrice;
-                cartInfo.productName = productName;
-                cartInfo.productImage = productImage1;
-                cartInfo.cartInfoId = "cartInfoId";
-                List<CartInfo> cartInfos = currentCart.cartInfos;
-                cartInfos.add(cartInfo);
-                currentCart.cartInfos = cartInfos;
-                currentCart.totalAmount = currentCart.totalAmount + amount;
-                currentCart.totalPrice = currentCart.totalPrice + amount*productPrice;
-                new FirebaseArtToCartHelper().updateCart(keyCart, currentCart, new FirebaseArtToCartHelper.DataStatus() {
+                cartInfo.setProductId(productId);
+                cartInfo.setAmount(amount);
+                currentCart.setTotalAmount(currentCart.getTotalAmount()+amount);
+                currentCart.setTotalPrice(currentCart.getTotalPrice()+amount*productPrice);
+                new FirebaseArtToCartHelper().updateCart(currentCart,cartInfo,false ,new FirebaseArtToCartHelper.DataStatus() {
+
                     @Override
-                    public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+                    public void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
 
                     }
 
                     @Override
                     public void DataIsInserted() {
-
+                        Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void DataIsUpdated() {
-                        Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -271,19 +251,12 @@ public class ProductInfoActivity extends AppCompatActivity {
                 });
             }
             else {  // truong hop da co san pham hien tai trong gio hang
-                for (int i = 0;i<currentCart.cartInfos.size();i++)
-                {
-                    if (currentCart.cartInfos.get(i).productId.equals(productId))
-                    {
-                        currentCart.cartInfos.get(i).amount = currentCart.cartInfos.get(i).amount + amount;
-                        currentCart.totalAmount = currentCart.totalAmount + amount;
-                        currentCart.totalPrice = currentCart.totalPrice + amount * productPrice;
-                        break;
-                    }
-                }
-                new FirebaseArtToCartHelper().updateCart(keyCart, currentCart, new FirebaseArtToCartHelper.DataStatus() {
+                currentCart.setTotalAmount(currentCart.getTotalAmount()+amount);
+                currentCart.setTotalPrice(currentCart.getTotalPrice()+amount*productPrice);
+                currentCartInfo.setAmount(currentCartInfo.getAmount()+amount);
+                new FirebaseArtToCartHelper().updateCart(currentCart, currentCartInfo,true, new FirebaseArtToCartHelper.DataStatus() {
                     @Override
-                    public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+                    public void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
 
                     }
 
@@ -305,156 +278,156 @@ public class ProductInfoActivity extends AppCompatActivity {
             }
         }
     }
-
-    public void loadDataFavourite()
-    {
-        final String[] keyOfFavourite = new String[1];
-        final String[] keyOfFavouriteDetail = new String[1];
-        final boolean[] isExistsFavourite = new boolean[1];
-        final boolean[] isExistsFavouriteDetail = new boolean[1];
-        final Favourite[] currentFavourite = {new Favourite()};
-        new FirebaseFavouriteInfoProductHelper().readFavourite(productId, userId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
-
-
-            @Override
-            public void DataIsLoaded(Favourite favourite, String keyFavourite, String keyFavouriteDetail, boolean isFavouriteExists, boolean isFavouriteDetailExists) {
-                if (isFavouriteDetailExists == true)
-                {
-                    btnAddFavourite.setVisibility(View.GONE);
-                    btnCancelFavourite.setVisibility(View.VISIBLE);
-                }
-                else {
-                    btnAddFavourite.setVisibility(View.VISIBLE);
-                    btnCancelFavourite.setVisibility(View.GONE);
-                }
-                keyOfFavourite[0] = keyFavourite;
-                keyOfFavouriteDetail[0] = keyFavouriteDetail;
-                isExistsFavourite[0] = isFavouriteExists;
-                isExistsFavouriteDetail[0] = isFavouriteDetailExists;
-                currentFavourite[0] = favourite;
-            }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
-        btnAddFavourite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // truong hop new user
-                if (isExistsFavourite[0] == false)
-                {
-                    Favourite favourite = new Favourite();
-                    List<FavouriteDetail> details = new ArrayList<>();
-                    FavouriteDetail detail = new FavouriteDetail();
-                    detail.productId = productId;
-                    detail.productName = productName;
-                    detail.productImage = productImage1;
-                    detail.ratingStar = ratingStar;
-                    details.add(detail);
-                    favourite.userId = userId;
-                    favourite.userName = userName;
-                    new FirebaseFavouriteInfoProductHelper().addFavourite(favourite, new FirebaseArtToCartHelper.DataStatus() {
-                        @Override
-                        public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
-                            
-                        }
-
-                        @Override
-                        public void DataIsInserted() {
-                            Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void DataIsUpdated() {
-
-                        }
-
-                        @Override
-                        public void DataIsDeleted() {
-
-                        }
-                    });
-                }
-                else {
-                    if (isExistsFavouriteDetail[0] == false)
-                    {
-                        FavouriteDetail detail = new FavouriteDetail();
-                        detail.productId = productId;
-                        detail.productName = productName;
-                        detail.productImage = productImage1;
-                        detail.ratingStar = ratingStar;
-                        currentFavourite[0].favouriteList.add(detail);
-                        new FirebaseFavouriteInfoProductHelper().updateFavourite(keyOfFavourite[0], currentFavourite[0], new FirebaseArtToCartHelper.DataStatus() {
-                            @Override
-                            public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
-                                
-                            }
-
-                            @Override
-                            public void DataIsInserted() {
-
-                            }
-
-                            @Override
-                            public void DataIsUpdated() {
-                                Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void DataIsDeleted() {
-
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        
-        btnCancelFavourite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i =0;i < currentFavourite[0].favouriteList.size();i++)
-                {
-                    if (currentFavourite[0].favouriteList.get(i).productId.equals(productId)) {
-                        currentFavourite[0].favouriteList.remove(i);
-                        break;
-                    }
-                }
-                new FirebaseFavouriteInfoProductHelper().updateFavourite(keyOfFavourite[0], currentFavourite[0], new FirebaseArtToCartHelper.DataStatus() {
-                    @Override
-                    public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
-                        
-                    }
-
-                    @Override
-                    public void DataIsInserted() {
-
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-                        Toast.makeText(ProductInfoActivity.this, "Đã xóa khỏi danh mục yêu thích", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
-
-                    }
-                });
-            }
-        });
-    }
+//
+//    public void loadDataFavourite()
+//    {
+//        final String[] keyOfFavourite = new String[1];
+//        final String[] keyOfFavouriteDetail = new String[1];
+//        final boolean[] isExistsFavourite = new boolean[1];
+//        final boolean[] isExistsFavouriteDetail = new boolean[1];
+//        final Favourite[] currentFavourite = {new Favourite()};
+//        new FirebaseFavouriteInfoProductHelper().readFavourite(productId, userId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
+//
+//
+//            @Override
+//            public void DataIsLoaded(Favourite favourite, String keyFavourite, String keyFavouriteDetail, boolean isFavouriteExists, boolean isFavouriteDetailExists) {
+//                if (isFavouriteDetailExists == true)
+//                {
+//                    btnAddFavourite.setVisibility(View.GONE);
+//                    btnCancelFavourite.setVisibility(View.VISIBLE);
+//                }
+//                else {
+//                    btnAddFavourite.setVisibility(View.VISIBLE);
+//                    btnCancelFavourite.setVisibility(View.GONE);
+//                }
+//                keyOfFavourite[0] = keyFavourite;
+//                keyOfFavouriteDetail[0] = keyFavouriteDetail;
+//                isExistsFavourite[0] = isFavouriteExists;
+//                isExistsFavouriteDetail[0] = isFavouriteDetailExists;
+//                currentFavourite[0] = favourite;
+//            }
+//
+//            @Override
+//            public void DataIsInserted() {
+//
+//            }
+//
+//            @Override
+//            public void DataIsUpdated() {
+//
+//            }
+//
+//            @Override
+//            public void DataIsDeleted() {
+//
+//            }
+//        });
+//        btnAddFavourite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // truong hop new user
+//                if (isExistsFavourite[0] == false)
+//                {
+//                    Favourite favourite = new Favourite();
+//                    List<FavouriteDetail> details = new ArrayList<>();
+//                    FavouriteDetail detail = new FavouriteDetail();
+//                    detail.productId = productId;
+//                    detail.productName = productName;
+//                    detail.productImage = productImage1;
+//                    detail.ratingStar = ratingStar;
+//                    details.add(detail);
+//                    favourite.userId = userId;
+//                    favourite.userName = userName;
+//                    new FirebaseFavouriteInfoProductHelper().addFavourite(favourite, new FirebaseArtToCartHelper.DataStatus() {
+//                        @Override
+//                        public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+//
+//                        }
+//
+//                        @Override
+//                        public void DataIsInserted() {
+//                            Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                        @Override
+//                        public void DataIsUpdated() {
+//
+//                        }
+//
+//                        @Override
+//                        public void DataIsDeleted() {
+//
+//                        }
+//                    });
+//                }
+//                else {
+//                    if (isExistsFavouriteDetail[0] == false)
+//                    {
+//                        FavouriteDetail detail = new FavouriteDetail();
+//                        detail.productId = productId;
+//                        detail.productName = productName;
+//                        detail.productImage = productImage1;
+//                        detail.ratingStar = ratingStar;
+//                        currentFavourite[0].favouriteList.add(detail);
+//                        new FirebaseFavouriteInfoProductHelper().updateFavourite(keyOfFavourite[0], currentFavourite[0], new FirebaseArtToCartHelper.DataStatus() {
+//                            @Override
+//                            public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+//
+//                            }
+//
+//                            @Override
+//                            public void DataIsInserted() {
+//
+//                            }
+//
+//                            @Override
+//                            public void DataIsUpdated() {
+//                                Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            @Override
+//                            public void DataIsDeleted() {
+//
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+//        });
+//
+//        btnCancelFavourite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                for (int i =0;i < currentFavourite[0].favouriteList.size();i++)
+//                {
+//                    if (currentFavourite[0].favouriteList.get(i).productId.equals(productId)) {
+//                        currentFavourite[0].favouriteList.remove(i);
+//                        break;
+//                    }
+//                }
+//                new FirebaseFavouriteInfoProductHelper().updateFavourite(keyOfFavourite[0], currentFavourite[0], new FirebaseArtToCartHelper.DataStatus() {
+//                    @Override
+//                    public void DataIsLoaded(Cart cart, String keyCart, String keyProduct, boolean isExistsCart, boolean isExistsProduct) {
+//
+//                    }
+//
+//                    @Override
+//                    public void DataIsInserted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void DataIsUpdated() {
+//                        Toast.makeText(ProductInfoActivity.this, "Đã xóa khỏi danh mục yêu thích", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void DataIsDeleted() {
+//
+//                    }
+//                });
+//            }
+//        });
+//    }
 
 }

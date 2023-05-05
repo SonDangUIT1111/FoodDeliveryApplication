@@ -8,24 +8,25 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Model.Comment;
-import com.example.fooddeliveryapplication.Model.CommentDetail;
 import com.example.fooddeliveryapplication.R;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
 public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecyclerViewAdapter.ViewHolder> {
     private Context mContext;
-    private List<CommentDetail> commentList;
+    private List<Comment> commentList;
     private List<String> mKeys;
 
 
-    public CommentRecyclerViewAdapter(Context mContext, List<CommentDetail> commentList, List<String> mKeys) {
+    public CommentRecyclerViewAdapter(Context mContext, List<Comment> commentList, List<String> mKeys) {
         this.mContext = mContext;
         this.commentList = commentList;
         this.mKeys = mKeys;
@@ -41,10 +42,25 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
 
     @Override
     public void onBindViewHolder(@NonNull CommentRecyclerViewAdapter.ViewHolder holder, int position) {
-        CommentDetail comment = commentList.get(position);
-        holder.txtRecCommentUsername.setText(comment.getPublisherName());
+        // find name from id
+        Comment comment = commentList.get(position);
+        final String[] userName = {""};
+
+        FirebaseDatabase.getInstance().getReference().child("Users").child(comment.getPublisherId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.child("userName").getValue(String.class);
+                holder.txtRecCommentUsername.setText(name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        holder.txtRecCommentUsername.setText(userName[0]);
         holder.txtRecCommentComment.setText(comment.getCommentDetail());
-        holder.recCommentRatingBar.setRating(comment.getRatingStar());
+        holder.recCommentRatingBar.setRating(comment.getRating());
     }
 
     @Override
