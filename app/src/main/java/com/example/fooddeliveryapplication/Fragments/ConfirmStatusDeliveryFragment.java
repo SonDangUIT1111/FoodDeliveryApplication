@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.fooddeliveryapplication.Activities.ProductInfoActivity;
 import com.example.fooddeliveryapplication.Adapters.StatusManagementPagerAdapter;
@@ -26,7 +27,7 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
     RecyclerView recConfirmDelivery;
     View view;
     String userId;
-
+    ProgressBar progressBarConfirmDelivery;
     public ConfirmStatusDeliveryFragment(String Id) {
         userId = Id;
     }
@@ -39,7 +40,7 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
 
         // find view by id
         recConfirmDelivery = (RecyclerView) view.findViewById(R.id.recConfirmDelivery);
-
+        progressBarConfirmDelivery = (ProgressBar) view.findViewById(R.id.progressBarConfirmDelivery);
         //set data and adapter for list
         new FirebaseStatusOrderHelper(userId).readConfirmBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
@@ -48,6 +49,7 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
                 recConfirmDelivery.setHasFixedSize(true);
                 recConfirmDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 recConfirmDelivery.setAdapter(adapter);
+                progressBarConfirmDelivery.setVisibility(View.GONE);
             }
 
 

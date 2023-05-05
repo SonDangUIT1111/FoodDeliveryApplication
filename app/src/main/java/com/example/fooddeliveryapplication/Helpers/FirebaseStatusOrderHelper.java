@@ -70,4 +70,72 @@ public class FirebaseStatusOrderHelper {
             }
         });
     }
+    public void readShippingBills(String userId, final FirebaseStatusOrderHelper.DataStatus dataStatus)
+    {
+        mReferenceStatusOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                bills.clear();
+                images.clear();
+                for (DataSnapshot keyNode : snapshot.child("Bills").getChildren())
+                {
+                    if (keyNode.child("senderId").getValue(String.class).equals(userId)
+                            &&  keyNode.child("orderStatus").getValue(String.class).equals("Shipping"))
+                    {
+                        Bill bill = keyNode.getValue(Bill.class);
+                        bills.add(bill);
+
+                        // get first product id
+                        DataSnapshot snapChild = snapshot.child("BillInfos").child(bill.getBillId());
+                        String firstProductId = "";
+                        for (DataSnapshot keyChild : snapChild.getChildren())
+                        {
+                            firstProductId = keyChild.child("productId").getValue(String.class);
+                        }
+                        // get image for bill
+                        images.add(snapshot.child("Products").child(firstProductId).child("productImage1").getValue(String.class));
+                    }
+                }
+
+                dataStatus.DataIsLoaded(bills,images);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void readCompletedBills(String userId, final FirebaseStatusOrderHelper.DataStatus dataStatus) {
+        mReferenceStatusOrder.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                bills.clear();
+                images.clear();
+                for (DataSnapshot keyNode : snapshot.child("Bills").getChildren()) {
+                    if (keyNode.child("senderId").getValue(String.class).equals(userId)
+                            && keyNode.child("orderStatus").getValue(String.class).equals("Completed")) {
+                        Bill bill = keyNode.getValue(Bill.class);
+                        bills.add(bill);
+
+                        // get first product id
+                        DataSnapshot snapChild = snapshot.child("BillInfos").child(bill.getBillId());
+                        String firstProductId = "";
+                        for (DataSnapshot keyChild : snapChild.getChildren()) {
+                            firstProductId = keyChild.child("productId").getValue(String.class);
+                        }
+                        // get image for bill
+                        images.add(snapshot.child("Products").child(firstProductId).child("productImage1").getValue(String.class));
+                    }
+                }
+
+                dataStatus.DataIsLoaded(bills, images);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="5dp"
         app:cardElevation="2dp"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
@@ -42,7 +43,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="20dp"
                 android:text="Order ID:"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -53,7 +54,7 @@
                 android:id="@+id/txtOrderId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:text="order of id"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -66,7 +67,7 @@
                 android:id="@+id/txtStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
                 android:text="Confirming"
                 android:textColor="@color/orange"
@@ -90,7 +91,7 @@
                 android:id="@+id/txtDateOfOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:text="Date"
                 app:layout_constraintBottom_toBottomOf="@+id/textView10"
                 app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -100,7 +101,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="20dp"
                 android:text="Total:"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView"
@@ -110,7 +111,7 @@
                 android:id="@+id/txtOrderTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:text="100.000 VND"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/textView13"
@@ -121,10 +122,10 @@
                 android:id="@+id/btnChangeStatus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Confirm"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView"
                 app:layout_constraintWidth_percent="0.4" />
         </androidx.constraintlayout.widget.ConstraintLayout>
