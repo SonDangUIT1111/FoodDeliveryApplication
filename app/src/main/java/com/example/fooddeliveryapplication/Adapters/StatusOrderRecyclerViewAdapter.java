@@ -15,17 +15,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusOrderRecyclerViewAdapter.ViewHolder> {
     Context mContext;
     List<Bill> billList;
-    private List<String> mKeys;
+    List<String> listImage;
 
-    public StatusOrderRecyclerViewAdapter(Context mContext, List<Bill> billList, List<String> mKeys) {
+    public StatusOrderRecyclerViewAdapter(Context mContext, List<Bill> billList,List<String> imgUrl) {
         this.mContext = mContext;
         this.billList = billList;
-        this.mKeys = mKeys;
+        this.listImage = imgUrl;
     }
 
     @NonNull
@@ -41,32 +43,27 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         holder.txtOrderId.setText(bill.getBillId());
         holder.txtStatus.setText(bill.getOrderStatus());
         holder.txtDateOfOrder.setText(bill.getOrderDate());
-        holder.txtOrderTotal.setText(String.valueOf(bill.getTotalPrice()));
+        holder.txtOrderTotal.setText(convertToVND(bill.getTotalPrice()) + " VND");
 
-
-        holder.imgProductImage = new ImageView(mContext);
         holder.imgProductImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        if (bill.getBillInfos().size() > 0)
-//        {
-//            Glide.with(mContext)
-//                    .asBitmap()
-//                    .load(bill.billInfos.get(0).productImage)
-//                    .into(holder.imgProductImage);
-//        }
-//
-//        if (bill.orderStatus.equals("Confirm"))
-//        {
-//            holder.btnChangeStatus.setText("Shipping");
-//            //todo logic for btn
-//        }
-//        else if (bill.orderStatus.equals("Shipping"))
-//        {
-//            holder.btnChangeStatus.setText("Completed");
-//            //todo logic for btn
-//        }
-//        else {
-//            holder.btnChangeStatus.setVisibility(View.GONE);
-//        }
+        Glide.with(mContext)
+                .asBitmap()
+                .load(listImage.get(position))
+                .into(holder.imgProductImage);
+
+        if (bill.getOrderStatus().equals("Confirm"))
+        {
+            holder.btnChangeStatus.setText("Shipping");
+            //todo logic for btn
+        }
+        else if (bill.getOrderStatus().equals("Shipping"))
+        {
+            holder.btnChangeStatus.setText("Completed");
+            //todo logic for btn
+        }
+        else {
+            holder.btnChangeStatus.setVisibility(View.GONE);
+        }
     }
 
 
@@ -93,6 +90,13 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
             txtOrderTotal = itemView.findViewById(R.id.txtOrderTotal);
             btnChangeStatus = itemView.findViewById(R.id.btnChangeStatus);
         }
+    }
+
+    public String convertToVND(int value)
+    {
+        NumberFormat nfi = NumberFormat.getInstance(new Locale("vn","VN"));
+        String price = nfi.format(value);
+        return price;
     }
 
 }

@@ -41,14 +41,15 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
         recConfirmDelivery = (RecyclerView) view.findViewById(R.id.recConfirmDelivery);
 
         //set data and adapter for list
-        new FirebaseStatusOrderHelper().readConfirmBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
+        new FirebaseStatusOrderHelper(userId).readConfirmBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Bill> bills, List<String> keys) {
-                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills,keys);
+            public void DataIsLoaded(List<Bill> bills,List<String> imgUrl) {
+                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills,imgUrl);
                 recConfirmDelivery.setHasFixedSize(true);
                 recConfirmDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 recConfirmDelivery.setAdapter(adapter);
             }
+
 
             @Override
             public void DataIsInserted() {}

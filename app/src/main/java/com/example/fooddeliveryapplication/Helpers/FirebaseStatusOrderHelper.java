@@ -17,18 +17,21 @@ public class FirebaseStatusOrderHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceStatusOrder;
     List<Bill> bills = new ArrayList<>();
+    List<String> images = new ArrayList<>();
+    String userId;
 
     public interface DataStatus{
-        void DataIsLoaded(List<Bill> bills, List<String> keys);
+        void DataIsLoaded(List<Bill> bills,List<String> img);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
 
     }
 
-    public FirebaseStatusOrderHelper() {
+    public FirebaseStatusOrderHelper(String user) {
+        userId = user;
         mDatabase = FirebaseDatabase.getInstance();
-        mReferenceStatusOrder = mDatabase.getReference("/Bills");
+        mReferenceStatusOrder = mDatabase.getReference();
     }
 
     public void readConfirmBills(String userId, final FirebaseStatusOrderHelper.DataStatus dataStatus)
@@ -37,29 +40,28 @@ public class FirebaseStatusOrderHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 bills.clear();
-                List<String> keys = new ArrayList<>();
-                for (DataSnapshot keyNode : snapshot.getChildren())
+                images.clear();
+                for (DataSnapshot keyNode : snapshot.child("Bills").getChildren())
                 {
                     if (keyNode.child("senderId").getValue(String.class).equals(userId)
                     &&  keyNode.child("orderStatus").getValue(String.class).equals("Confirm"))
                     {
-                        DataSnapshot snapshotList = keyNode.child("billInfos");
-                        List<BillInfo> billInfos = new ArrayList<>();
-                        for (DataSnapshot snapChild : snapshotList.getChildren())
-                        {
-                            billInfos.add(snapChild.getValue(BillInfo.class));
-                        }
-                        Bill bill = new Bill();
-//                        bill.orderStatus = "Confirm";
-//                        bill.billInfos = billInfos;
-//                        bill.billId = keyNode.child("billId").getValue(String.class);
-//                        bill.orderDate = keyNode.child("orderDate").getValue(String.class);
-//                        bill.totalPrice = keyNode.child("totalPrice").getValue(int.class);
+                        Bill bill = keyNode.getValue(Bill.class);
                         bills.add(bill);
-                        keys.add(keyNode.getKey());
+
+                        // get first product id
+                        DataSnapshot snapChild = snapshot.child("BillInfos").child(bill.getBillId());
+                        String firstProductId = "";
+                        for (DataSnapshot keyChild : snapChild.getChildren())
+                        {
+                            firstProductId = keyChild.child("productId").getValue(String.class);
+                        }
+                        // get image for bill
+                        images.add(snapshot.child("Products").child(firstProductId).child("productImage1").getValue(String.class));
                     }
                 }
-                dataStatus.DataIsLoaded(bills,keys);
+
+                dataStatus.DataIsLoaded(bills,images);
             }
 
             @Override

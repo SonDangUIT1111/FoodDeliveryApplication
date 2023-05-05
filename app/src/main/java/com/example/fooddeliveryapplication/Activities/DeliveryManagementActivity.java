@@ -23,7 +23,7 @@ public class DeliveryManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delivery_management);
 
         //get input
-        userId = "user2";
+        userId = "randomUserId2";
 
         // find view by id
         tabLayoutDelivery = (TabLayout) findViewById(R.id.tabLayoutDelivery);
