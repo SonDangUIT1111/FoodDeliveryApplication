@@ -41,11 +41,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/txtGmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="3dp"
-            android:text="Username"
+            android:text="Gmail"
             android:textColor="#000000"
             android:textSize="14sp" />
 
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:ems="10"
-            android:hint="username"
+            android:hint="abc@gmail.com"
             android:inputType="textPersonName" />
 
 
