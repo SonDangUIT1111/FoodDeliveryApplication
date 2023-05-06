@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.15"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,13 +26,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3"
             app:srcCompat="@drawable/ic_back_ios" />
 
         <TextView
             android:id="@+id/txt8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:text="Detail Order"
             android:textSize="34sp"
             android:textStyle="bold"
@@ -61,7 +62,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.85"
+        app:layout_constraintHeight_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
 
@@ -84,7 +85,7 @@
                 android:id="@+id/txtAddressDetail"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:ellipsize="end"
                 android:maxLines="4"
                 android:textSize="18dp"
@@ -109,7 +110,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recOrderDetail"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="160dp"
                 android:layout_margin="10dp"
                 android:background="#ffffff"/>
         </androidx.cardview.widget.CardView>
