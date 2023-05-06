@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,11 @@ public class FirebaseStatusOrderHelper {
 
     public FirebaseStatusOrderHelper(String user) {
         userId = user;
+        mDatabase = FirebaseDatabase.getInstance();
+        mReferenceStatusOrder = mDatabase.getReference();
+    }
+
+    public FirebaseStatusOrderHelper() {
         mDatabase = FirebaseDatabase.getInstance();
         mReferenceStatusOrder = mDatabase.getReference();
     }
@@ -106,7 +112,7 @@ public class FirebaseStatusOrderHelper {
             }
         });
     }
-    public void readCompletedBills(String userId, final FirebaseStatusOrderHelper.DataStatus dataStatus) {
+    public void readCompletedBills(String userId,final FirebaseStatusOrderHelper.DataStatus dataStatus) {
         mReferenceStatusOrder.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -137,5 +143,24 @@ public class FirebaseStatusOrderHelper {
 
             }
         });
+    }
+
+    public void setConfirmToShipping(String billId,final FirebaseStatusOrderHelper.DataStatus dataStatus) {
+        mReferenceStatusOrder.child("Bills").child(billId).child("orderStatus").setValue("Shipping")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        dataStatus.DataIsUpdated();
+                    }
+                });
+    }
+    public void setShippingToCompleted(String billId,final FirebaseStatusOrderHelper.DataStatus dataStatus) {
+        mReferenceStatusOrder.child("Bills").child(billId).child("orderStatus").setValue("Completed")
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        dataStatus.DataIsUpdated();
+                    }
+                });
     }
 }

@@ -1,19 +1,28 @@
 package com.example.fooddeliveryapplication.Adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.fooddeliveryapplication.Activities.DetailOfOrderDeliveryManagementActivity;
+import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.R;
 import android.content.Context;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -37,6 +46,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         return new StatusOrderRecyclerViewAdapter.ViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Bill bill = billList.get(position);
@@ -54,16 +64,79 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         if (bill.getOrderStatus().equals("Confirm"))
         {
             holder.btnChangeStatus.setText("Shipping");
-            //todo logic for btn
+            holder.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new FirebaseStatusOrderHelper().setConfirmToShipping(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
+                        @Override
+                        public void DataIsLoaded(List<Bill> bills, List<String> img) {
+                            
+                        }
+
+                        @Override
+                        public void DataIsInserted() {
+
+                        }
+
+                        @Override
+                        public void DataIsUpdated() {
+                            Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái đang giao hàng", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void DataIsDeleted() {
+
+                        }
+                    });
+                }
+            });
         }
         else if (bill.getOrderStatus().equals("Shipping"))
         {
             holder.btnChangeStatus.setText("Completed");
-            //todo logic for btn
+            holder.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new FirebaseStatusOrderHelper().setShippingToCompleted(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
+                        @Override
+                        public void DataIsLoaded(List<Bill> bills, List<String> img) {
+                            
+                        }
+
+                        @Override
+                        public void DataIsInserted() {
+
+                        }
+
+                        @Override
+                        public void DataIsUpdated() {
+                            Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái hoàn thành", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void DataIsDeleted() {
+
+                        }
+                    });
+                }
+            });
         }
         else {
+            holder.txtStatus.setTextColor(Color.parseColor("#48DC7D"));
             holder.btnChangeStatus.setVisibility(View.GONE);
         }
+        
+        // view detail
+        holder.parentOfItemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DetailOfOrderDeliveryManagementActivity.class);
+                intent.putExtra("billId",bill.getBillId());
+                intent.putExtra("addressId",bill.getAddressId());
+                intent.putExtra("totalBill",bill.getTotalPrice());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
 
@@ -80,6 +153,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         public TextView txtDateOfOrder;
         public TextView txtOrderTotal;
         public Button btnChangeStatus;
+        public ConstraintLayout parentOfItemCard;
         public String key;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +163,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
             txtDateOfOrder = itemView.findViewById(R.id.txtDateOfOrder);
             txtOrderTotal = itemView.findViewById(R.id.txtOrderTotal);
             btnChangeStatus = itemView.findViewById(R.id.btnChangeStatus);
+            parentOfItemCard = itemView.findViewById(R.id.parentOfItemCard);
         }
     }
 

@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recShippingDelivery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
     <ProgressBar
         android:id="@+id/progressBarShippingDelivery"
         style="?android:attr/progressBarStyle"
