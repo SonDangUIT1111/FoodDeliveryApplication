@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
-import com.example.fooddeliveryapplication.Class.Product;
-import com.example.fooddeliveryapplication.Class.ProductAdapter;
+import com.example.fooddeliveryapplication.Activities.AddProductActivity;
+import com.example.fooddeliveryapplication.Model.Product;
+import com.example.fooddeliveryapplication.Adapters.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,27 @@ public class MyShopActivity extends AppCompatActivity {
         rcvProduct.setLayoutManager(linearLayoutManager);
         productAdapter.setData(getListProduct());
         rcvProduct.setAdapter(productAdapter);
+
+
+        ImageView back = findViewById(R.id.imgBack);
+
+        Button btnAdd = findViewById(R.id.btnAddProduct);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyShopActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyShopActivity.this, AddProductActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private List<Product> getListProduct(){

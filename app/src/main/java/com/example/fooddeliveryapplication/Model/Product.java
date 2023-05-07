@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Class;
+package com.example.fooddeliveryapplication.Model;
 
 public class Product {
     private int resourceId;

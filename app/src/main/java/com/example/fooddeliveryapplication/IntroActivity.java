@@ -21,7 +21,7 @@ public class IntroActivity extends AppCompatActivity {
         startedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(IntroActivity.this,MyShopActivity.class);
+                Intent intent = new Intent(IntroActivity.this,LoginActivity.class);
                 startActivity(intent);
             }
         });

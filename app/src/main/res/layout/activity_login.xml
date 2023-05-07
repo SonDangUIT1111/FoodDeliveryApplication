@@ -77,7 +77,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnlogin"
             android:layout_marginTop="30dp"
             android:layout_width="170dp"
             android:layout_height="50dp"
@@ -89,7 +89,7 @@
             app:backgroundTint="@null" />
 
         <TextView
-            android:id="@+id/forgotpassText"
+            android:id="@+id/txtforgotpass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -99,7 +99,8 @@
             android:textStyle="bold" />
 
 
-            <TextView android:id="@+id/donthaveaccText"
+            <TextView
+                android:id="@+id/txtDonthaveacc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -107,10 +108,5 @@
             android:textColor="@color/orange"
             android:textSize="15sp"
             android:textStyle="bold" />
-
-
-
-
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
