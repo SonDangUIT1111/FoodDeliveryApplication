@@ -45,7 +45,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="315dp"
-        android:layout_height="197dp"
+        android:layout_height="150dp"
         android:layout_marginStart="25dp"
         android:layout_marginTop="117dp"
         android:layout_alignParentStart="true"
@@ -63,7 +63,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/profile_image"/>
+                android:src="@drawable/profile_image"
+                android:id="@+id/user_avatar"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -72,18 +73,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="123dp"
             android:layout_marginTop="26dp"
-            android:text="Do Minh Nhat"
             android:textSize="18sp"
-            android:fontFamily="sans-serif-light"/>
+            android:fontFamily="sans-serif-light"
+            android:id="@+id/user_name"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="123dp"
             android:layout_marginTop="53dp"
-            android:text="dmnhat.pt@gmail.com"
             android:textSize="15sp"
-            android:fontFamily="sans-serif-light"/>
+            android:fontFamily="sans-serif-light"
+            android:id="@+id/user_email"/>
 
         <View
             android:layout_width="165dp"
@@ -98,9 +99,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="123dp"
             android:layout_marginTop="85dp"
-            android:text="0824670790"
             android:textSize="15sp"
-            android:fontFamily="sans-serif-light"/>
+            android:fontFamily="sans-serif-light"
+            android:id="@+id/user_phone_number"/>
 
         <View
             android:layout_width="165dp"
@@ -109,15 +110,6 @@
             android:layout_marginStart="123dp"
             android:layout_marginTop="110dp"
             android:alpha="0.5"/>
-
-        <TextView
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="123dp"
-            android:layout_marginTop="117dp"
-            android:text="Bán các loại mặt hàng thiết yếu cho một buổi nhậu, cụ thể là đồ ăn."
-            android:textSize="15sp"
-            android:fontFamily="sans-serif-light"/>
         
     </androidx.cardview.widget.CardView>
 
@@ -127,7 +119,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="341dp"
+        android:layout_marginTop="300dp"
         app:cardCornerRadius="20dp"
         android:elevation="40dp">
 
@@ -155,7 +147,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="428dp"
+        android:layout_marginTop="380dp"
         app:cardCornerRadius="20dp"
         android:elevation="40dp">
 
@@ -183,7 +175,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="515dp"
+        android:layout_marginTop="460dp"
         app:cardCornerRadius="20dp"
         android:elevation="40dp">
 
@@ -193,6 +185,34 @@
             android:layout_marginStart="23dp"
             android:layout_marginTop="20dp"
             android:text="My shop"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-light"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="264dp"
+            android:layout_marginTop="19dp"
+            android:src="@drawable/ic_right_arrow"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="315dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="540dp"
+        app:cardCornerRadius="20dp"
+        android:elevation="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="20dp"
+            android:text="Help"
             android:textSize="18sp"
             android:fontFamily="sans-serif-light"/>
 
