@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "952794363015",
+    "firebase_url": "https://instagramfirebase-45333-default-rtdb.firebaseio.com",
+    "project_id": "instagramfirebase-45333",
+    "storage_bucket": "instagramfirebase-45333.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952794363015:android:b4c573a0443d93ec18f422",
+        "android_client_info": {
+          "package_name": "com.example.fooddeliveryapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952794363015-kaeaottpuvtkingtor1ucpf7jkada00f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-f1XE719jG7WTpvkYxDsvyMurWm20_N4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952794363015-kaeaottpuvtkingtor1ucpf7jkada00f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
