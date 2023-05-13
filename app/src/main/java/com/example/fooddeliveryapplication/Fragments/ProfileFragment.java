@@ -85,7 +85,7 @@ public class ProfileFragment extends Fragment {
                 userName.setText(user.getUserName());
                 userEmail.setText(user.getEmail());
                 userPhoneNumber.setText(user.getPhoneNumber());
-                Glide.with(view).load(user.getAvatarURL()).into(userAvatar);
+                Glide.with(view).load(user.getAvatarURL()).placeholder(R.drawable.profile_image).into(userAvatar);
             }
 
             @Override

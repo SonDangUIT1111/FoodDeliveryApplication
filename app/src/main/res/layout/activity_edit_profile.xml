@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/email"
             android:hint="Email"
+            android:inputType="textEmailAddress"
             android:layout_marginTop="20dp"/>
 
         <EditText
@@ -94,6 +95,7 @@
             android:layout_gravity="center"
             android:background="@drawable/round_button"
             android:text="Update"
+            android:textColor="@color/white"
             android:layout_marginTop="180dp"
             android:enabled="false"
             android:id="@+id/update"/>
