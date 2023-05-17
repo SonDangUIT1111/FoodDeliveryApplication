@@ -15,11 +15,8 @@
         android:theme="@style/Theme.FoodDeliveryApplication"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.DetailOfOrderDeliveryManagementActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.DeliveryManagementActivity"
-            android:exported="true">
+            android:name=".TestActivityForFragmentTask"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,8 +24,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Activities.DetailOfOrderDeliveryManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DeliveryManagementActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".Activities.ProductInfoActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
