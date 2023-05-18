@@ -6,15 +6,17 @@
     android:layout_height="wrap_content"
     android:paddingBottom="10dp"
     android:id="@+id/background_notification_item">
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="36dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
             android:id="@+id/imgNotification"
             android:layout_width="50dp"
@@ -27,25 +29,26 @@
         android:id="@+id/txtTitleNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:text="Title"
-        android:textStyle="bold"
         android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/cardViewImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtContentNotification"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.55"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Content"
+        android:layout_marginStart="8dp"
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
         android:textSize="12dp"
-        android:maxLines="5"
         app:layout_constraintStart_toEndOf="@+id/cardViewImage"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitleNotification" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTitleNotification"
+        app:layout_constraintWidth_percent="0.75" />
 
     <TextView
         android:id="@+id/txtTimeNotification"
@@ -62,8 +65,8 @@
         android:id="@+id/imageView5"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardViewImage"
         app:layout_constraintTop_toBottomOf="@+id/cardViewImage"
@@ -71,13 +74,23 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/dotStatusRead"
-        app:cardElevation="0dp"
+        app:cardElevation="20dp"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:foreground="#FF0000"
+        android:foreground="@color/orange"
         app:cardCornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cat_2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

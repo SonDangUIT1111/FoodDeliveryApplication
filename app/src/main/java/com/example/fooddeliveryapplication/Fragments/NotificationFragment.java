@@ -40,11 +40,11 @@ public class NotificationFragment extends Fragment {
         progressBarNotification = (ProgressBar) view.findViewById(R.id.progressBarNotification);
 
         List<Notification> listSAMPLE = new ArrayList<>();
-        listSAMPLE.add(new Notification("Title","Content","","3-1-2003",true));
-        listSAMPLE.add(new Notification("Title","Content","","3-1-2003",false));
-        listSAMPLE.add(new Notification("Title","Content","","3-1-2003",true));
-        listSAMPLE.add(new Notification("Title","Content","","3-1-2003",false));
-        listSAMPLE.add(new Notification("Title","Content","","3-1-2003",true));
+        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",true));
+        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",false));
+        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",true));
+        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",false));
+        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",true));
 
         NotificationListAdapter adapter = new NotificationListAdapter(getContext(),listSAMPLE);
         recNotification.setHasFixedSize(true);

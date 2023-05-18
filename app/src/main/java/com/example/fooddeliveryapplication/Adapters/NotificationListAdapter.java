@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Layout;
@@ -66,6 +67,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             holder.dotStatusRead.setVisibility(View.GONE);
             holder.background_notification_item.setBackgroundColor(Color.TRANSPARENT);
         }
+        // trigger for navigate to another activity
+        holder.background_notification_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo write code to navigate to the activity refer to notification
+                notification.setRead(true);
+            }
+        });
     }
 
     @Override
