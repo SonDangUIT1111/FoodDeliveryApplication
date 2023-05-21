@@ -55,7 +55,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             holder.imgNotification.setScaleType(ImageView.ScaleType.CENTER_CROP);
             Glide.with(mContext)
                     .asBitmap()
-                    .load(notificationList.get(position))
+                    .load(notificationList.get(position).getImageURL())
                     .into(holder.imgNotification);
         }
         if (notification.isRead()==false)

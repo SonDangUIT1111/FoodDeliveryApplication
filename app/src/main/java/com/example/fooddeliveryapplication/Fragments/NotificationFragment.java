@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.fooddeliveryapplication.Adapters.NotificationListAdapter;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotification;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 
@@ -39,19 +40,36 @@ public class NotificationFragment extends Fragment {
         recNotification = (RecyclerView) view.findViewById(R.id.recNotification);
         progressBarNotification = (ProgressBar) view.findViewById(R.id.progressBarNotification);
 
-        List<Notification> listSAMPLE = new ArrayList<>();
-        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",true));
-        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",false));
-        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",true));
-        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",false));
-        listSAMPLE.add(new Notification("Title","Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ","","3-1-2003",true));
-
-        NotificationListAdapter adapter = new NotificationListAdapter(getContext(),listSAMPLE);
-        recNotification.setHasFixedSize(true);
-        recNotification.setLayoutManager(new LinearLayoutManager(getContext()));
-        recNotification.setAdapter(adapter);
-        progressBarNotification.setVisibility(View.GONE);
-
+        readNotification();
         return view;
+    }
+
+    public void readNotification()
+    {
+        new FirebaseNotification().readNotification(userId, new FirebaseNotification.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Notification> notificationList) {
+                NotificationListAdapter adapter = new NotificationListAdapter(getContext(),notificationList);
+                recNotification.setHasFixedSize(true);
+                recNotification.setLayoutManager(new LinearLayoutManager(getContext()));
+                recNotification.setAdapter(adapter);
+                progressBarNotification.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
     }
 }

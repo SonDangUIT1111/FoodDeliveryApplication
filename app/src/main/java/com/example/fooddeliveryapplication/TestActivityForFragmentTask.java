@@ -22,7 +22,7 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
         setContentView(R.layout.activity_test_for_fragment_task);
 
         //get input
-        userId = "randomUserId2";
+        userId = "randomUserId1";
 
         // find view by id
         tabLayoutTest = (TabLayout) findViewById(R.id.tabLayoutTest);
