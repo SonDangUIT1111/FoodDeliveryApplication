@@ -1,21 +1,31 @@
 package com.example.fooddeliveryapplication.Model;
 
 public class Notification {
+    String notificationId;
     String title;
     String content;
     String imageURL;
     String time;
-    boolean isRead;
+    boolean read;
 
-    public Notification(String title, String content, String imageURL, String time, boolean isRead) {
+    public Notification(String notificationId, String title, String content, String imageURL, String time, boolean isRead) {
+        this.notificationId = notificationId;
         this.title = title;
         this.content = content;
         this.imageURL = imageURL;
         this.time = time;
-        this.isRead = isRead;
+        this.read = isRead;
     }
 
     public Notification() {
+    }
+
+    public String getNotificationId() {
+        return notificationId;
+    }
+
+    public void setNotificationId(String notificationId) {
+        this.notificationId = notificationId;
     }
 
     public String getTitle() {
@@ -51,10 +61,10 @@ public class Notification {
     }
 
     public boolean isRead() {
-        return isRead;
+        return read;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
+    public void setRead(boolean isRead) {
+        read = isRead;
     }
 }

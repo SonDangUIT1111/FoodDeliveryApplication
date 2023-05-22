@@ -4,10 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.AdapterTest;
 import com.example.fooddeliveryapplication.Adapters.StatusManagementPagerAdapter;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotification;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.google.android.material.tabs.TabLayout;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class TestActivityForFragmentTask extends AppCompatActivity {
 
@@ -16,6 +26,7 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
     TabLayout tabLayoutTest;
     ViewPager2 viewPagerTest;
     AdapterTest adapterTest;
+    Button btnAddNotification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +38,7 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
         // find view by id
         tabLayoutTest = (TabLayout) findViewById(R.id.tabLayoutTest);
         viewPagerTest = (ViewPager2) findViewById(R.id.viewPagerTest);
+        btnAddNotification = (Button) findViewById(R.id.btnAddNotification);
         adapterTest = new AdapterTest(this,userId);
         viewPagerTest.setAdapter(adapterTest);
 
@@ -49,6 +61,41 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 tabLayoutTest.getTabAt(position).select();
+            }
+        });
+
+        btnAddNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Notification notification = new Notification();
+                notification.setRead(false);
+                notification.setContent("New content");
+                notification.setImageURL("https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg?w=2000");
+                notification.setTitle("New title");
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                String currentDateAndTime = sdf.format(new Date());
+                notification.setTime(currentDateAndTime);
+                new FirebaseNotification().addNotification(userId, notification, new FirebaseNotification.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList) {
+                        
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+                        Toast.makeText(TestActivityForFragmentTask.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
             }
         });
     }

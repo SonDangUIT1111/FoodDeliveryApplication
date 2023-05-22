@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,19 +20,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotification;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ViewHolder> {
     private Context mContext;
     private List<Notification> notificationList;
     private List<String> mKeys;
+    String userId;
 
-    public NotificationListAdapter(Context mContext, List<Notification> notificationList) {
+    public NotificationListAdapter(Context mContext, List<Notification> notificationList,String id) {
         this.mContext = mContext;
         this.notificationList = notificationList;
+        userId = id;
     }
 
     @NonNull
@@ -72,7 +78,31 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             @Override
             public void onClick(View v) {
                 //todo write code to navigate to the activity refer to notification
-                notification.setRead(true);
+                if (!notification.isRead())
+                {
+                    notification.setRead(true);
+                    new FirebaseNotification().updateNotification(userId, notification, new FirebaseNotification.DataStatus() {
+                        @Override
+                        public void DataIsLoaded(List<Notification> notificationList) {
+
+                        }
+
+                        @Override
+                        public void DataIsInserted() {
+
+                        }
+
+                        @Override
+                        public void DataIsUpdated() {
+                            Toast.makeText(mContext, "Have read", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void DataIsDeleted() {
+
+                        }
+                    });
+                }
             }
         });
     }
