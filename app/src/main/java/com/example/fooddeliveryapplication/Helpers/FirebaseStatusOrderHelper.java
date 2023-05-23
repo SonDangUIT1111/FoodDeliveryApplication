@@ -20,6 +20,8 @@ public class FirebaseStatusOrderHelper {
     List<Bill> bills = new ArrayList<>();
     List<String> images = new ArrayList<>();
     String userId;
+    List<BillInfo> temp = new ArrayList<>();
+    List<Integer> tempInt = new ArrayList<>();
 
     public interface DataStatus{
         void DataIsLoaded(List<Bill> bills,List<String> img);
@@ -162,5 +164,59 @@ public class FirebaseStatusOrderHelper {
                         dataStatus.DataIsUpdated();
                     }
                 });
+
+
+        // set sold value of Product
+        temp = new ArrayList<>();
+        tempInt = new ArrayList<>();
+        mReferenceStatusOrder.child("BillInfos").child(billId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot keyNode: snapshot.getChildren())
+                {
+                    BillInfo billInfo = keyNode.getValue(BillInfo.class);
+                    temp.add(billInfo);
+                }
+                readSomeInfoOfBill();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+    public void readSomeInfoOfBill()
+    {
+        mReferenceStatusOrder.child("Products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (BillInfo info:temp)
+                {
+                    int count = snapshot.child(info.getProductId()).child("sold").getValue(int.class) + info.getAmount();
+                    tempInt.add(count);
+                }
+                updateSoldOfProduct();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public void updateSoldOfProduct()
+    {
+        for (int i = 0;i < temp.size(); i++)
+        {
+            mReferenceStatusOrder.child("Products").child(temp.get(i).getProductId()).child("sold").setValue(tempInt.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+
+                }
+            });
+        }
     }
 }
