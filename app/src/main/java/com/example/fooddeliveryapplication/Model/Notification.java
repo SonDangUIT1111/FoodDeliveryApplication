@@ -7,14 +7,16 @@ public class Notification {
     String imageURL;
     String time;
     boolean read;
+    boolean notified;
 
-    public Notification(String notificationId, String title, String content, String imageURL, String time, boolean isRead) {
+    public Notification(String notificationId, String title, String content, String imageURL, String time, boolean read, boolean notified) {
         this.notificationId = notificationId;
         this.title = title;
         this.content = content;
         this.imageURL = imageURL;
         this.time = time;
-        this.read = isRead;
+        this.read = read;
+        this.notified = notified;
     }
 
     public Notification() {
@@ -64,7 +66,15 @@ public class Notification {
         return read;
     }
 
-    public void setRead(boolean isRead) {
-        read = isRead;
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public boolean isNotified() {
+        return notified;
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
     }
 }

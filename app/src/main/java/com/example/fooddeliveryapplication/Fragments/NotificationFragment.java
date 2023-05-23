@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.fooddeliveryapplication.Adapters.NotificationListAdapter;
-import com.example.fooddeliveryapplication.Helpers.FirebaseNotification;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 
@@ -46,7 +46,7 @@ public class NotificationFragment extends Fragment {
 
     public void readNotification()
     {
-        new FirebaseNotification().readNotification(userId, new FirebaseNotification.DataStatus() {
+        new FirebaseNotificationHelper(getContext()).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList) {
                 NotificationListAdapter adapter = new NotificationListAdapter(getContext(),notificationList,userId);

@@ -1,21 +1,26 @@
 package com.example.fooddeliveryapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.AdapterTest;
-import com.example.fooddeliveryapplication.Adapters.StatusManagementPagerAdapter;
-import com.example.fooddeliveryapplication.Helpers.FirebaseNotification;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +36,6 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_for_fragment_task);
-
         //get input
         userId = "randomUserId1";
 
@@ -41,6 +45,8 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
         btnAddNotification = (Button) findViewById(R.id.btnAddNotification);
         adapterTest = new AdapterTest(this,userId);
         viewPagerTest.setAdapter(adapterTest);
+
+
 
 
         // connect tab layout with view pager
@@ -75,7 +81,7 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                 String currentDateAndTime = sdf.format(new Date());
                 notification.setTime(currentDateAndTime);
-                new FirebaseNotification().addNotification(userId, notification, new FirebaseNotification.DataStatus() {
+                new FirebaseNotificationHelper(TestActivityForFragmentTask.this).addNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override
                     public void DataIsLoaded(List<Notification> notificationList) {}
 
@@ -93,4 +99,5 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
             }
         });
     }
+
 }

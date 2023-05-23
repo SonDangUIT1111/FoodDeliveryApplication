@@ -1,9 +1,7 @@
 package com.example.fooddeliveryapplication.Adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.app.NotificationCompatSideChannelService;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
-import com.example.fooddeliveryapplication.Helpers.FirebaseNotification;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ViewHolder> {
@@ -81,7 +75,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 if (!notification.isRead())
                 {
                     notification.setRead(true);
-                    new FirebaseNotification().updateNotification(userId, notification, new FirebaseNotification.DataStatus() {
+                    new FirebaseNotificationHelper(mContext).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
                         @Override
                         public void DataIsLoaded(List<Notification> notificationList) {
 
