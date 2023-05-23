@@ -77,9 +77,7 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
                 notification.setTime(currentDateAndTime);
                 new FirebaseNotification().addNotification(userId, notification, new FirebaseNotification.DataStatus() {
                     @Override
-                    public void DataIsLoaded(List<Notification> notificationList) {
-                        
-                    }
+                    public void DataIsLoaded(List<Notification> notificationList) {}
 
                     @Override
                     public void DataIsInserted() {
@@ -87,14 +85,10 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
                     }
 
                     @Override
-                    public void DataIsUpdated() {
-
-                    }
+                    public void DataIsUpdated() {}
 
                     @Override
-                    public void DataIsDeleted() {
-
-                    }
+                    public void DataIsDeleted() {}
                 });
             }
         });

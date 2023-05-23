@@ -14,13 +14,21 @@ import java.util.List;
 
 public class FirebaseProductInfoHelper {
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mReferenceComment;
+    private  DatabaseReference mReference;
     private String productId;
     private List<Comment> comments = new ArrayList<>();
 
 
     public interface DataStatus{
-        void DataIsLoaded(List<Comment> comments, List<String> keys);
+        void DataIsLoaded(List<Comment> comments, int countRate,List<String> keys);
+        void DataIsInserted();
+        void DataIsUpdated();
+        void DataIsDeleted();
+
+    }
+
+    public interface DataStatusCountFavourite{
+        void DataIsLoaded(int countFavourite);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -29,12 +37,13 @@ public class FirebaseProductInfoHelper {
     public FirebaseProductInfoHelper(String productBranch){
         productId = productBranch;
         mDatabase = FirebaseDatabase.getInstance();
-        mReferenceComment = mDatabase.getReference("/Comments/"+productBranch);
+        mReference = mDatabase.getReference();
     }
+
 
     public void readComments(final DataStatus dataStatus)
     {
-        mReferenceComment.addValueEventListener(new ValueEventListener() {
+        mReference.child("Comments").child(productId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 comments.clear();
@@ -44,7 +53,31 @@ public class FirebaseProductInfoHelper {
                     comments.add(keyNode.getValue(Comment.class));
                     keys.add(keyNode.getKey());
                 }
-                dataStatus.DataIsLoaded(comments,keys);
+                int rate = comments.size();
+                dataStatus.DataIsLoaded(comments,rate,keys);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void countFavourite(final FirebaseProductInfoHelper.DataStatusCountFavourite dataStatusCountFavourite)
+    {
+        mReference.child("Favorites").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = 0;
+                for (DataSnapshot keyNode: snapshot.getChildren())
+                {
+                    if (keyNode.child(productId).exists())
+                    {
+                        count++;
+                    }
+                }
+                dataStatusCountFavourite.DataIsLoaded(count);
             }
 
             @Override

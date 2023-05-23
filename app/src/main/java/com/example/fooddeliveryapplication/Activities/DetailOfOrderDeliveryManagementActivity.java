@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,7 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
     TextView txtOrderIdDetail;
     TextView txtAddressDetail;
     TextView txtBillTotalInDetail;
+    TextView txtStatusOrderDetail;
     RecyclerView recOrderDetail;
     ImageButton btnBack;
     @Override
@@ -36,6 +38,7 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
         txtOrderIdDetail = (TextView) findViewById(R.id.txtOrderIdDetail);
         txtAddressDetail = (TextView) findViewById(R.id.txtAddressDetail);
         txtBillTotalInDetail = (TextView) findViewById(R.id.txtBillTotalInDetail);
+        txtStatusOrderDetail = (TextView) findViewById(R.id.txtStatusOrderDetail);
         recOrderDetail = (RecyclerView) findViewById(R.id.recOrderDetail);
         btnBack = (ImageButton) findViewById(R.id.btnBack);
 
@@ -45,10 +48,16 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
             String billId = intent.getStringExtra("billId");
             String addressId = intent.getStringExtra("addressId");
             String recipientId = intent.getStringExtra("recipientId");
+            String orderStatus = intent.getStringExtra("orderStatus");
             int price = intent.getIntExtra("totalBill",-1);
             try {
                 txtOrderIdDetail.setText("Order Id: "+billId);
                 txtBillTotalInDetail.setText(convertToVND(price)+ "VND");
+                txtStatusOrderDetail.setText(orderStatus);
+                if (orderStatus.equals("Completed"))
+                {
+                    txtStatusOrderDetail.setTextColor(Color.parseColor("#48DC7D"));
+                }
                 new FirebaseOrderDetailHelper().readOrderDetail(addressId, recipientId, billId, new FirebaseOrderDetailHelper.DataStatus() {
                     @Override
                     public void DataIsLoaded(String addresss, List<BillInfo> billInfos) {

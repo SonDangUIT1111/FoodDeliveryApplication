@@ -135,6 +135,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                 intent.putExtra("addressId",bill.getAddressId());
                 intent.putExtra("recipientId",bill.getRecipientId());
                 intent.putExtra("totalBill",bill.getTotalPrice());
+                intent.putExtra("orderStatus",bill.getOrderStatus());
                 mContext.startActivity(intent);
             }
         });

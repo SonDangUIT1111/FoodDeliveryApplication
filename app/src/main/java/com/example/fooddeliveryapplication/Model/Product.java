@@ -13,8 +13,9 @@ public class Product {
     String publisherId;
     String ratingStar;
     int remainAmount;
+    int sold;
 
-    public Product(String description, String productId, String productImage1, String productImage2, String productImage3, String productImage4, String productName, int productPrice, String productType, String publisherId, String ratingStar, int remainAmount) {
+    public Product(String description, String productId, String productImage1, String productImage2, String productImage3, String productImage4, String productName, int productPrice, String productType, String publisherId, String ratingStar, int remainAmount, int sold) {
         this.description = description;
         this.productId = productId;
         this.productImage1 = productImage1;
@@ -27,6 +28,7 @@ public class Product {
         this.publisherId = publisherId;
         this.ratingStar = ratingStar;
         this.remainAmount = remainAmount;
+        this.sold = sold;
     }
 
     public Product() {
@@ -126,5 +128,13 @@ public class Product {
 
     public void setRemainAmount(int remainAmount) {
         this.remainAmount = remainAmount;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 }

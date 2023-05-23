@@ -96,7 +96,7 @@
                     android:id="@+id/txtNameProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:text="Product Name"
                     android:textSize="34sp"
                     android:textStyle="bold|normal"
@@ -109,7 +109,7 @@
                     android:id="@+id/txtPriceProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="5dp"
                     android:text="100 000 VND"
                     android:textColor="#FD8C32"
                     android:textSize="20sp"
@@ -117,6 +117,31 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtNameProduct" />
+
+                <TextView
+                    android:id="@+id/txtSell"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:text="Sell: 100"
+                    android:textColor="#FF7700"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtPriceProduct" />
+
+
+                <TextView
+                    android:id="@+id/txtFavourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Favourite: 100"
+                    android:textColor="#E91E63"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtSell"
+                    app:layout_constraintStart_toEndOf="@+id/txtSell"
+                    app:layout_constraintTop_toTopOf="@+id/txtSell" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -142,6 +167,16 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="(100)"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtRating"
+                    app:layout_constraintStart_toEndOf="@+id/txtRating"
+                    app:layout_constraintTop_toTopOf="@+id/txtRating" />
 
                 <RatingBar
                     android:id="@+id/ratingBar"
@@ -212,6 +247,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recComment" />
 
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -230,4 +267,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+    <ProgressBar
+        android:id="@+id/progressBarProductInfo"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

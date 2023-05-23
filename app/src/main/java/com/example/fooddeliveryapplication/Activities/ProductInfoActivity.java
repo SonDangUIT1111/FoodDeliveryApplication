@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,9 +38,13 @@ public class ProductInfoActivity extends AppCompatActivity {
     TextView txtNameProduct;
     TextView txtPriceProduct;
     TextView txtDescription;
+    TextView txtSell;
+    TextView txtFavourite;
+    TextView txtRate;
     Button btnAddToCart;
     RatingBar ratingBar;
     RecyclerView recComment;
+    ProgressBar progressBarProductInfo;
 
     String productId;
     String productName;
@@ -52,6 +57,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     String productImage4;
     String userName;
     String userId;
+    int sold;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +73,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         userName = "Đặng Thái Sơn";
         productDescription = "Súp gà ngô kem thơm ngon bổ dưỡng";
         userId = "randomUserId2";
+        sold = 1;
 
 
         // find view by id
@@ -78,9 +85,13 @@ public class ProductInfoActivity extends AppCompatActivity {
         txtNameProduct = (TextView) findViewById(R.id.txtNameProduct);
         txtDescription = (TextView) findViewById(R.id.txtDesciption);
         txtPriceProduct = (TextView) findViewById(R.id.txtPriceProduct);
+        txtSell = (TextView) findViewById(R.id.txtSell);
+        txtRate = (TextView) findViewById(R.id.txtRate);
+        txtFavourite = (TextView) findViewById(R.id.txtFavourite);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         recComment = (RecyclerView) findViewById(R.id.recComment);
         btnAddToCart = (Button) findViewById(R.id.btnAddToCart);
+        progressBarProductInfo = (ProgressBar) findViewById(R.id.progressBarProductInfo);
 
         // set up default value
 
@@ -88,6 +99,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         txtNameProduct.setText(productName);
         txtPriceProduct.setText(String.valueOf(productPrice)+" VNĐ");
         txtDescription.setText(productDescription);
+        txtSell.setText("Sell: "+String.valueOf(sold));
         tabDots.setupWithViewPager(pagerProductImage, true);
         ratingBar.setRating(ratingStar);
 
@@ -110,6 +122,23 @@ public class ProductInfoActivity extends AppCompatActivity {
         }
         adapterPager.insertImageUrl(imageUrl);
         pagerProductImage.setAdapter(adapterPager);
+
+        // load sell, favourite
+        new FirebaseProductInfoHelper(productId).countFavourite(new FirebaseProductInfoHelper.DataStatusCountFavourite() {
+            @Override
+            public void DataIsLoaded(int countFavourite) {
+                txtFavourite.setText("Favourite: "+String.valueOf(countFavourite));
+            }
+
+            @Override
+            public void DataIsInserted() {}
+
+            @Override
+            public void DataIsUpdated() {}
+
+            @Override
+            public void DataIsDeleted() {}
+        });
 
 
         // load data cart
@@ -157,6 +186,9 @@ public class ProductInfoActivity extends AppCompatActivity {
                 updateCart(isCartExists[0],isProductExists[0],currentCart[0],currentCartInfo[0],1);
             }
         });
+
+        // end of load data
+        progressBarProductInfo.setVisibility(View.GONE);
     }
 
 
@@ -167,11 +199,12 @@ public class ProductInfoActivity extends AppCompatActivity {
     {
         new FirebaseProductInfoHelper(productId).readComments(new FirebaseProductInfoHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Comment> commentList, List<String> keys) {
+            public void DataIsLoaded(List<Comment> commentList,int count, List<String> keys) {
                 CommentRecyclerViewAdapter adapter = new CommentRecyclerViewAdapter(ProductInfoActivity.this,commentList,keys);
                 recComment.setHasFixedSize(true);
                 recComment.setLayoutManager(new LinearLayoutManager(ProductInfoActivity.this));
                 recComment.setAdapter(adapter);
+                txtRate.setText("("+count+")");
             }
 
             @Override
