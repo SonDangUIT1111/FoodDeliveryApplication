@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -78,15 +79,20 @@ public class FirebaseNotificationHelper {
                         return o2.getTime().compareTo(o1.getTime());
                     }
                 });
-                if (notificationList.size() > 0 && notificationList.get(0).isRead() == false)
+                if (notificationList.size() > 0 && notificationList.get(0).isRead() == false && notificationList.get(0).isNotified() == false)
                 {
+                    boolean flag = false;
                     mReference.child("Notification").child(userId).child(notificationList.get(0).getNotificationId()).child("notified").setValue(true)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                 }
                             });
-                    notificationPush(notificationList.get(0).getTitle(),notificationList.get(0).getContent());
+                    if (!flag)
+                    {
+                        notificationPush(notificationList.get(0).getTitle(),notificationList.get(0).getContent());
+                        flag = true;
+                    }
                 }
                 dataStatus.DataIsLoaded(notificationList);
             }
@@ -152,5 +158,20 @@ public class FirebaseNotificationHelper {
     private int getNotificationId()
     {
         return (int) new Date().getTime();
+    }
+
+    public static Notification createNotification(String title,String content,String imageNotificationURL)
+    {
+        Notification notification = new Notification();
+        notification.setRead(false);
+        notification.setNotified(false);
+        notification.setContent(content);
+        notification.setImageURL(imageNotificationURL);
+        notification.setTitle(title);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String currentDateAndTime = sdf.format(new Date());
+        notification.setTime(currentDateAndTime);
+
+        return notification;
     }
 }

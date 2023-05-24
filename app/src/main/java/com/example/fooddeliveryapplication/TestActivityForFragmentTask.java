@@ -78,7 +78,7 @@ public class TestActivityForFragmentTask extends AppCompatActivity {
                 notification.setContent("New content");
                 notification.setImageURL("https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg?w=2000");
                 notification.setTitle("New title");
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String currentDateAndTime = sdf.format(new Date());
                 notification.setTime(currentDateAndTime);
                 new FirebaseNotificationHelper(TestActivityForFragmentTask.this).addNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {

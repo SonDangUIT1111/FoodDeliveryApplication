@@ -18,10 +18,12 @@ import com.example.fooddeliveryapplication.Adapters.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseFavouriteInfoProductHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -57,6 +59,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     String productImage4;
     String userName;
     String userId;
+    String publisherId;
     int sold;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,8 @@ public class ProductInfoActivity extends AppCompatActivity {
         ratingStar = Float.parseFloat("4.2");
         userName = "Đặng Thái Sơn";
         productDescription = "Súp gà ngô kem thơm ngon bổ dưỡng";
-        userId = "randomUserId2";
+        publisherId = "randomUserId1";
+        userId = "randomUserId1";
         sold = 1;
 
 
@@ -122,6 +126,29 @@ public class ProductInfoActivity extends AppCompatActivity {
         }
         adapterPager.insertImageUrl(imageUrl);
         pagerProductImage.setAdapter(adapterPager);
+
+        // load notification
+        new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Notification> notificationList) {
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
 
         // load sell, favourite
         new FirebaseProductInfoHelper(productId).countFavourite(new FirebaseProductInfoHelper.DataStatusCountFavourite() {
@@ -178,6 +205,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         // load data favourite
         loadDataFavourite();
 
+
         //add to cart process
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,8 +215,6 @@ public class ProductInfoActivity extends AppCompatActivity {
             }
         });
 
-        // end of load data
-        progressBarProductInfo.setVisibility(View.GONE);
     }
 
 
@@ -328,6 +354,8 @@ public class ProductInfoActivity extends AppCompatActivity {
                 }
                 isExistsFavourite[0] = isFavouriteExists;
                 isExistsFavouriteDetail[0] = isFavouriteDetailExists;
+                // end of load data
+                progressBarProductInfo.setVisibility(View.GONE);
             }
 
             @Override
@@ -362,6 +390,7 @@ public class ProductInfoActivity extends AppCompatActivity {
                         @Override
                         public void DataIsInserted() {
                             Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                            pushNotificationFavourite();
                         }
 
                         @Override
@@ -389,6 +418,7 @@ public class ProductInfoActivity extends AppCompatActivity {
                             @Override
                             public void DataIsInserted() {
                                 Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                                pushNotificationFavourite();
                             }
 
                             @Override
@@ -432,6 +462,34 @@ public class ProductInfoActivity extends AppCompatActivity {
                         Toast.makeText(ProductInfoActivity.this, "Đã xóa khỏi danh mục yêu thích", Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+    }
+
+    public void pushNotificationFavourite()
+    {
+        String title = "Sản phẩm yêu thích";
+        String content = userName + " đã thích sản phẩm "+ productName + " của bạn. Nhấn vào để xem lượt yêu thích nào.";
+        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1);
+        new FirebaseNotificationHelper(this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Notification> notificationList) {
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
             }
         });
     }
