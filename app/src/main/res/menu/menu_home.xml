@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home_menu"
+        android:title="Home"
+        android:icon="@drawable/home_icon"
+        app:cnb_iconColor="@color/main"/>
+
+
+    <item
+        android:id="@+id/favorite_menu"
+        android:title="Favorites"
+        android:icon="@drawable/heart_icon"
+        app:cnb_iconColor="@color/main"/>
+
+    <item
+        android:id="@+id/history_menu"
+        android:title="History"
+        android:icon="@drawable/history_icon"
+        app:cnb_iconColor="@color/main"/>
+</menu>
