@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/cart_product_item_background"
+    android:padding="10dp"
+    android:elevation="20dp"
+    android:layout_centerHorizontal="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cart_product_item_background"
+        android:padding="10dp"
+        android:elevation="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="45dp"
+            android:id="@+id/product_image_container">
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@mipmap/ic_launcher"
+                android:id="@+id/product_image"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/product_image_container">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Food name"
+                android:textSize="22sp"
+                android:maxLines="1"
+                android:id="@+id/product_name"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/app_color"
+                android:text="#1,000"
+                android:textSize="22sp"
+                android:id="@+id/product_price"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:text="-"
+                android:textSize="12sp"
+                android:background="@drawable/rounded_button_left"
+                android:id="@+id/subtract"/>
+
+            <Button
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:text="1"
+                android:textSize="12sp"
+                android:background="@drawable/normal_button"
+                android:id="@+id/product_amount"/>
+
+            <Button
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:text="+"
+                android:textSize="12sp"
+                android:background="@drawable/rounded_button_right"
+                android:id="@+id/add"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"
+        android:padding="8dp"
+        android:id="@+id/buttons_container">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_button"
+            android:src="@drawable/ic_like"
+            android:id="@+id/like"/>
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_button"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_delete"
+            android:id="@+id/delete"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

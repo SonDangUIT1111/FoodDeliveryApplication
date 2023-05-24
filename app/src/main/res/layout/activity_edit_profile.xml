@@ -41,14 +41,15 @@
             android:layout_gravity="center"
             android:textColor="#FA4A0C"
             android:textSize="18sp"
-            android:id="@+id/change_photo"/>
+            android:id="@+id/change_photo" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/user_name"
             android:hint="Full name"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -56,14 +57,16 @@
             android:id="@+id/email"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/phone_number"
             android:hint="Phone number"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_edittext"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,7 +82,8 @@
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="Birth date"/>
+                android:hint="Birth date"
+                android:background="@drawable/rounded_edittext"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -93,12 +97,13 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/round_button"
+            android:background="@drawable/rounded_button"
             android:text="Update"
             android:textColor="@color/white"
             android:layout_marginTop="180dp"
             android:enabled="false"
-            android:id="@+id/update"/>
+            android:id="@+id/update"
+            android:elevation="20dp"/>
 
     </LinearLayout>
 

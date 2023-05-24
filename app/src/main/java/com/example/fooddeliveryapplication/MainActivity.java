@@ -4,21 +4,32 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Fragments.ProfileFragment;
+import com.example.fooddeliveryapplication.Models.Cart;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
+    private FirebaseUser firebaseUser;
     private BottomNavigationView bottomNavigationView;
     private Fragment selectorFragment;
+    private ImageView cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Login user for test purpose, will be deleted later
-        FirebaseAuth.getInstance().signInWithEmailAndPassword("21522415@gm.uit.edu.vn", "12345678").addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword("21522549@gm.uit.edu.vn", "12345678").addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 Toast.makeText(MainActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
@@ -38,7 +49,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        cart = findViewById(R.id.cart);
 
         // Navigation item selected
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -64,6 +78,30 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 return true;
+            }
+        });
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().child("Carts").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            Cart cart = ds.getValue(Cart.class);
+                            if (cart.getUserId().equals(firebaseUser.getUid())) {
+                                intent.putExtra("cartId", cart.getCartId());
+                            }
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }
