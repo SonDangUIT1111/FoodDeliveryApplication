@@ -84,24 +84,7 @@ public class MainActivity extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference().child("Carts").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            Cart cart = ds.getValue(Cart.class);
-                            if (cart.getUserId().equals(firebaseUser.getUid())) {
-                                intent.putExtra("cartId", cart.getCartId());
-                            }
-                            startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                startActivity(new Intent(MainActivity.this, CartActivity.class));
             }
         });
     }

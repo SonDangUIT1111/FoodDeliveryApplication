@@ -3,13 +3,13 @@ package com.example.fooddeliveryapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.CartProductAdapter;
 import com.example.fooddeliveryapplication.Models.Cart;
@@ -20,7 +20,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.ktx.Firebase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,30 +40,61 @@ public class CartActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        cartId = getIntent().getStringExtra("cartId");
-
         initToolbar();
 
         recyclerViewCartProducts = findViewById(R.id.recycler_view_cart_product);
         recyclerViewCartProducts.setHasFixedSize(true);
         recyclerViewCartProducts.setLayoutManager(new LinearLayoutManager(this));
         cartInfoList = new ArrayList<>();
-        cartProductAdapter = new CartProductAdapter(this, cartInfoList, cartId);
-        recyclerViewCartProducts.setAdapter(cartProductAdapter);
 
         getCartProducts();
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (cartProductAdapter != null) {
+            cartProductAdapter.saveStates(outState);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (cartProductAdapter != null) {
+            cartProductAdapter.restoreStates(savedInstanceState);
+        }
+    }
+
     private void getCartProducts() {
-        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Carts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                cartInfoList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    CartInfo cartInfo = ds.getValue(CartInfo.class);
-                    cartInfoList.add(cartInfo);
+                    Cart cart = ds.getValue(Cart.class);
+                    if (cart.getUserId().equals(firebaseUser.getUid())) {
+                        cartId = cart.getCartId();
+                    }
                 }
-                cartProductAdapter.notifyDataSetChanged();
+
+                cartProductAdapter = new CartProductAdapter(CartActivity.this, cartInfoList, cartId);
+                recyclerViewCartProducts.setAdapter(cartProductAdapter);
+
+                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        cartInfoList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            CartInfo cartInfo = ds.getValue(CartInfo.class);
+                            cartInfoList.add(cartInfo);
+                        }
+                        cartProductAdapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override

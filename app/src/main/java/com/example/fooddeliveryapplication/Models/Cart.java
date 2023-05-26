@@ -3,13 +3,13 @@ package com.example.fooddeliveryapplication.Models;
 public class Cart {
     String cartId;
     int totalAmount;
-    int totalPrice;
+    long totalPrice;
     String userId;
 
     public Cart() {
     }
 
-    public Cart(String cartId, int totalAmount, int totalPrice, String userId) {
+    public Cart(String cartId, int totalAmount, long totalPrice, String userId) {
         this.cartId = cartId;
         this.totalAmount = totalAmount;
         this.totalPrice = totalPrice;
@@ -32,11 +32,11 @@ public class Cart {
         this.totalAmount = totalAmount;
     }
 
-    public int getTotalPrice() {
+    public long getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(long totalPrice) {
         this.totalPrice = totalPrice;
     }
 
