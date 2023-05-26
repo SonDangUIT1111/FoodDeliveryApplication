@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Fragments.Home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,11 @@ public class FoodHomeFrg extends Fragment {
     private ArrayList<Product>dsFood;
     private final DatabaseReference productsReference= FirebaseDatabase.getInstance().getReference("Products");
     private FoodDrinkFrgAdapter adapter;
+    private String userId;
+
+    public FoodHomeFrg(String id) {
+        userId = id;
+    }
 
     @Nullable
     @Override
@@ -42,7 +48,7 @@ public class FoodHomeFrg extends Fragment {
     private void initUI() {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity().getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
         binding.rycDrinkHome.setLayoutManager(linearLayoutManager);
-        adapter=new FoodDrinkFrgAdapter(dsFood);
+        adapter=new FoodDrinkFrgAdapter(dsFood, userId,getContext());
         binding.rycDrinkHome.setAdapter(adapter);
         binding.rycDrinkHome.setHasFixedSize(true);
     }

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -65,18 +66,20 @@ public class ProductInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
         //ToDo received input from search product navigate to here
-        productId = "randomProductId2";
-        productName = "Súp gà ngô kem";
-        productPrice = 50000;
-        productImage1 = "https://cuahang.takyfood.com.vn/vnt_upload/news/01_2019/mon-ngon-10/sup-ga-ngo/sup-ga-ngo-kem-11.jpg";
-        productImage2 = "https://huongsen.vn/wp-content/uploads/2019/06/sup-ngo-kem-3.jpg";
-        productImage3 = "https://bepnhamo.vn/wp-content/uploads/2022/04/cach-nau-sup-ga-thap-cam-e1532943924981.jpg";
-        ratingStar = Float.parseFloat("4.2");
-        userName = "Đặng Thái Sơn";
-        productDescription = "Súp gà ngô kem thơm ngon bổ dưỡng";
-        publisherId = "randomUserId1";
-        userId = "randomUserId1";
-        sold = 1;
+        Intent intent = getIntent();
+        productId = intent.getStringExtra("productId");
+        productName = intent.getStringExtra("productName");
+        productPrice = intent.getIntExtra("productPrice",0);
+        productImage1 = intent.getStringExtra("productImage1");
+        productImage2 = intent.getStringExtra("productImage2");
+        productImage3 = intent.getStringExtra("productImage3");
+        productImage4 = intent.getStringExtra("productImage4");
+        ratingStar = Float.parseFloat(intent.getStringExtra("ratingStar"));
+        userName = intent.getStringExtra("userName");
+        productDescription = intent.getStringExtra("productDescription");
+        publisherId = intent.getStringExtra("publisherId");
+        userId = intent.getStringExtra("userId");
+        sold = intent.getIntExtra("sold",0);
 
 
         // find view by id
@@ -211,6 +214,13 @@ public class ProductInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //todo take amount from user input
                 updateCart(isCartExists[0],isProductExists[0],currentCart[0],currentCartInfo[0],1);
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

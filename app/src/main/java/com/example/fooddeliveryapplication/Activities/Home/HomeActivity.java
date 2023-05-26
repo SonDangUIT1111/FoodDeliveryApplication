@@ -23,7 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class HomeActivity extends AppCompatActivity {
+    private String userId;
     FirebaseDatabase database= FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference();
     ActivityHomeBinding binding;
     private LinearLayout layoutMain;
 
@@ -33,6 +35,9 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //Todo take information of user just login here
+        userId = "randomUserId1";
+        //----------
         //----------------------
         initUI();
         //----------------------
@@ -47,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         layoutMain=binding.layoutMain;
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(layoutMain.getId(),new HomeFragment())
+                .add(layoutMain.getId(),new HomeFragment(userId))
                 .commit();
 
         setEventNavigationBottom();
@@ -60,13 +65,13 @@ public class HomeActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (i) {
                     case R.id.favorite_menu:
-                        fragment=new FavoriteFragment();
+                        fragment=new FavoriteFragment(userId);
                         break;
                     case R.id.history_menu:
                         fragment=new HistoryFragment();
                         break;
                     default:
-                        fragment=new HomeFragment();
+                        fragment=new HomeFragment(userId);
                 }
 
                 getSupportFragmentManager().beginTransaction()

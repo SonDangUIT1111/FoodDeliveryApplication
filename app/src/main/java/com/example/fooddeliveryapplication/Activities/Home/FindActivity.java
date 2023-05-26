@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -26,6 +27,8 @@ public class FindActivity extends AppCompatActivity {
     private ArrayList<Product> dsAll = new ArrayList<>();
     private FindAdapter adapter;
 
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +36,7 @@ public class FindActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initData();
-        adapter=new FindAdapter(dsAll);
+        adapter = new FindAdapter(dsAll, userId,this);
         binding.recycleFoodFinded.setAdapter(adapter);
 
         initUI();
@@ -70,6 +73,8 @@ public class FindActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
         dsAll = new ArrayList<>();
 
         productsReference.addListenerForSingleValueEvent(new ValueEventListener() {

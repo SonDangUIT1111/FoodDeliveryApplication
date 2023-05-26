@@ -18,7 +18,11 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
 
+    private String userId;
 
+    public HomeFragment(String id) {
+        userId = id;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,13 +35,14 @@ public class HomeFragment extends Fragment {
 
     private void initUI() {
         //Set adapter cho recycleView
-        FoodDrinkAdapter adapter1=new FoodDrinkAdapter(HomeFragment.this);
+        FoodDrinkAdapter adapter1=new FoodDrinkAdapter(HomeFragment.this, userId);
         binding.viewpaperHome.setAdapter(adapter1);
         binding.viewpaperHome.setUserInputEnabled(false);
         binding.layoutSearchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getActivity(), FindActivity.class);
+                intent.putExtra("userId",userId);
                 startActivity(intent);
             }
         });

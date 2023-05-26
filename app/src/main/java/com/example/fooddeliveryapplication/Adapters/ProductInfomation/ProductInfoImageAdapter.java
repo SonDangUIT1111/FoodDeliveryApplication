@@ -26,25 +26,25 @@ public class ProductInfoImageAdapter extends PagerAdapter {
     }
 
     private String[] sliderImageURL = new String[]{};
-
     public  void insertImageUrl(String[] values)
     {
         String[] copyCat = new String[]{};
         int count = 0;
         for (int i = 0;i<values.length;i++)
         {
-            if (values[i] != null)
+            if (values[i] != null && values[i].equals("") == false) {
                 count++;
+            }
         }
         copyCat = new String[count];
         int index = 0;
-        if (values[0] != null )
+        if (values[0] != null && !values[0].equals(""))
             copyCat[index++] = values[0];
-        if (values[1] != null )
+        if (values[1] != null && !values[1].equals(""))
             copyCat[index++] = values[1];
-        if (values[2] != null )
+        if (values[2] != null && !values[2].equals(""))
             copyCat[index++] = values[2];
-        if (values[3] != null )
+        if (values[3] != null && !values[3].equals(""))
             copyCat[index++] = values[3];
 
         sliderImageURL = copyCat;

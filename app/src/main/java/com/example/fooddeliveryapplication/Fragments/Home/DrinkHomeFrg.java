@@ -29,6 +29,11 @@ public class DrinkHomeFrg extends Fragment {
     private final DatabaseReference productsReference= FirebaseDatabase.getInstance().getReference("Products");
     FragmentDrinkHomeFrgBinding binding;
     private FoodDrinkFrgAdapter adapter;
+    String userId;
+
+    public DrinkHomeFrg(String id) {
+        userId = id;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -46,7 +51,7 @@ public class DrinkHomeFrg extends Fragment {
             }
         });
         initData();
-        adapter=new FoodDrinkFrgAdapter(dsDrink);
+        adapter=new FoodDrinkFrgAdapter(dsDrink,userId,getContext());
         binding.rycDrinkHome.setAdapter(adapter);
 
         return view;

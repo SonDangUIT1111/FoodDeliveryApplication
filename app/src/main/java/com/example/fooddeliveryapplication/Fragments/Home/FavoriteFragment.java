@@ -15,6 +15,10 @@ import com.example.fooddeliveryapplication.databinding.FragmentFavoriteBinding;
 
 public class FavoriteFragment extends Fragment {
     FragmentFavoriteBinding binding;
+    private  String userId;
+    public FavoriteFragment(String id ) {
+        userId = id;
+    }
 
     @Nullable
     @Override
