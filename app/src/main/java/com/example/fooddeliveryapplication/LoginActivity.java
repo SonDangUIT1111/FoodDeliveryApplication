@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Activities.ForgotPassActivity;
+import com.example.fooddeliveryapplication.Activities.MyOrderActivity;
 
 import org.w3c.dom.Text;
 
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,MyShopActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MyOrderActivity.class);
                 startActivity(intent);
             }
         });

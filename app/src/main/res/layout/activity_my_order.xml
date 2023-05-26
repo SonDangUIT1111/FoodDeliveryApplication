@@ -32,13 +32,13 @@
             android:textSize="30dp"
             android:textStyle="bold" />
     </LinearLayout>
-    
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabSelectedTextColor="@color/orange"/>
-    
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.widget.TableLayout;
 
 import com.example.fooddeliveryapplication.Adapters.ViewPagerAdapter;
 import com.example.fooddeliveryapplication.Fragments.CurrentProductFragment;
+import com.example.fooddeliveryapplication.Fragments.HistoryFragment;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -18,9 +19,6 @@ public class MyOrderActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private ViewPager mviewPager;
 
-    private final Fragment[] PAGES = new Fragment[]{
-            new CurrentProductFragment(),
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
