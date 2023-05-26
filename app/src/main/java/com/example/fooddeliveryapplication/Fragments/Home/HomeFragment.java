@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Fragment;
+package com.example.fooddeliveryapplication.Fragments.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,22 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.fooddeliveryapplication.Activity.FindActivity;
-import com.example.fooddeliveryapplication.HomeAdapter.FoodDrinkAdapter;
-import com.example.fooddeliveryapplication.Model.Products;
+import com.example.fooddeliveryapplication.Activities.Home.FindActivity;
+import com.example.fooddeliveryapplication.Adapters.HomeAdapter.FoodDrinkAdapter;
 import com.example.fooddeliveryapplication.databinding.FragmentHomeBinding;
 
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 
 public class HomeFragment extends Fragment {

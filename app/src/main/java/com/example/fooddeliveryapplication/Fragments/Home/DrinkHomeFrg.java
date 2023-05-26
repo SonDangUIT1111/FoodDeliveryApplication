@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Fragment;
+package com.example.fooddeliveryapplication.Fragments.Home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,10 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.fooddeliveryapplication.HomeAdapter.FoodDrinkFrgAdapter;
-import com.example.fooddeliveryapplication.Model.Food;
-import com.example.fooddeliveryapplication.Model.Products;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.Adapters.HomeAdapter.FoodDrinkFrgAdapter;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.FragmentDrinkHomeFrgBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +25,7 @@ import java.util.ArrayList;
 
 
 public class DrinkHomeFrg extends Fragment {
-    private ArrayList<Products>dsDrink;
+    private ArrayList<Product>dsDrink;
     private final DatabaseReference productsReference= FirebaseDatabase.getInstance().getReference("Products");
     FragmentDrinkHomeFrgBinding binding;
     private FoodDrinkFrgAdapter adapter;
@@ -66,7 +64,7 @@ public class DrinkHomeFrg extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot item:snapshot.getChildren()) {
-                    Products tmp=item.getValue(Products.class);
+                    Product tmp=item.getValue(Product.class);
                     if (tmp.getProductType().equals("drink")) {
                         dsDrink.add(tmp);
                     }

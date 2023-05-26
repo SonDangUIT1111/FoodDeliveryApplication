@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Activity;
+package com.example.fooddeliveryapplication.Activities.Home;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,35 +11,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.fooddeliveryapplication.Fragment.FavoriteFragment;
-import com.example.fooddeliveryapplication.Fragment.HistoryFragment;
-import com.example.fooddeliveryapplication.Fragment.HomeFragment;
-import com.example.fooddeliveryapplication.Model.Food;
-import com.example.fooddeliveryapplication.Model.Products;
-import com.example.fooddeliveryapplication.Model.User;
+import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
+import com.example.fooddeliveryapplication.Fragments.Home.HistoryFragment;
+import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityHomeBinding;
 
 import com.example.fooddeliveryapplication.databinding.LayoutNavigationHeaderBinding;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-
-
-import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
     FirebaseDatabase database= FirebaseDatabase.getInstance();
-    DatabaseReference datbaseReference=database.getReference();
-
-
-
-   ActivityHomeBinding binding;
-
-
+    ActivityHomeBinding binding;
     private LinearLayout layoutMain;
 
     @Override
@@ -57,15 +42,14 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void initUI() {
-        //Khởi tạo actionbar
         createActionBar();
-        //Khởi tạo homeFrg
+
         layoutMain=binding.layoutMain;
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(layoutMain.getId(),new HomeFragment())
                 .commit();
-        //Set sự kiện cho bottom navigation
+
         setEventNavigationBottom();
     }
 
@@ -75,9 +59,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemSelected(int i) {
                 Fragment fragment;
                 switch (i) {
-                    case R.id.home_menu:
-                        fragment=new HomeFragment();
-                        break;
                     case R.id.favorite_menu:
                         fragment=new FavoriteFragment();
                         break;

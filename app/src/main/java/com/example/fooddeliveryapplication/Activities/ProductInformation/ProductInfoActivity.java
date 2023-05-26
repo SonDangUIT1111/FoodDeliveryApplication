@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Activities;
+package com.example.fooddeliveryapplication.Activities.ProductInformation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,8 +14,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fooddeliveryapplication.Adapters.CommentRecyclerViewAdapter;
-import com.example.fooddeliveryapplication.Adapters.ProductInfoImageAdapter;
+import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
+import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseFavouriteInfoProductHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
@@ -27,7 +27,6 @@ import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductInfoActivity extends AppCompatActivity {

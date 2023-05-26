@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F8"
-    tools:context=".Activities.DetailOfOrderDeliveryManagementActivity">
+    tools:context=".Activities.OrderSellerManagement.DetailOfOrderDeliveryManagementActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"

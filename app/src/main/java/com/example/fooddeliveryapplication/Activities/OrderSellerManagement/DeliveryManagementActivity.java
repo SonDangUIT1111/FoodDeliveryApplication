@@ -1,13 +1,11 @@
-package com.example.fooddeliveryapplication.Activities;
+package com.example.fooddeliveryapplication.Activities.OrderSellerManagement;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 
-import com.example.fooddeliveryapplication.Adapters.StatusManagementPagerAdapter;
+import com.example.fooddeliveryapplication.Adapters.OrderSellerManagement.StatusManagementPagerAdapter;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 

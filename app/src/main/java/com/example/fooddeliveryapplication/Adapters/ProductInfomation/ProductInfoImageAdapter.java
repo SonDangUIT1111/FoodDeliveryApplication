@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters;
+package com.example.fooddeliveryapplication.Adapters.ProductInfomation;
 
 import android.content.Context;
 import android.net.Uri;

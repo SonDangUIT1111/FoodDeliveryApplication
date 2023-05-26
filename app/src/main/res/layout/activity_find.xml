@@ -6,7 +6,7 @@
 
     android:layout_height="match_parent"
     android:layout_weight="8"
-    tools:context=".Activity.FindActivity">
+    tools:context=".Activities.Home.FindActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

@@ -2,24 +2,15 @@ package com.example.fooddeliveryapplication.Helpers;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.os.Build;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import com.example.fooddeliveryapplication.Activities.ProductInfoActivity;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,8 +26,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
-import kotlinx.coroutines.CompletionHandlerException;
 
 public class FirebaseNotificationHelper {
     private Context mContext;

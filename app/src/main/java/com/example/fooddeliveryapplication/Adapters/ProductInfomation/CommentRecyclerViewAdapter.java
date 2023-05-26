@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters;
+package com.example.fooddeliveryapplication.Adapters.ProductInfomation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.R;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;

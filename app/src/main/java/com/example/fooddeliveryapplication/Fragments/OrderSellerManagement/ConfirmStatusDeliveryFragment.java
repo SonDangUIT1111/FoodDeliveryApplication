@@ -1,6 +1,5 @@
-package com.example.fooddeliveryapplication.Fragments;
+package com.example.fooddeliveryapplication.Fragments.OrderSellerManagement;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.example.fooddeliveryapplication.Activities.ProductInfoActivity;
-import com.example.fooddeliveryapplication.Adapters.StatusManagementPagerAdapter;
-import com.example.fooddeliveryapplication.Adapters.StatusOrderRecyclerViewAdapter;
+import com.example.fooddeliveryapplication.Adapters.OrderSellerManagement.StatusOrderRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.R;

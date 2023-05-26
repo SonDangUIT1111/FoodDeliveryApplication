@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.HomeAdapter;
+package com.example.fooddeliveryapplication.Adapters.HomeAdapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,9 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.fooddeliveryapplication.Model.Food;
-import com.example.fooddeliveryapplication.Model.Products;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.ItemHomeBinding;
 
 import java.text.NumberFormat;
@@ -18,9 +16,9 @@ import java.util.Locale;
 
 public class FoodDrinkFrgAdapter extends RecyclerView.Adapter {
     NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-    ArrayList<Products> ds;
+    ArrayList<Product> ds;
 
-    public FoodDrinkFrgAdapter(ArrayList<Products> ds) {
+    public FoodDrinkFrgAdapter(ArrayList<Product> ds) {
         this.ds = ds;
     }
 
@@ -33,8 +31,10 @@ public class FoodDrinkFrgAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder newHolder=(ViewHolder)holder;
-        Products item=ds.get(position);
-        Glide.with(newHolder.binding.getRoot()).load(item.getProductImage1()).into(newHolder.binding.imgFood);
+        Product item = ds.get(position);
+        Glide.with(newHolder.binding.getRoot())
+                .load(item.getProductImage1())
+                .into(newHolder.binding.imgFood);
         newHolder.binding.txtFoodName.setText(item.getProductName());
         newHolder.binding.txtFoodPrice.setText(nf.format(item.getProductPrice()));
 

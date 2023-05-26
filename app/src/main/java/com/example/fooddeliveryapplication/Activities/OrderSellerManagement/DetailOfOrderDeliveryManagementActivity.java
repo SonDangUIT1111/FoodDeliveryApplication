@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Activities;
+package com.example.fooddeliveryapplication.Activities.OrderSellerManagement;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,12 +8,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.fooddeliveryapplication.Adapters.ListOfItemInOrderAdapter;
+import com.example.fooddeliveryapplication.Adapters.OrderSellerManagement.ListOfItemInOrderAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseOrderDetailHelper;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.R;

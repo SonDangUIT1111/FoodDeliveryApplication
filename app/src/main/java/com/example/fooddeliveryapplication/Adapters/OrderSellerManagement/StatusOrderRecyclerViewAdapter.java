@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters;
+package com.example.fooddeliveryapplication.Adapters.OrderSellerManagement;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,18 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.fooddeliveryapplication.Activities.DetailOfOrderDeliveryManagementActivity;
-import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
+import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DetailOfOrderDeliveryManagementActivity;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.R;
 import android.content.Context;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;

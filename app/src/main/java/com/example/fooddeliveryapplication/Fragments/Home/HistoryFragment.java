@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Fragment;
+package com.example.fooddeliveryapplication.Fragments.Home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

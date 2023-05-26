@@ -1,16 +1,14 @@
-package com.example.fooddeliveryapplication.Adapters;
+package com.example.fooddeliveryapplication.Adapters.OrderSellerManagement;
 
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.fooddeliveryapplication.Fragments.CompletedStatusDeliveryFragment;
-import com.example.fooddeliveryapplication.Fragments.ConfirmStatusDeliveryFragment;
-import com.example.fooddeliveryapplication.Fragments.ShippingStatusDeliveryFragment;
+import com.example.fooddeliveryapplication.Fragments.OrderSellerManagement.CompletedStatusDeliveryFragment;
+import com.example.fooddeliveryapplication.Fragments.OrderSellerManagement.ConfirmStatusDeliveryFragment;
+import com.example.fooddeliveryapplication.Fragments.OrderSellerManagement.ShippingStatusDeliveryFragment;
 
 public class StatusManagementPagerAdapter extends FragmentStateAdapter {
 
