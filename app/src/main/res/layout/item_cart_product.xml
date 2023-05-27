@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_centerHorizontal="true"
+    android:layout_gravity="center_horizontal"
     android:padding="5dp"
     app:mode="same_level"
     app:dragEdge="right"
@@ -90,6 +90,15 @@
                     android:id="@+id/product_price"/>
 
             </LinearLayout>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:buttonTint="@color/app_color"
+                android:id="@+id/check_box"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -1,11 +1,15 @@
 package com.example.fooddeliveryapplication.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,16 +21,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
 import com.example.fooddeliveryapplication.Models.Cart;
 import com.example.fooddeliveryapplication.Models.CartInfo;
 import com.example.fooddeliveryapplication.Models.Product;
 import com.example.fooddeliveryapplication.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,12 +43,98 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     private List<CartInfo> mCartInfos;
     private String cartId;
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+    private AlertDialog.Builder builder;
+    private int checkedItemCount = 0;
+    private long checkedItemPrice = 0;
+    private IAdapterItemListener adapterItemListener;
+    private boolean isCheckAll;
+    private ArrayList<CartInfo> selectedItems = new ArrayList<>();
 
-    public CartProductAdapter(Context mContext, List<CartInfo> mCartInfos, String cartId) {
+    public CartProductAdapter(Context mContext, List<CartInfo> mCartInfos, String cartId, boolean isCheckAll) {
         this.mContext = mContext;
         this.mCartInfos = mCartInfos;
         this.cartId = cartId;
+        this.isCheckAll = isCheckAll;
         viewBinderHelper.setOpenOnlyOne(true);
+    }
+
+    private void initDialogBuilder(CartInfo cartInfo) {
+        builder = new AlertDialog.Builder(mContext);
+        builder.setMessage("Delete this product?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                deleteCartInfo(cartInfo);
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+    }
+
+    public void setCheckAll(boolean isCheckAll) {
+        this.isCheckAll = isCheckAll;
+    }
+
+    private void deleteCartInfo(CartInfo cartInfo) {
+        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int remainAmount = snapshot.getValue(int.class);
+                remainAmount += cartInfo.getAmount();
+                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").setValue(remainAmount);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Cart cart = snapshot.getValue(Cart.class);
+                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Product product = snapshot.getValue(Product.class);
+                        int totalAmount = cart.getTotalAmount() - cartInfo.getAmount();
+                        long totalPrice = cart.getTotalPrice() - (long)(product.getProductPrice() * cartInfo.getAmount());
+
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("totalAmount", totalAmount);
+                        map.put("totalPrice", totalPrice);
+                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).updateChildren(map);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(mContext, "Delete product successfully!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @NonNull
@@ -55,6 +149,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         CartInfo cartInfo = mCartInfos.get(position);
 
         viewBinderHelper.bind(holder.swipeRevealLayout, cartInfo.getCartInfoId());
+
+        initDialogBuilder(cartInfo);
+
+        holder.checkBox.setChecked(isCheckAll);
 
         FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -80,7 +178,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 // Change display value
                 int amount = Integer.parseInt(holder.productAmount.getText().toString());
                 amount++;
-                holder.productAmount.setText(String.valueOf(amount));
 
                 // Save to firebase
                 FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).child("amount").setValue(amount);
@@ -114,6 +211,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
                     }
                 });
+
+                if (adapterItemListener != null) {
+                    adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
+                }
             }
         });
 
@@ -124,9 +225,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     // Change display value
                     int amount = Integer.parseInt(holder.productAmount.getText().toString());
                     amount--;
-                    holder.productAmount.setText(String.valueOf(amount));
-
-                    Toast.makeText(mContext, cartId, Toast.LENGTH_SHORT).show();
 
                     // Save to firebase
                     FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).child("amount").setValue(amount);
@@ -141,8 +239,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                                     Product product = snapshot1.getValue(Product.class);
                                     int totalAmount = cart.getTotalAmount() - 1;
                                     long totalPrice = cart.getTotalPrice() - product.getProductPrice();
-
-                                    Toast.makeText(mContext, String.valueOf(totalPrice), Toast.LENGTH_SHORT).show();
 
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("totalAmount", totalAmount);
@@ -163,6 +259,60 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                         }
                     });
                 }
+
+                if (adapterItemListener != null) {
+                    adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
+                }
+            }
+        });
+
+        holder.like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (holder.like.getTag().equals("like"))
+                    FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(cartInfo.getProductId()).setValue(true);
+                else {
+                    FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(cartInfo.getProductId()).removeValue();
+                }
+            }
+        });
+
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Product product = snapshot.getValue(Product.class);
+                        if (isChecked) {
+                            checkedItemCount += cartInfo.getAmount();
+                            checkedItemPrice += cartInfo.getAmount() * product.getProductPrice();
+                            selectedItems.add(cartInfo);
+                        }
+                        else {
+                            checkedItemCount -= cartInfo.getAmount();
+                            checkedItemPrice -= cartInfo.getAmount() * product.getProductPrice();
+                            selectedItems.remove(cartInfo);
+                        }
+
+                        if (adapterItemListener != null) {
+                            adapterItemListener.onCheckedItemCountChanged(checkedItemCount, checkedItemPrice, selectedItems);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }
@@ -188,7 +338,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         });
     }
 
-    private String convertToMoney(int price) {
+    private String convertToMoney(long price) {
         String temp = String.valueOf(price);
         String output = "";
         int count = 3;
@@ -204,7 +354,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         }
 
         if (output.charAt(0) == ',')
-            return output.substring(1, output.length());
+            return output.substring(1);
 
         return output;
 
@@ -219,8 +369,16 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         viewBinderHelper.saveStates(outState);
     }
 
+    public void setAdapterItemListener(IAdapterItemListener adapterItemListener) {
+        this.adapterItemListener = adapterItemListener;
+    }
+
     public void restoreStates(Bundle instate) {
         viewBinderHelper.restoreStates(instate);
+    }
+
+    public List<CartInfo> getSelectedItems() {
+        return selectedItems;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -234,6 +392,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         public ImageButton like;
         public ImageButton delete;
         public View buttonsContainer;
+        public CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -248,6 +407,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             like = itemView.findViewById(R.id.like);
             delete = itemView.findViewById(R.id.delete);
             buttonsContainer = itemView.findViewById(R.id.buttons_container);
+            checkBox = itemView.findViewById(R.id.check_box);
         }
     }
 }
