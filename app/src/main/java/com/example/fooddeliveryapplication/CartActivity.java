@@ -77,7 +77,9 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CartActivity.this, ProceedOrderActivity.class);
-                intent.putExtra("buyProduucts", buyProducts);
+                intent.putExtra("buyProducts", buyProducts);
+                String totalPriceDisplay = totalPrice.getText().toString();
+                intent.putExtra("totalPrice", totalPriceDisplay.substring(13));
                 startActivity(intent);
             }
         });

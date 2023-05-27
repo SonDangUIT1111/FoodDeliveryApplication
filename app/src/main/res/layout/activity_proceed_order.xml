@@ -1,9 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProceedOrderActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        android:elevation="40dp"
+        android:id="@+id/toolbar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery"
+        android:textSize="34sp"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/delivery"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address details"
+        android:textSize="18sp"
+        android:layout_below="@id/delivery"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/address_detail"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="change"
+        android:textSize="15sp"
+        android:textColor="@color/app_color"
+        android:layout_below="@id/delivery"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="25dp"
+        android:id="@+id/change"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="40dp"
+        android:layout_below="@id/address_detail"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        app:cardCornerRadius="20dp"
+        android:id="@+id/address_container">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Do Minh Nhat"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:id="@+id/receiver_name"/>
+
+            <View
+                android:layout_width="300dp"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:alpha="0.5"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hoang Nhu Street, Hop Giang Ward, Cao Bang"
+                android:maxLines="2"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:id="@+id/detail_address"/>
+
+            <View
+                android:layout_width="300dp"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:alpha="0.5"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0824670790"
+                android:textSize="18sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:id="@+id/receiver_phone_number"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Products"
+        android:textSize="18sp"
+        android:layout_below="@id/address_container"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:id="@+id/products"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/products"
+        android:layout_above="@id/total"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="25dp"
+        app:cardCornerRadius="20dp"
+        android:elevation="40dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:id="@+id/recycler_view_order_product"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_button"
+        android:layout_alignParentBottom="true"
+        android:text="Complete"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/complete"
+        android:elevation="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total: "
+        android:textSize="18sp"
+        android:layout_above="@id/complete"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/total"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0đ"
+        android:textSize="18sp"
+        android:textColor="@color/app_color"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="25dp"
+        android:layout_above="@id/complete"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/total_price"/>
+
+</RelativeLayout>

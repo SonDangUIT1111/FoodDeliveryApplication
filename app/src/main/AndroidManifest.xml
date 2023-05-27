@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FoodDeliveryApplication"
         tools:targetApi="31">
         <activity
+            android:name=".EmptyCartActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProceedOrderActivity"
             android:exported="false" />
         <activity

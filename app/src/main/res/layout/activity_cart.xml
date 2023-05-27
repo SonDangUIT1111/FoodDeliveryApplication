@@ -55,6 +55,7 @@
         android:layout_alignParentStart="true"
         android:orientation="vertical"
         android:layout_above="@id/proceed_order"
+        android:layout_marginBottom="20dp"
         android:paddingStart="10dp"
         android:id="@+id/text_container">
 
@@ -88,6 +89,7 @@
         android:fontFamily="sans-serif-black"
         android:textColor="@color/app_color"
         android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="10dp"
         android:layout_above="@id/proceed_order"
         android:buttonTint="@color/app_color"

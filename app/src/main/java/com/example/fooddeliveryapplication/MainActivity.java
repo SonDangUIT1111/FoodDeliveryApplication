@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.fooddeliveryapplication.Adapters.CartProductAdapter;
 import com.example.fooddeliveryapplication.Fragments.ProfileFragment;
+import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
 import com.example.fooddeliveryapplication.Models.Cart;
+import com.example.fooddeliveryapplication.Models.CartInfo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,6 +27,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
@@ -84,7 +89,39 @@ public class MainActivity extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, CartActivity.class));
+                FirebaseDatabase.getInstance().getReference().child("Carts").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String cartId = "";
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            Cart cart = ds.getValue(Cart.class);
+                            if (cart.getUserId().equals(firebaseUser.getUid())) {
+                                cartId = cart.getCartId();
+                            }
+                        }
+
+                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.getChildrenCount() == 0) {
+                                    startActivity(new Intent(MainActivity.this, EmptyCartActivity.class));
+                                }
+                                else {
+                                    startActivity(new Intent(MainActivity.this, CartActivity.class));
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
     }
