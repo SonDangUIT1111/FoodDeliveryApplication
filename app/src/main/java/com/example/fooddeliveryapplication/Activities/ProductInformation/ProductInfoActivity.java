@@ -129,28 +129,6 @@ public class ProductInfoActivity extends AppCompatActivity {
         adapterPager.insertImageUrl(imageUrl);
         pagerProductImage.setAdapter(adapterPager);
 
-        // load notification
-        new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
-            @Override
-            public void DataIsLoaded(List<Notification> notificationList) {
-
-            }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
 
         // load sell, favourite
         new FirebaseProductInfoHelper(productId).countFavourite(new FirebaseProductInfoHelper.DataStatusCountFavourite() {

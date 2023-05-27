@@ -88,7 +88,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
                         @Override
                         public void DataIsUpdated() {
-                            Toast.makeText(mContext, "Have read", Toast.LENGTH_SHORT).show();
+
                         }
 
                         @Override
