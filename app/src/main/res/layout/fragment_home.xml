@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="tab layout"
-
+        android:background="#00FFFFFF"
         app:tabIndicatorColor="#FD8C32"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="3dp">

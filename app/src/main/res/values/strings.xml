@@ -6,7 +6,7 @@
     <string name="account_balance">Account Balance</string>
     <string name="balance_currency">$</string>
     <string name="balance_amount">524.99</string>
-    <string name="query_hint">"Tìm kiếm ở đây"</string>
+    <string name="query_hint">"Search here ..."</string>
 
 
     <string-array name="ld_activityScreenTitles">

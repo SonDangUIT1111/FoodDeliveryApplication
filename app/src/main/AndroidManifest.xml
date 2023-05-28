@@ -26,10 +26,6 @@
             android:name=".Activities.Home.SignupActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".TestActivityForFragmentTask"
-            android:exported="false" >
-        </activity>
 
         <activity
             android:name=".Activities.Home.IntroActivity"
