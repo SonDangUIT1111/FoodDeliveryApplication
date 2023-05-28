@@ -65,14 +65,14 @@
             android:layout_alignParentRight="true"
             android:layout_margin="20dp"
             >
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/orange"
-                android:textAlignment="gravity"
                 android:text="Feedback and rate"
-                android:textSize="20dp"
-                />
+                android:textAlignment="gravity"
+                android:textSize="20dp" />
         </LinearLayout>
 
     </RelativeLayout>

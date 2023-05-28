@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".MyShopActivity">
+
+    <ScrollView
+        android:id="@+id/scrollViewRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/layout_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/imgBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/back" />
+
+                <RelativeLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imgFavourite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/like" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="50dp">
+
+                <ImageView
+                    android:id="@+id/img_Current_product"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/pop_1" />
+
+                <TextView
+                    android:id="@+id/txtNameProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pizza"
+                    android:textSize="28dp"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"/>
+
+                <TextView
+                    android:id="@+id/txtPriceProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2000$"
+                    android:textSize="24dp"
+                    android:textColor="@color/orange"
+                    android:textAlignment="center"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txtYourRating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Your rating"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"
+                        android:textAlignment="gravity"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/rating"
+                            android:padding="10dp"
+                            />
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/rating"
+                            android:padding="10dp"
+                            />
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/rating"
+                            android:padding="10dp"
+                            />
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/rating"
+                            android:padding="10dp"
+                            />
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/rating"
+                            android:padding="10dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txtYourFeedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Your feedback"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"
+                        android:textAlignment="gravity"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/custome_edittext"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/btnAddProduct"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/orange"
+            android:text="Send feedback"
+            android:textSize="30dp" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,4 +45,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.apachat:swipereveallayout-android:1.1.2'
     implementation 'com.google.android.material:material:<1.2.1>'
+    implementation 'me.relex:circleindicator:2.1.6'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 }
