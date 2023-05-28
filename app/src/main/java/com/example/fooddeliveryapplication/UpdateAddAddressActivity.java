@@ -1,0 +1,142 @@
+package com.example.fooddeliveryapplication;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.fooddeliveryapplication.Models.Address;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+
+public class UpdateAddAddressActivity extends AppCompatActivity {
+    private EditText receiverName;
+    private EditText receiverPhoneNumber;
+    private EditText detailAddress;
+    private SwitchCompat setDefault;
+    private Button updateAndComplete;
+    private String mode;
+    private String choseAddressId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_update_add_address);
+
+        mode = getIntent().getStringExtra("mode");
+        choseAddressId = getIntent().getStringExtra("choseAddressId");
+
+        initToolbar();
+
+        receiverName = findViewById(R.id.full_name);
+        receiverPhoneNumber = findViewById(R.id.phone_number);
+        detailAddress = findViewById(R.id.detail_address);
+        setDefault = findViewById(R.id.set_default);
+        updateAndComplete = findViewById(R.id.update_complete);
+
+        if (mode.equals("add")) {
+            updateAndComplete.setText("Complete");
+        }
+
+        updateAndComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (updateAndComplete.getText().equals("Complete")) {
+                    if (validateAddressInfo()) {
+                        if (setDefault.isChecked()) {
+                            String addressId = FirebaseDatabase.getInstance().getReference().push().getKey();
+
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        Address address = ds.getValue(Address.class);
+                                        if (!address.getAddressId().equals(addressId)) {
+                                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(address.getAddressId()).child("state").setValue("");
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("addressId", addressId);
+                            map.put("detailAddress", detailAddress.getText().toString());
+                            map.put("receiverName", receiverName.getText().toString());
+                            map.put("receiverPhoneNumber", receiverPhoneNumber.getText().toString());
+                            map.put("state", "default");
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(addressId).setValue(map);
+                        }
+                        else {
+                            String addressId = FirebaseDatabase.getInstance().getReference().push().getKey();
+
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("addressId", addressId);
+                            map.put("detailAddress", detailAddress.getText().toString());
+                            map.put("receiverName", receiverName.getText().toString());
+                            map.put("receiverPhoneNumber", receiverPhoneNumber.getText().toString());
+                            map.put("state", "");
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(addressId).setValue(map);
+                        }
+
+                        Intent intent = new Intent();
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                }
+            }
+        });
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (mode.equals("add")) {
+            getSupportActionBar().setTitle("Add new address");
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+    }
+
+    private boolean validateAddressInfo() {
+        if (receiverName.getText().toString().equals("")) {
+            Toast.makeText(this, "Receiver name must not be empty!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (receiverPhoneNumber.getText().toString().equals("")) {
+            Toast.makeText(this, "Receiver phone number must not be empty!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (detailAddress.getText().toString().equals("")) {
+            Toast.makeText(this, "Detail address must not be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+}
