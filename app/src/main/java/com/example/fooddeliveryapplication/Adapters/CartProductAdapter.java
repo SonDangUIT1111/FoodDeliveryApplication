@@ -278,7 +278,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             public void onClick(View view) {
                 if (holder.like.getTag().equals("like"))
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(cartInfo.getProductId()).setValue(true);
-                else {
+                else if (holder.like.getTag().equals("liked")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(cartInfo.getProductId()).removeValue();
                 }
             }
@@ -324,17 +324,17 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         });
     }
 
-    private void isLiked(ImageButton like, String productId) {
-        FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void isLiked(ImageButton imageButton, String productId) {
+        FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(productId).exists()) {
-                    like.setImageResource(R.drawable.ic_liked);
-                    like.setTag("liked");
+                    imageButton.setImageResource(R.drawable.ic_liked);
+                    imageButton.setTag("liked");
                 }
                 else {
-                    like.setImageResource(R.drawable.ic_like);
-                    like.setTag("like");
+                    imageButton.setImageResource(R.drawable.ic_like);
+                    imageButton.setTag("like");
                 }
             }
 
