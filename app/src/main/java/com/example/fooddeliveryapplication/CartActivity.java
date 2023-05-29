@@ -102,7 +102,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void getCartProducts() {
-        FirebaseDatabase.getInstance().getReference().child("Carts").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
@@ -127,7 +127,7 @@ public class CartActivity extends AppCompatActivity {
                 });
                 recyclerViewCartProducts.setAdapter(cartProductAdapter);
 
-                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         cartInfoList.clear();

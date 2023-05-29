@@ -154,7 +154,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
         holder.checkBox.setChecked(isCheckAll);
 
-        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product product = snapshot.getValue(Product.class);
@@ -178,6 +178,12 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 // Change display value
                 int amount = Integer.parseInt(holder.productAmount.getText().toString());
                 amount++;
+                holder.productAmount.setText(String.valueOf(amount));
+                holder.checkBox.setChecked(false);
+
+                if (adapterItemListener != null) {
+                    adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
+                }
 
                 // Save to firebase
                 FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).child("amount").setValue(amount);
@@ -211,10 +217,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
                     }
                 });
-
-                if (adapterItemListener != null) {
-                    adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
-                }
             }
         });
 
@@ -225,6 +227,12 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     // Change display value
                     int amount = Integer.parseInt(holder.productAmount.getText().toString());
                     amount--;
+                    holder.productAmount.setText(String.valueOf(amount));
+                    holder.checkBox.setChecked(false);
+
+                    if (adapterItemListener != null) {
+                        adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
+                    }
 
                     // Save to firebase
                     FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).child("amount").setValue(amount);
@@ -239,6 +247,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                                     Product product = snapshot1.getValue(Product.class);
                                     int totalAmount = cart.getTotalAmount() - 1;
                                     long totalPrice = cart.getTotalPrice() - product.getProductPrice();
+                                    Toast.makeText(mContext, String.valueOf(totalAmount), Toast.LENGTH_SHORT).show();
 
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("totalAmount", totalAmount);
@@ -258,10 +267,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
                         }
                     });
-                }
-
-                if (adapterItemListener != null) {
-                    adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
                 }
             }
         });
@@ -318,7 +323,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     private void isLiked(ImageButton like, String productId) {
-        FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(productId).exists()) {

@@ -1,6 +1,9 @@
 package com.example.fooddeliveryapplication.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,24 +15,28 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fooddeliveryapplication.EditProfileActivity;
+import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Models.Address;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.UpdateAddAddressActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder>{
     private Context mContext;
     private List<Address> mAddresses;
-    private Address choseAddress;
     private RadioButton checkedRadioButton;
     private IAddressAdapterListener addressAdapterListener;
-    private String choseAddressId;
 
-    public AddressAdapter(Context mContext, List<Address> mAddresses, String choseAddressId) {
+    public AddressAdapter(Context mContext, List<Address> mAddresses) {
         this.mContext = mContext;
         this.mAddresses = mAddresses;
-        this.choseAddressId = choseAddressId;
     }
 
     @NonNull
@@ -43,16 +50,14 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     public void onBindViewHolder(@NonNull AddressAdapter.ViewHolder holder, int position) {
         Address address = mAddresses.get(position);
 
-        if (address.getAddressId().equals(choseAddressId) && address.getState().equals("default")) {
+        if (address.getAddressId().equals(GlobalConfig.choseAddressId) && address.getState().equals("default")) {
             holder.choose.setChecked(true);
             holder.defaultText.setVisibility(View.VISIBLE);
-            choseAddress = address;
             checkedRadioButton = holder.choose;
         }
-        else if (address.getAddressId().equals(choseAddressId)) {
+        else if (address.getAddressId().equals(GlobalConfig.choseAddressId)) {
             holder.choose.setChecked(true);
             holder.defaultText.setVisibility(View.INVISIBLE);
-            choseAddress = address;
             checkedRadioButton = holder.choose;
         }
         else if (address.getState().equals("default")) {
@@ -67,19 +72,63 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
         holder.detailAddress.setText(address.getDetailAddress());
 
-        holder.choose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.choose.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View view) {
+                if (holder.choose.isChecked()) {
                     checkedRadioButton.setChecked(false);
 
                     if (addressAdapterListener != null) {
                         addressAdapterListener.onCheckedChanged(address);
                     }
 
-                    choseAddress = address;
                     checkedRadioButton = holder.choose;
                 }
+            }
+        });
+
+        holder.update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GlobalConfig.updateAddressId = address.getAddressId();
+                Intent intent = new Intent(mContext, UpdateAddAddressActivity.class);
+                intent.putExtra("mode", "update");
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (address.getState().equals("default")) {
+                    Toast.makeText(mContext, "You cannot delete the default address", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+                    alertDialog.setMessage("Delete this address?");
+                    alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(address.getAddressId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(mContext, "Delete address successfully!", Toast.LENGTH_SHORT).show();
+                                        dialogInterface.dismiss();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    alertDialog.show();
+                }
+                return true;
             }
         });
     }

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Models.Address;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +30,6 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
     private SwitchCompat setDefault;
     private Button updateAndComplete;
     private String mode;
-    private String choseAddressId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,6 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_add_address);
 
         mode = getIntent().getStringExtra("mode");
-        choseAddressId = getIntent().getStringExtra("choseAddressId");
 
         initToolbar();
 
@@ -49,6 +49,30 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
         if (mode.equals("add")) {
             updateAndComplete.setText("Complete");
         }
+        else {
+            updateAndComplete.setText("Update");
+
+            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(GlobalConfig.updateAddressId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Address address = snapshot.getValue(Address.class);
+                    receiverName.setText(address.getReceiverName());
+                    receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
+                    detailAddress.setText(address.getDetailAddress());
+                    if (address.getState().equals("default")) {
+                        setDefault.setChecked(true);
+                    }
+                    else {
+                        setDefault.setChecked(false);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
         updateAndComplete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +81,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                     if (validateAddressInfo()) {
                         if (setDefault.isChecked()) {
                             String addressId = FirebaseDatabase.getInstance().getReference().push().getKey();
+                            GlobalConfig.choseAddressId = addressId;
 
                             FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -81,10 +106,21 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                             map.put("receiverName", receiverName.getText().toString());
                             map.put("receiverPhoneNumber", receiverPhoneNumber.getText().toString());
                             map.put("state", "default");
-                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(addressId).setValue(map);
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(addressId).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        GlobalConfig.choseAddressId = addressId;
+                                        Intent intent = new Intent();
+                                        setResult(RESULT_OK, intent);
+                                        finish();
+                                    }
+                                }
+                            });
                         }
                         else {
                             String addressId = FirebaseDatabase.getInstance().getReference().push().getKey();
+                            GlobalConfig.choseAddressId = addressId;
 
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("addressId", addressId);
@@ -92,12 +128,69 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                             map.put("receiverName", receiverName.getText().toString());
                             map.put("receiverPhoneNumber", receiverPhoneNumber.getText().toString());
                             map.put("state", "");
-                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(addressId).setValue(map);
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(addressId).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        GlobalConfig.choseAddressId = addressId;
+                                        Intent intent = new Intent();
+                                        setResult(RESULT_OK, intent);
+                                        finish();
+                                    }
+                                }
+                            });
                         }
+                    }
+                }
+                else if (updateAndComplete.getText().equals("Update")) {
+                    if (validateAddressInfo()) {
+                        if (setDefault.isChecked()) {
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        Address address = ds.getValue(Address.class);
+                                        if (!address.getAddressId().equals(GlobalConfig.updateAddressId)) {
+                                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(address.getAddressId()).child("state").setValue("");
+                                        }
+                                    }
+                                }
 
-                        Intent intent = new Intent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("detailAddress", detailAddress.getText().toString());
+                            map.put("receiverName", receiverName.getText().toString());
+                            map.put("receiverPhoneNumber", receiverPhoneNumber.getText().toString());
+                            map.put("state", "default");
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(GlobalConfig.updateAddressId).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        finish();
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            HashMap<String, Object> map = new HashMap<>();
+                            map.put("detailAddress", detailAddress.getText().toString());
+                            map.put("receiverName", receiverName.getText().toString());
+                            map.put("receiverPhoneNumber", receiverPhoneNumber.getText().toString());
+                            map.put("state", "");
+                            FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(GlobalConfig.updateAddressId).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        finish();
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -109,6 +202,9 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (mode.equals("add")) {
             getSupportActionBar().setTitle("Add new address");
+        }
+        else if (mode.equals("update")) {
+            getSupportActionBar().setTitle("Update address");
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

@@ -35,7 +35,6 @@ public class ChangeAddressActivity extends AppCompatActivity {
     private RecyclerView recyclerViewAddresses;
     private AddressAdapter addressAdapter;
     private List<Address> addressList;
-    private String choseAddressId;
     private ActivityResultLauncher<Intent> updateAddAddressLauncher;
 
     @Override
@@ -51,16 +50,13 @@ public class ChangeAddressActivity extends AppCompatActivity {
         recyclerViewAddresses = findViewById(R.id.recycler_view_address);
         recyclerViewAddresses.setHasFixedSize(true);
         recyclerViewAddresses.setLayoutManager(new LinearLayoutManager(this));
-        choseAddressId = getIntent().getStringExtra("choseAddressId");
-        //Toast.makeText(this, choseAddressId, Toast.LENGTH_SHORT).show();
         addressList = new ArrayList<>();
-        addressAdapter = new AddressAdapter(this, addressList, choseAddressId);
+        addressAdapter = new AddressAdapter(this, addressList);
         addressAdapter.setAddressAdapterListener(new IAddressAdapterListener() {
             @Override
             public void onCheckedChanged(Address selectedAddress) {
+                GlobalConfig.choseAddressId = selectedAddress.getAddressId();
                 Intent intent = new Intent();
-                intent.putExtra("addressId", selectedAddress.getAddressId());
-                Toast.makeText(ChangeAddressActivity.this, selectedAddress.getAddressId(), Toast.LENGTH_SHORT).show();
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -74,8 +70,7 @@ public class ChangeAddressActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
                 intent.putExtra("mode", "add");
-                intent.putExtra("choseAddressId", choseAddressId);
-                startActivity(intent);
+                updateAddAddressLauncher.launch(intent);
             }
         });
 
@@ -84,8 +79,7 @@ public class ChangeAddressActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
                 intent.putExtra("mode", "add");
-                intent.putExtra("choseAddressId", choseAddressId);
-                startActivity(intent);
+                updateAddAddressLauncher.launch(intent);
             }
         });
     }
@@ -94,25 +88,25 @@ public class ChangeAddressActivity extends AppCompatActivity {
         // Init launcher
         updateAddAddressLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                loadInfo();
+                addressAdapter.notifyDataSetChanged();
             }
         });
     }
 
     private void loadInfo() {
-        FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 addressList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Address address = ds.getValue(Address.class);
-                    if (address.getAddressId().equals(choseAddressId)) {
+                    if (address.getAddressId().equals(GlobalConfig.choseAddressId)) {
                         addressList.add(ds.getValue(Address.class));
                     }
                 }
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Address address = ds.getValue(Address.class);
-                    if (!address.getAddressId().equals(choseAddressId)) {
+                    if (!address.getAddressId().equals(GlobalConfig.choseAddressId)) {
                         addressList.add(ds.getValue(Address.class));
                     }
                 }

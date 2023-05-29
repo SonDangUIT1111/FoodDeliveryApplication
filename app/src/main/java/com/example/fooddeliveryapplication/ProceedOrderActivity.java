@@ -18,14 +18,21 @@ import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.OrderProductAdapter;
 import com.example.fooddeliveryapplication.Models.Address;
+import com.example.fooddeliveryapplication.Models.Cart;
 import com.example.fooddeliveryapplication.Models.CartInfo;
+import com.example.fooddeliveryapplication.Models.Product;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class ProceedOrderActivity extends AppCompatActivity {
     private TextView receiverName;
@@ -39,7 +46,6 @@ public class ProceedOrderActivity extends AppCompatActivity {
     private TextView totalPrice;
     String totalPriceDisplay;
     private ActivityResultLauncher<Intent> changeAddressLauncher;
-    private String addressId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,38 +74,80 @@ public class ProceedOrderActivity extends AppCompatActivity {
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Add to Bills
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                Date date = new Date();
+                String billId = FirebaseDatabase.getInstance().getReference().push().getKey();
 
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("addressId", GlobalConfig.choseAddressId);
+                map.put("billId", billId);
+                map.put("orderDate", formatter.format(date));
+                map.put("orderStatus", "Confirm");
+                map.put("recipientId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                map.put("totalPrice", convertMoneyToValue(totalPriceDisplay));
+
+                FirebaseDatabase.getInstance().getReference().child("Bills").child(billId).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            for (CartInfo cartInfo : cartInfoList) {
+                                // Add to BillInfos
+                                String billInfoId = FirebaseDatabase.getInstance().getReference().push().getKey();
+                                HashMap<String, Object> map1 = new HashMap<>();
+                                map1.put("amount", cartInfo.getAmount());
+                                map1.put("billInfoId", billInfoId);
+                                map1.put("productId", cartInfo.getProductId());
+                                FirebaseDatabase.getInstance().getReference().child("BillInfos").child(billId).child(billInfoId).setValue(map1);
+
+                                // Update Carts and CartInfos
+                                FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            Cart cart = ds.getValue(Cart.class);
+                                            if (cart.getUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).child(cartInfo.getCartInfoId()).removeValue();
+                                                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        Product product = snapshot.getValue(Product.class);
+                                                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalAmount").setValue(cart.getTotalAmount() - cartInfo.getAmount());
+                                                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalPrice").setValue(cart.getTotalPrice() - cartInfo.getAmount() - product.getProductPrice());
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+
+                                                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).child(cartInfo.getCartInfoId()).removeValue();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
+                            cartInfoList.clear();
+                            finish();
+                        }
+                    }
+                });
+                
             }
         });
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Init intent
-                FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Intent intent = new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class);
-                        if (addressId == null) {
-                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                Address address = ds.getValue(Address.class);
-                                if (address.getState().equals("default")) {
-                                    intent.putExtra("choseAddressId", address.getAddressId());
-                                }
-                            }
-                        }
-                        else {
-                            intent.putExtra("choseAddressId", addressId);
-                        }
-
-                        changeAddressLauncher.launch(intent);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                changeAddressLauncher.launch(new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class));
+                //startActivity(new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class));
             }
         });
     }
@@ -108,19 +156,13 @@ public class ProceedOrderActivity extends AppCompatActivity {
         // Init launcher
         changeAddressLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                Intent data = result.getData();
-                if (data != null) {
-                    addressId = data.getStringExtra("addressId");
-                    //Toast.makeText(this, addressId, Toast.LENGTH_SHORT).show();
-
-                    loadAddressData(addressId);
-                }
+                loadAddressData();
             }
         });
     }
 
-    private void loadAddressData(String addressId) {
-        FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(addressId).addValueEventListener(new ValueEventListener() {
+    private void loadAddressData() {
+        FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(GlobalConfig.choseAddressId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Address address = snapshot.getValue(Address.class);
@@ -161,7 +203,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                     Address address = ds.getValue(Address.class);
 
                     if (address.getState().equals("default")) {
-                        addressId = address.getAddressId();
+                        GlobalConfig.choseAddressId = address.getAddressId();
                         receiverName.setText(address.getReceiverName());
                         detailAddress.setText(address.getDetailAddress());
                         receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
@@ -174,5 +216,15 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private long convertMoneyToValue(String money) {
+        String output = "";
+        for (int i = 0; i < money.length(); i++) {
+            if (money.charAt(i) != ',' && money.charAt(i) != 'đ') {
+                output += money.charAt(i);
+            }
+        }
+        return Long.parseLong(output);
     }
 }

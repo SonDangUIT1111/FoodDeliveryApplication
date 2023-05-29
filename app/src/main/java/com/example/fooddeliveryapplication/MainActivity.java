@@ -89,32 +89,29 @@ public class MainActivity extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference().child("Carts").addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String cartId = "";
                         for (DataSnapshot ds : snapshot.getChildren()) {
                             Cart cart = ds.getValue(Cart.class);
                             if (cart.getUserId().equals(firebaseUser.getUid())) {
-                                cartId = cart.getCartId();
+                                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.getChildrenCount() == 0) {
+                                            startActivity(new Intent(MainActivity.this, EmptyCartActivity.class));
+                                        }
+                                        else {
+                                            startActivity(new Intent(MainActivity.this, CartActivity.class));
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                             }
                         }
-
-                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.getChildrenCount() == 0) {
-                                    startActivity(new Intent(MainActivity.this, EmptyCartActivity.class));
-                                }
-                                else {
-                                    startActivity(new Intent(MainActivity.this, CartActivity.class));
-                                }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
                     }
 
                     @Override
