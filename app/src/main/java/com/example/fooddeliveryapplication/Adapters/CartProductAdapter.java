@@ -180,9 +180,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 amount++;
                 holder.productAmount.setText(String.valueOf(amount));
                 holder.checkBox.setChecked(false);
+                isCheckAll = false;
 
                 if (adapterItemListener != null) {
                     adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
+                    adapterItemListener.onAddClicked();
                 }
 
                 // Save to firebase
@@ -228,10 +230,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     int amount = Integer.parseInt(holder.productAmount.getText().toString());
                     amount--;
                     holder.productAmount.setText(String.valueOf(amount));
-                    holder.checkBox.setChecked(false);
+                    isCheckAll = false;
 
                     if (adapterItemListener != null) {
                         adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
+                        adapterItemListener.onSubtractClicked();
                     }
 
                     // Save to firebase
@@ -247,7 +250,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                                     Product product = snapshot1.getValue(Product.class);
                                     int totalAmount = cart.getTotalAmount() - 1;
                                     long totalPrice = cart.getTotalPrice() - product.getProductPrice();
-                                    Toast.makeText(mContext, String.valueOf(totalAmount), Toast.LENGTH_SHORT).show();
 
                                     HashMap<String, Object> map = new HashMap<>();
                                     map.put("totalAmount", totalAmount);
@@ -305,7 +307,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                         else {
                             checkedItemCount -= cartInfo.getAmount();
                             checkedItemPrice -= cartInfo.getAmount() * product.getProductPrice();
-                            selectedItems.remove(cartInfo);
+                            selectedItems.removeIf(c -> (c.getCartInfoId().equals(cartInfo.getCartInfoId())));
                         }
 
                         if (adapterItemListener != null) {

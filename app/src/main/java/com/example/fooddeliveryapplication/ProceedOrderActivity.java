@@ -113,7 +113,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         Product product = snapshot.getValue(Product.class);
                                                         FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalAmount").setValue(cart.getTotalAmount() - cartInfo.getAmount());
-                                                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalPrice").setValue(cart.getTotalPrice() - cartInfo.getAmount() - product.getProductPrice());
+                                                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalPrice").setValue(cart.getTotalPrice() - cartInfo.getAmount() * product.getProductPrice());
                                                     }
 
                                                     @Override
@@ -135,6 +135,8 @@ public class ProceedOrderActivity extends AppCompatActivity {
                             }
 
                             cartInfoList.clear();
+                            Intent intent = new Intent();
+                            setResult(RESULT_OK, intent);
                             finish();
                         }
                     }
@@ -186,6 +188,8 @@ public class ProceedOrderActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

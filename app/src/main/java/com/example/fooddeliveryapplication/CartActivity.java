@@ -1,5 +1,7 @@
 package com.example.fooddeliveryapplication;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.CartProductAdapter;
 import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
@@ -41,9 +44,9 @@ public class CartActivity extends AppCompatActivity {
     private CheckBox checkAll;
     private Button proceedOrder;
 
-    private String cartId;
     private boolean isCheckAll = false;
     private ArrayList<CartInfo> buyProducts = new ArrayList<>();
+    private ActivityResultLauncher<Intent> proceedOrderLaucher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class CartActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         initToolbar();
+        initProceedOrderLauncher();
 
         recyclerViewCartProducts = findViewById(R.id.recycler_view_cart_product);
         recyclerViewCartProducts.setHasFixedSize(true);
@@ -69,7 +73,8 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 cartProductAdapter.setCheckAll(isChecked);
-                cartProductAdapter.notifyDataSetChanged();
+
+                reloadCartProducts();
             }
         });
 
@@ -80,7 +85,53 @@ public class CartActivity extends AppCompatActivity {
                 intent.putExtra("buyProducts", buyProducts);
                 String totalPriceDisplay = totalPrice.getText().toString();
                 intent.putExtra("totalPrice", totalPriceDisplay.substring(13));
-                startActivity(intent);
+                proceedOrderLaucher.launch(intent);
+            }
+        });
+    }
+
+    private void initProceedOrderLauncher() {
+        // Init launcher
+        proceedOrderLaucher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                reloadCartProducts();
+                buyProducts.clear();
+                Toast.makeText(this, String.valueOf(buyProducts.size()), Toast.LENGTH_SHORT).show();
+                selected.setText("Selected: 0");
+                totalPrice.setText("Total price: 0đ");
+            }
+        });
+    }
+
+    private void reloadCartProducts() {
+        FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Cart cart = ds.getValue(Cart.class);
+                    if (cart.getUserId().equals(firebaseUser.getUid())) {
+                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                cartInfoList.clear();
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    CartInfo cartInfo = ds.getValue(CartInfo.class);
+                                    cartInfoList.add(cartInfo);
+                                }
+                                cartProductAdapter.notifyDataSetChanged();
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -108,40 +159,51 @@ public class CartActivity extends AppCompatActivity {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Cart cart = ds.getValue(Cart.class);
                     if (cart.getUserId().equals(firebaseUser.getUid())) {
-                        cartId = cart.getCartId();
+                        cartProductAdapter = new CartProductAdapter(CartActivity.this, cartInfoList, cart.getCartId(), isCheckAll);
+                        cartProductAdapter.setAdapterItemListener(new IAdapterItemListener() {
+                            @Override
+                            public void onCheckedItemCountChanged(int count, long price, ArrayList<CartInfo> selectedItems) {
+                                selected.setText("Selected: " + String.valueOf(count));
+                                totalPrice.setText("Total price: " + convertToMoney(price) + "đ");
+                                buyProducts = selectedItems;
+
+                                if (count > 0) {
+                                    proceedOrder.setEnabled(true);
+                                }
+                                else {
+                                    proceedOrder.setEnabled(false);
+                                }
+                            }
+
+                            @Override
+                            public void onAddClicked() {
+                                reloadCartProducts();
+                            }
+
+                            @Override
+                            public void onSubtractClicked() {
+                                reloadCartProducts();
+                            }
+                        });
+                        recyclerViewCartProducts.setAdapter(cartProductAdapter);
+
+                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                cartInfoList.clear();
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    CartInfo cartInfo = ds.getValue(CartInfo.class);
+                                    cartInfoList.add(cartInfo);
+                                }
+                                cartProductAdapter.notifyDataSetChanged();
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
-
-                cartProductAdapter = new CartProductAdapter(CartActivity.this, cartInfoList, cartId, isCheckAll);
-                cartProductAdapter.setAdapterItemListener(new IAdapterItemListener() {
-                    @Override
-                    public void onCheckedItemCountChanged(int count, long price, ArrayList<CartInfo> selectedItems) {
-                        selected.setText("Selected: " + String.valueOf(count));
-                        totalPrice.setText("Total price: " + convertToMoney(price) + "đ");
-                        buyProducts = selectedItems;
-
-                        if (count > 0) {
-                            proceedOrder.setEnabled(true);
-                        }
-                    }
-                });
-                recyclerViewCartProducts.setAdapter(cartProductAdapter);
-
-                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        cartInfoList.clear();
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            CartInfo cartInfo = ds.getValue(CartInfo.class);
-                            cartInfoList.add(cartInfo);
-                        }
-                        cartProductAdapter.notifyDataSetChanged();
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
             }
 
             @Override
