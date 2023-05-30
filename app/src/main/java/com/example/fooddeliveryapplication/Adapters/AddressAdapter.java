@@ -100,21 +100,22 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (address.getState().equals("default")) {
-                    Toast.makeText(mContext, "You cannot delete the default address", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                    alertDialog.setMessage("Delete this address?");
-                    alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+                alertDialog.setMessage("Delete this address?");
+                alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (address.getState().equals("default")) {
+                            Toast.makeText(mContext, "You cannot delete the default address", Toast.LENGTH_SHORT).show();
                             dialogInterface.dismiss();
                         }
-                    });
-                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                        else {
                             FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(address.getAddressId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -125,9 +126,10 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                                 }
                             });
                         }
-                    });
-                    alertDialog.show();
-                }
+                    }
+                });
+                alertDialog.show();
+
                 return true;
             }
         });
