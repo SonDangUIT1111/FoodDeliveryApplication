@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters.HomeAdapter;
+package com.example.fooddeliveryapplication.Adapters.Home;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

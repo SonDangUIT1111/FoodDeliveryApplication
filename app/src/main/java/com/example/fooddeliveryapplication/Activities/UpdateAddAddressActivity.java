@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication;
+package com.example.fooddeliveryapplication.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.fooddeliveryapplication.Models.Address;
+import com.example.fooddeliveryapplication.GlobalConfig;
+import com.example.fooddeliveryapplication.Model.Address;
+import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

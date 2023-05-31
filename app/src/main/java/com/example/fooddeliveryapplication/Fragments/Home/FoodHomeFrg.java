@@ -1,6 +1,5 @@
 package com.example.fooddeliveryapplication.Fragments.Home;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.fooddeliveryapplication.Adapters.HomeAdapter.FoodDrinkFrgAdapter;
+import com.example.fooddeliveryapplication.Adapters.Home.FoodDrinkFrgAdapter;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.FragmentDrinkHomeFrgBinding;
 import com.google.firebase.database.DataSnapshot;

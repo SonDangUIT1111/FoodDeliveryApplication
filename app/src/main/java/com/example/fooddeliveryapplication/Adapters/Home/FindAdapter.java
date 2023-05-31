@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters.HomeAdapter;
+package com.example.fooddeliveryapplication.Adapters.Home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
-import com.example.fooddeliveryapplication.databinding.ActivityFindBinding;
 import com.example.fooddeliveryapplication.databinding.ItemHomeFindLayoutBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

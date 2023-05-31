@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters.HomeAdapter;
+package com.example.fooddeliveryapplication.Adapters.Home;
 
 
 import android.content.Context;

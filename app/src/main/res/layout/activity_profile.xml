@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingTop="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.ProfileFragment">
+    tools:context=".Activities.Home.ProfileActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
             android:layout_marginStart="123dp"
             android:layout_marginTop="110dp"
             android:alpha="0.5"/>
-        
+
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView

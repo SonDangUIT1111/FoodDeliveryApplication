@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.fooddeliveryapplication.Activities.Home.FindActivity;
-import com.example.fooddeliveryapplication.Adapters.HomeAdapter.FoodDrinkAdapter;
+import com.example.fooddeliveryapplication.Adapters.Home.FoodDrinkAdapter;
 import com.example.fooddeliveryapplication.databinding.FragmentHomeBinding;
 
 import com.google.android.material.tabs.TabLayoutMediator;

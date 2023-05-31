@@ -182,13 +182,13 @@
                 <RatingBar
                     android:id="@+id/ratingBar"
                     android:layout_width="263dp"
+                    android:theme="@style/RatingBar"
                     android:layout_height="53dp"
                     android:layout_marginTop="32dp"
                     android:isIndicator="true"
                     android:numStars="5"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:theme="@style/RatingBar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

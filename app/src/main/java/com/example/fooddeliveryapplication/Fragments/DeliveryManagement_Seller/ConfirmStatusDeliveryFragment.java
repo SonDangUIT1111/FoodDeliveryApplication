@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Fragments.OrderSellerManagement;
+package com.example.fooddeliveryapplication.Fragments.DeliveryManagement_Seller;
 
 import android.os.Bundle;
 
@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.example.fooddeliveryapplication.Adapters.OrderSellerManagement.StatusOrderRecyclerViewAdapter;
+import com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller.StatusOrderRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.R;
