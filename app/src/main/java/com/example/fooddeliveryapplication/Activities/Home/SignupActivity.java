@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication;
+package com.example.fooddeliveryapplication.Activities.Home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.fooddeliveryapplication.R;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -20,7 +22,7 @@ public class SignupActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

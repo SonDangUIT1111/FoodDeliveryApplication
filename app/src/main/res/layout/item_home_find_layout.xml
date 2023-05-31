@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:elevation="40dp"
+    android:id="@+id/parent_of_item_in_find_activity"
+    >
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgFood"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="top|center"
+
+
+            android:elevation="1dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tmp2"
+            app:shapeAppearanceOverlay="@style/Circle_Image"
+
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="160dp"
+            android:layout_height="250dp"
+            android:background="@drawable/rectangle_item_home">
+
+            <TextView
+
+                android:id="@+id/txtFoodName"
+                android:layout_width="99dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="80dp"
+                android:fontFamily="@font/sfpro_regular"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="#555555"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtFoodPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="#FF6363"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/txtFoodName"
+                app:layout_constraintHorizontal_bias="0.52"
+                app:layout_constraintStart_toStartOf="@+id/txtFoodName"
+                app:layout_constraintTop_toBottomOf="@+id/txtFoodName" />
+
+            <LinearLayout
+                android:layout_width="99dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/txtFoodPrice"
+                app:layout_constraintStart_toStartOf="@+id/txtFoodPrice"
+                app:layout_constraintTop_toBottomOf="@+id/txtFoodPrice">
+
+                <ImageView
+                    android:id="@+id/imgRate"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/rating_star_empty" />
+
+                <TextView
+                    android:id="@+id/txtRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingTop="2dp"
+                    android:text="TextView" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</LinearLayout>

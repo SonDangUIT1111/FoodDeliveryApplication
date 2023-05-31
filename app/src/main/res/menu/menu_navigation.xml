@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/profileMenu"
+        android:title="Profile"
+        android:icon="@drawable/user_icon"
+        app:cnb_iconColor="@color/main"/>
+
+
+    <item
+        android:id="@+id/orderMenu"
+        android:title="Your order"
+        android:icon="@drawable/order_icon"
+        app:cnb_iconColor="@color/main"/>
+
+    <item
+        android:id="@+id/myShopMenu"
+        android:title="My shop"
+        android:icon="@drawable/shop_icon"
+        app:cnb_iconColor="@color/main"/>
+    <item
+        android:id="@+id/logoutMenu"
+        android:title="Log Out"
+        android:icon="@drawable/logout_icon"
+        app:cnb_iconColor="@color/main"/>
+
+</menu>

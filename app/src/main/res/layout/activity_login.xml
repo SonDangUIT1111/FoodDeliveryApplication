@@ -5,7 +5,7 @@
     android:id="@+id/signupBtn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".Activities.Home.LoginActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"

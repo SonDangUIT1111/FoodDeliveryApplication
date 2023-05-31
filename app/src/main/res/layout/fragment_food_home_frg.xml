@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".Fragments.Home.FoodHomeFrg">
+
+
+    <TextView
+        android:id="@+id/txtSeemoreFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="25dp"
+        android:fontFamily="@font/sfpro_regular"
+        android:layout_marginBottom="12dp"
+        android:text="See more"
+        android:textColor="#FA4A0C"
+        android:textSize="16sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rycFoodHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="3" />
+
+
+</LinearLayout>
