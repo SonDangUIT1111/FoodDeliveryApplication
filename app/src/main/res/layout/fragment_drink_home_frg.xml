@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical"
+    tools:context=".Fragments.Home.DrinkHomeFrg">
+
+    <TextView
+        android:id="@+id/txtSeemoreDrink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="25dp"
+        android:fontFamily="@font/sfpro_regular"
+        android:text="See more"
+        android:textSize="16sp"
+        android:layout_marginBottom="12dp"
+        android:textColor="#FA4A0C" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rycDrinkHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="3" />
+
+</LinearLayout>

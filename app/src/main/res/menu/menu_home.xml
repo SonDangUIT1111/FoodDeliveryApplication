@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home_menu"
+        android:title="Home"
+        android:checked="true"
+        android:icon="@drawable/home_icon"
+        app:cnb_iconColor="@color/main"/>
+
+
+    <item
+        android:id="@+id/favorite_menu"
+        android:title="Favourite"
+        android:icon="@drawable/heart_icon"
+        app:cnb_iconColor="#E91E63"/>
+
+    <item
+        android:id="@+id/history_menu"
+        android:title="History"
+        android:icon="@drawable/history_icon"
+        app:cnb_iconColor="@color/completed_status_color"/>
+
+    <item
+        android:id="@+id/notification_menu"
+        android:title="Notification"
+        android:icon="@drawable/notification_icon"
+        app:cnb_iconColor="#00B7FF">
+    </item>
+</menu>
