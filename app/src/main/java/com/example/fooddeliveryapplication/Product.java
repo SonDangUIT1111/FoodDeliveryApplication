@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Model;
+package com.example.fooddeliveryapplication;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ public class Product implements Serializable {
     String productImage2;
     String productImage3;
     String productImage4;
-    int productPrice;
+    Double productPrice;
     String productType;
     int remainAmmount;
     String description;
@@ -21,7 +21,7 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmmount, String description, Double ratingStar, String publisherId, String avatarURL) {
+    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, Double productPrice, String productType, int remainAmmount, String description, Double ratingStar, String publisherId, String avatarURL) {
         this.productId = productId;
         this.productName = productName;
         this.productImage1 = productImage1;
@@ -85,11 +85,11 @@ public class Product implements Serializable {
         this.productImage4 = productImage4;
     }
 
-    public int getProductPrice() {
+    public Double getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(int productPrice) {
+    public void setProductPrice(Double productPrice) {
         this.productPrice = productPrice;
     }
 
