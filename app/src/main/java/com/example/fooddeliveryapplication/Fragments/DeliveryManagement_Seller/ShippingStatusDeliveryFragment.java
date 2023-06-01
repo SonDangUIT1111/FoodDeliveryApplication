@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Fragments.OrderSellerManagement;
+package com.example.fooddeliveryapplication.Fragments.DeliveryManagement_Seller;
 
 import android.os.Bundle;
 
@@ -11,20 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.example.fooddeliveryapplication.Adapters.OrderSellerManagement.StatusOrderRecyclerViewAdapter;
+import com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller.StatusOrderRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.R;
 
 import java.util.List;
 
-public class CompletedStatusDeliveryFragment extends Fragment {
+
+public class ShippingStatusDeliveryFragment extends Fragment {
 
     View view;
-    RecyclerView recCompletedDelivery;
     String userId;
-    ProgressBar progressBarCompletedDelivery;
-    public CompletedStatusDeliveryFragment(String Id) {
+    RecyclerView recShippingDelivery;
+    ProgressBar progressBarShippingDelivery;
+    public ShippingStatusDeliveryFragment(String Id) {
         userId = Id;
     }
 
@@ -32,21 +33,22 @@ public class CompletedStatusDeliveryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_completed_status_delivery, container, false);
+        view = inflater.inflate(R.layout.fragment_shipping_status_delivery, container, false);
+
 
         // find view by id
-        recCompletedDelivery = (RecyclerView) view.findViewById(R.id.recCompletedDelivery);
-        progressBarCompletedDelivery = (ProgressBar) view.findViewById(R.id.progressBarCompletedDelivery);
+        recShippingDelivery = (RecyclerView) view.findViewById(R.id.recShippingDelivery);
+        progressBarShippingDelivery = (ProgressBar) view.findViewById(R.id.progressBarShippingDelivery);
 
-        // pull data and set adapter for recycler view
-        new FirebaseStatusOrderHelper(userId).readCompletedBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
+        //set adapter and pull data for recycler view
+        new FirebaseStatusOrderHelper(userId).readShippingBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Bill> bills, List<String> img) {
                 StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills,img);
-                recCompletedDelivery.setHasFixedSize(true);
-                recCompletedDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
-                recCompletedDelivery.setAdapter(adapter);
-                progressBarCompletedDelivery.setVisibility(View.GONE);
+                recShippingDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
+                recShippingDelivery.setHasFixedSize(true);
+                recShippingDelivery.setAdapter(adapter);
+                progressBarShippingDelivery.setVisibility(View.GONE);
             }
 
             @Override
@@ -64,8 +66,6 @@ public class CompletedStatusDeliveryFragment extends Fragment {
 
             }
         });
-
-
         return view;
     }
 }

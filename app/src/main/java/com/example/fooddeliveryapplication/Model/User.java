@@ -8,7 +8,7 @@ public class User {
     String email;
     String avatarURL;
     String userName;
-    Date birthDate;
+    String birthDate;
     String phoneNumber;
     Date registerDate;
     Date saleRegisterDate;
@@ -17,7 +17,7 @@ public class User {
     public User() {
     }
 
-    public User(String accountName, String userId, String email, String avatarURL, String nameOfUser, Date birthDate, String phoneNumber, Date registerDate, Date saleRegisterDate) {
+    public User(String accountName, String userId, String email, String avatarURL, String nameOfUser, String birthDate, String phoneNumber, Date registerDate, Date saleRegisterDate) {
         this.accountName = accountName;
         this.userId = userId;
         this.email = email;
@@ -69,11 +69,11 @@ public class User {
         userName = nameOfUser;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -99,5 +99,13 @@ public class User {
 
     public void setSaleRegisterDate(Date saleRegisterDate) {
         this.saleRegisterDate = saleRegisterDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

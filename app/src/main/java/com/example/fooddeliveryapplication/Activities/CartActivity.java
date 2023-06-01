@@ -1,17 +1,15 @@
-package com.example.fooddeliveryapplication;
+package com.example.fooddeliveryapplication.Activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,10 +17,11 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fooddeliveryapplication.Adapters.CartProductAdapter;
+import com.example.fooddeliveryapplication.Adapters.Cart.CartProductAdapter;
 import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
-import com.example.fooddeliveryapplication.Models.Cart;
-import com.example.fooddeliveryapplication.Models.CartInfo;
+import com.example.fooddeliveryapplication.Model.Cart;
+import com.example.fooddeliveryapplication.Model.CartInfo;
+import com.example.fooddeliveryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,7 +45,7 @@ public class CartActivity extends AppCompatActivity {
 
     private boolean isCheckAll = false;
     private ArrayList<CartInfo> buyProducts = new ArrayList<>();
-    private ActivityResultLauncher<Intent> proceedOrderLaucher;
+    private ActivityResultLauncher<Intent> proceedOrderLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +84,14 @@ public class CartActivity extends AppCompatActivity {
                 intent.putExtra("buyProducts", buyProducts);
                 String totalPriceDisplay = totalPrice.getText().toString();
                 intent.putExtra("totalPrice", totalPriceDisplay.substring(13));
-                proceedOrderLaucher.launch(intent);
+                proceedOrderLauncher.launch(intent);
             }
         });
     }
 
     private void initProceedOrderLauncher() {
         // Init launcher
-        proceedOrderLaucher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        proceedOrderLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
                 reloadCartProducts();
                 buyProducts.clear();

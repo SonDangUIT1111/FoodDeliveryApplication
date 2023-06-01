@@ -10,7 +10,7 @@
         android:id="@+id/navigation_left"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="left"
         app:headerLayout="@layout/layout_navigation_header"
 
         app:cnb_orientationMode="vertical"

@@ -4,9 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -39,21 +37,27 @@
             android:exported="false" />
         <activity
             android:name=".UpdateAddAddressActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ChangeAddressActivity"
+            android:name=".Activities.UpdateAddAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".EmptyCartActivity"
+            android:name=".Activities.ChangeAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".ProceedOrderActivity"
+            android:name=".Activities.EmptyCartActivity"
             android:exported="false" />
         <activity
-            android:name=".CartActivity"
+            android:name=".Activities.ProceedOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".Activities.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Home.FindActivity"
@@ -64,8 +68,6 @@
         <activity
             android:name=".Activities.Home.SignupActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".Activities.Home.IntroActivity"
             android:exported="false" />
@@ -83,14 +85,10 @@
             android:exported="false" />
         <activity
             android:name=".Activities.OrderSellerManagement.DeliveryManagementActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Activities.ProductInformation.ProductInfoActivity"
-            android:exported="false" >
-        </activity>
-
+            android:exported="false"></activity>
     </application>
 
 </manifest>

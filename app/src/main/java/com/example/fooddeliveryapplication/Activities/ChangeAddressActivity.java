@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication;
+package com.example.fooddeliveryapplication.Activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -13,13 +13,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.AddressAdapter;
-import com.example.fooddeliveryapplication.Adapters.OrderProductAdapter;
+import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
-import com.example.fooddeliveryapplication.Models.Address;
-import com.example.fooddeliveryapplication.Models.CartInfo;
+import com.example.fooddeliveryapplication.Model.Address;
+import com.example.fooddeliveryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Models;
+package com.example.fooddeliveryapplication.Model;
 
 public class Address {
     String addressId;

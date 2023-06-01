@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters.OrderSellerManagement;
+package com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

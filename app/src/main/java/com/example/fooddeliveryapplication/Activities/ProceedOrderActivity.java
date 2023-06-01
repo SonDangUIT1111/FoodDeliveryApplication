@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication;
+package com.example.fooddeliveryapplication.Activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.fooddeliveryapplication.Adapters.OrderProductAdapter;
-import com.example.fooddeliveryapplication.Models.Address;
-import com.example.fooddeliveryapplication.Models.Cart;
-import com.example.fooddeliveryapplication.Models.CartInfo;
-import com.example.fooddeliveryapplication.Models.Product;
+import com.example.fooddeliveryapplication.Adapters.Cart.OrderProductAdapter;
+import com.example.fooddeliveryapplication.GlobalConfig;
+import com.example.fooddeliveryapplication.Model.Address;
+import com.example.fooddeliveryapplication.Model.Cart;
+import com.example.fooddeliveryapplication.Model.CartInfo;
+import com.example.fooddeliveryapplication.Model.Product;
+import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

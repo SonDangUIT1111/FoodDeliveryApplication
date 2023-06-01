@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters;
+package com.example.fooddeliveryapplication.Adapters.Cart;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,9 +22,9 @@ import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
-import com.example.fooddeliveryapplication.Models.Cart;
-import com.example.fooddeliveryapplication.Models.CartInfo;
-import com.example.fooddeliveryapplication.Models.Product;
+import com.example.fooddeliveryapplication.Model.Cart;
+import com.example.fooddeliveryapplication.Model.CartInfo;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.fooddeliveryapplication.Adapters.OrderSellerManagement.ListOfItemInOrderAdapter;
+import com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller.ListOfItemInOrderAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseOrderDetailHelper;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.R;

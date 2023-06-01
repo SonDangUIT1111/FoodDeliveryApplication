@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.fooddeliveryapplication.Adapters.HomeAdapter.FindAdapter;
+import com.example.fooddeliveryapplication.Adapters.Home.FindAdapter;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.ActivityFindBinding;
 import com.google.firebase.database.DataSnapshot;

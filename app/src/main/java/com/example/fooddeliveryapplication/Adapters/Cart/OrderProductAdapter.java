@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters;
+package com.example.fooddeliveryapplication.Adapters.Cart;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.fooddeliveryapplication.Models.CartInfo;
-import com.example.fooddeliveryapplication.Models.Product;
+import com.example.fooddeliveryapplication.Model.CartInfo;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

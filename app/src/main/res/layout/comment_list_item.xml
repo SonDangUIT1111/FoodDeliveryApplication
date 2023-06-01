@@ -30,11 +30,11 @@
     <RatingBar
         android:id="@+id/recCommentRatingBar"
         style="@style/Widget.AppCompat.RatingBar.Small"
+        android:theme="@style/RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:isIndicator="true"
-        android:theme="@style/RatingBar"
         app:layout_constraintBottom_toBottomOf="@+id/txtRecCommentUsername"
         app:layout_constraintStart_toEndOf="@+id/txtRecCommentUsername"
         app:layout_constraintTop_toTopOf="@+id/txtRecCommentUsername" />

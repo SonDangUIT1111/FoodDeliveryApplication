@@ -1,11 +1,10 @@
-package com.example.fooddeliveryapplication.Adapters.HomeAdapter;
+package com.example.fooddeliveryapplication.Adapters.Home;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.fragment.app.Fragment;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

@@ -1,10 +1,12 @@
-package com.example.fooddeliveryapplication;
+package com.example.fooddeliveryapplication.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.fooddeliveryapplication.R;
 
 public class EmptyCartActivity extends AppCompatActivity {
     @Override

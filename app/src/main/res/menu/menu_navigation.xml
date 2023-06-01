@@ -20,16 +20,10 @@
         android:title="My shop"
         android:icon="@drawable/shop_icon"
         app:cnb_iconColor="@color/main"/>
-    <item android:title="Orther" >
-        <menu>
-            <item
-                android:id="@+id/logoutMenu"
-                android:title="Log Out"
-                android:icon="@drawable/logout_icon"
-                />
-
-        </menu>
-
-    </item>
+    <item
+        android:id="@+id/logoutMenu"
+        android:title="Log Out"
+        android:icon="@drawable/logout_icon"
+        app:cnb_iconColor="@color/main"/>
 
 </menu>
