@@ -87,9 +87,9 @@ public class FindAdapter extends RecyclerView.Adapter implements Filterable {
 
                 viewHolder.binding.txtFoodName.setText(item.getProductName());
                 viewHolder.binding.txtRating.setText(item.getRatingStar()+"/5.0");
-                if (Float.valueOf(item.getRatingStar())>=5) {
+                if (item.getRatingStar()>=5) {
                     viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_filled);
-                } else if (Float.valueOf(item.getRatingStar())>=3 && Float.valueOf(item.getRatingStar())<5) {
+                } else if (item.getRatingStar()>=3 && item.getRatingStar()<5) {
                     viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_half);
                 } else {
                     viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_empty);

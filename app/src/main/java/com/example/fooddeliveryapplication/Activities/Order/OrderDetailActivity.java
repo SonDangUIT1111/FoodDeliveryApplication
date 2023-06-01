@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fooddeliveryapplication.Adapter.OrderDetailAdapter;
+import com.example.fooddeliveryapplication.Activities.Feedback.FeedBackActivity;
+import com.example.fooddeliveryapplication.Adapters.OrderAdapter.OrderDetailAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
@@ -96,7 +97,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding.lnOderDetail.ryc.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
         binding.lnOderDetail.ryc.setAdapter(adapter);
         binding.lnOderDetail.ryc.setHasFixedSize(true);
-        binding.lnOderDetail.txtTotalPrice.setText(CurrencyFormatter.getFommater().format(currentBill.getTotalPrice())+"");
+        binding.lnOderDetail.txtTotalPrice.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(currentBill.getTotalPrice()))+"");
         binding.txtId.setText(currentBill.getBillId());
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +116,7 @@ public class OrderDetailActivity extends AppCompatActivity {
            @Override
            public void onClick(View view) {
                filterItemChecked();
-               Intent intent=new Intent(OrderDetailActivity.this,FeedBackActivity.class);
+               Intent intent=new Intent(OrderDetailActivity.this, FeedBackActivity.class);
                intent.putExtra("Current Bill",currentBill);
                intent.putExtra("List of billInfo",dsBillInfo);
                startActivity(intent);

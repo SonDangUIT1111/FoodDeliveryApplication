@@ -5,9 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+
 import com.example.fooddeliveryapplication.Fragments.Order.CurrentOrderFragment;
 import com.example.fooddeliveryapplication.Fragments.Order.HistoryOrderFragment;
-import com.example.fooddeliveryapplication.Bill;
+import com.example.fooddeliveryapplication.Model.Bill;
 
 import java.util.ArrayList;
 

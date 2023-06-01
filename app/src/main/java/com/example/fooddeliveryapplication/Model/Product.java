@@ -11,7 +11,8 @@ public class Product implements Serializable {
     String productImage4;
     int productPrice;
     String productType;
-    int remainAmmount;
+    int remainAmount;
+    int sold;
     String description;
     Double ratingStar;
 
@@ -21,7 +22,7 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmmount, String description, Double ratingStar, String publisherId, String avatarURL) {
+    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, String publisherId, String avatarURL) {
         this.productId = productId;
         this.productName = productName;
         this.productImage1 = productImage1;
@@ -30,7 +31,8 @@ public class Product implements Serializable {
         this.productImage4 = productImage4;
         this.productPrice = productPrice;
         this.productType = productType;
-        this.remainAmmount = remainAmmount;
+        this.remainAmount = remainAmount;
+        this.sold = sold;
         this.description = description;
         this.ratingStar = ratingStar;
         this.publisherId = publisherId;
@@ -101,12 +103,20 @@ public class Product implements Serializable {
         this.productType = productType;
     }
 
-    public int getRemainAmmount() {
-        return remainAmmount;
+    public int getRemainAmount() {
+        return remainAmount;
     }
 
-    public void setRemainAmmount(int remainAmmount) {
-        this.remainAmmount = remainAmmount;
+    public void setRemainAmount(int remainAmount) {
+        this.remainAmount = remainAmount;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 
     public String getDescription() {
@@ -124,8 +134,6 @@ public class Product implements Serializable {
     public void setRatingStar(Double ratingStar) {
         this.ratingStar = ratingStar;
     }
-
-
 
     public String getPublisherId() {
         return publisherId;
@@ -154,7 +162,7 @@ public class Product implements Serializable {
                 ", productImage4='" + productImage4 + '\'' +
                 ", productPrice=" + productPrice +
                 ", productType='" + productType + '\'' +
-                ", remainAmmount=" + remainAmmount +
+                ", remainAmount=" + remainAmount +
                 ", description='" + description + '\'' +
                 ", ratingStar=" + ratingStar +
                 ", publisherId='" + publisherId + '\'' +

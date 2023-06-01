@@ -75,7 +75,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product tmp=snapshot.getValue(Product.class);
                 //set Thông tin
-                viewHolder.binding.lnBillInfo.txtPrice.setText(CurrencyFormatter.getFommater().format(item.getAmount()*tmp.getProductPrice())+"");
+                viewHolder.binding.lnBillInfo.txtPrice.setText(CurrencyFormatter.getFormatter().format(item.getAmount()*Double.valueOf(tmp.getProductPrice()))+"");
                 viewHolder.binding.lnBillInfo.txtName.setText(tmp.getProductName());
                 viewHolder.binding.lnBillInfo.txtCount.setText(item.getAmount()+"");
                 Glide.with(context)

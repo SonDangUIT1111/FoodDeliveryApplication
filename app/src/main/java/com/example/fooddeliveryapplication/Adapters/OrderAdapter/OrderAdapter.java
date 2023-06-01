@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
-import com.example.fooddeliveryapplication.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
+import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ItemOrderLayoutBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -96,7 +96,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
         viewHolder.binding.txtId.setText(tmp.getBillId()+"");
         viewHolder.binding.txtDate.setText(tmp.getOrderDate()+"");
         viewHolder.binding.txtStatus.setText(tmp.getOrderStatus());
-        viewHolder.binding.txtTotal.setText(CurrencyFormatter.getFommater().format(tmp.getTotalPrice())+"");
+        viewHolder.binding.txtTotal.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(tmp.getTotalPrice()))+"");
         viewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -109,7 +109,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Tạo một BillInfos để lấy ảnh
-                BillInfo tmp=new BillInfo();
+                BillInfo tmp= new BillInfo();
                 for (DataSnapshot item: snapshot.getChildren()) {
                     tmp=item.getValue(BillInfo.class);
                     break;

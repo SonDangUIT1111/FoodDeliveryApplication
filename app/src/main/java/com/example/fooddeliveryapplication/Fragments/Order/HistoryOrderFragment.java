@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Adapters.OrderAdapter.OrderAdapter;
-import com.example.fooddeliveryapplication.Bill;
+import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.databinding.FragmentHistoryOrderBinding;
 
 import java.util.ArrayList;

@@ -1,21 +1,24 @@
 package com.example.fooddeliveryapplication.Model;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class Bill {
+public class Bill implements Serializable {
     String addressId;
     String billId;
     String orderDate;
     String orderStatus;
+
+    boolean checkAllComment;
     String recipientId;
     String senderId;
     int totalPrice;
 
-    public Bill(String addressId, String billId, String orderDate, String orderStatus, String recipientId, String senderId, int totalPrice) {
+    public Bill(String addressId, String billId, String orderDate, String orderStatus, boolean checkAllComment, String recipientId, String senderId, int totalPrice) {
         this.addressId = addressId;
         this.billId = billId;
         this.orderDate = orderDate;
         this.orderStatus = orderStatus;
+        this.checkAllComment = checkAllComment;
         this.recipientId = recipientId;
         this.senderId = senderId;
         this.totalPrice = totalPrice;
@@ -78,5 +81,13 @@ public class Bill {
 
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public boolean isCheckAllComment() {
+        return checkAllComment;
+    }
+
+    public void setCheckAllComment(boolean checkAllComment) {
+        this.checkAllComment = checkAllComment;
     }
 }

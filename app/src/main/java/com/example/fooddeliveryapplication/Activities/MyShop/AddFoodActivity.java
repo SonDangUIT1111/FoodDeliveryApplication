@@ -60,7 +60,7 @@ public class AddFoodActivity extends AppCompatActivity {
             checkUpdate=true;
             binding.lnAddFood.btnAddProduct.setText("Update");
             binding.lnAddFood.edtNameOfProduct.setText(productUpdate.getProductName());
-            binding.lnAddFood.edtAmount.setText(productUpdate.getRemainAmmount()+"");
+            binding.lnAddFood.edtAmount.setText(productUpdate.getRemainAmount()+"");
             binding.lnAddFood.edtDescp.setText(productUpdate.getDescription());
             binding.lnAddFood.edtPrice.setText(productUpdate.getProductPrice()+"");
             imgOld1=productUpdate.getProductImage1();
@@ -266,8 +266,8 @@ public class AddFoodActivity extends AppCompatActivity {
                                     String price=binding.lnAddFood.edtPrice.getText().toString();
                                     String amount=binding.lnAddFood.edtAmount.getText().toString();
                                     String description=binding.lnAddFood.edtDescp.getText().toString();
-                                    Product tmp=new Product("null",name,img1,img2,img3,img4,Double.valueOf(price),
-                                            binding.lnAddFood.rbFood.isSelected()?"Food":"Drink",Integer.valueOf(amount),description,0.0,curentUser,curentUser);
+                                    Product tmp=new Product("null",name,img1,img2,img3,img4,Integer.valueOf(price),
+                                            binding.lnAddFood.rbFood.isSelected()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0,curentUser,curentUser);
                                     uploadProduct(tmp);
                                 } else {
                                     if (count==1)  {

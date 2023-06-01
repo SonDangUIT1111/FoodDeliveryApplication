@@ -4,14 +4,16 @@ public class BillInfo {
     int amount;
     String billInfoId;
     String productId;
+    boolean check;
 
-    public BillInfo(int amount, String billInfoId, String productId) {
+    public BillInfo() {
+    }
+
+    public BillInfo(int amount, String billInfoId, String productId, boolean check) {
         this.amount = amount;
         this.billInfoId = billInfoId;
         this.productId = productId;
-    }
-
-    public BillInfo() {
+        this.check = check;
     }
 
     public int getAmount() {
@@ -36,5 +38,13 @@ public class BillInfo {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
     }
 }
