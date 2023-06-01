@@ -5,16 +5,19 @@
     android:id="@+id/signupBtn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Home.LoginActivity">
+    tools:viewBindingIgnore="true"
+    tools:context=".Activity.LoginActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/intro_image_layout"
+        android:layout_height="254.04dp"
         android:background="@drawable/bkg"
         android:orientation="vertical"
         tools:context=".MainActivity"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,13 +47,15 @@
             android:id="@+id/txtGmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:paddingLeft="3dp"
             android:text="Gmail"
             android:textColor="#000000"
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+
+            android:id="@+id/edtUserNameLogin"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:ems="10"
@@ -58,18 +63,18 @@
             android:inputType="textPersonName" />
 
 
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:paddingLeft="3dp"
             android:text="Password"
             android:textColor="#000000"
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/editTextTextPassword2"
+            android:id="@+id/edtPasswordLogin"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:ems="10"
@@ -82,8 +87,11 @@
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:background="@color/orange"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_login_signup"
             android:foreground="?attr/selectableItemBackground"
+            android:hint="if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))"
             android:text="Login"
             android:textColor="#000000"
             app:backgroundTint="@null" />
