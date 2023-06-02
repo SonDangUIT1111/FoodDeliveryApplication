@@ -17,12 +17,11 @@ public class Product implements Serializable {
     Double ratingStar;
 
     String publisherId;
-    String avatarURL;
 
     public Product() {
     }
 
-    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, String publisherId, String avatarURL) {
+    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, String publisherId) {
         this.productId = productId;
         this.productName = productName;
         this.productImage1 = productImage1;
@@ -36,7 +35,6 @@ public class Product implements Serializable {
         this.description = description;
         this.ratingStar = ratingStar;
         this.publisherId = publisherId;
-        this.avatarURL = avatarURL;
     }
 
     public String getProductId() {
@@ -143,13 +141,6 @@ public class Product implements Serializable {
         this.publisherId = publisherId;
     }
 
-    public String getAvatarURL() {
-        return avatarURL;
-    }
-
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
-    }
 
     @Override
     public String toString() {
@@ -166,7 +157,6 @@ public class Product implements Serializable {
                 ", description='" + description + '\'' +
                 ", ratingStar=" + ratingStar +
                 ", publisherId='" + publisherId + '\'' +
-                ", avatarURL='" + avatarURL + '\'' +
-                '}';
+                "}";
     }
 }

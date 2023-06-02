@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="-10dp"
+                style="@style/Widget.AppCompat.CompoundButton.CheckBox"
                 android:buttonTint="@color/app_color"
                 android:id="@+id/check_box"/>
 
@@ -113,6 +113,8 @@
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:text="-"
+                    style="@style/Widget.AppCompat.ActionButton"
+                    android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:background="@drawable/rounded_button_left"
                     android:layout_marginBottom="10dp"
@@ -122,6 +124,7 @@
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:text="1"
+                    style="@style/Widget.AppCompat.ActionButton"
                     android:textSize="12sp"
                     android:background="@drawable/normal_button"
                     android:layout_marginBottom="10dp"
@@ -131,6 +134,7 @@
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:text="+"
+                    style="@style/Widget.AppCompat.ActionButton"
                     android:textSize="12sp"
                     android:background="@drawable/rounded_button_right"
                     android:layout_marginBottom="10dp"

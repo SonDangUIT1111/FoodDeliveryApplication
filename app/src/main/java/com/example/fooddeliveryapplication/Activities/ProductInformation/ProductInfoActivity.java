@@ -52,7 +52,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     String productName;
     int productPrice;
     String productDescription;
-    Float ratingStar;
+    Double ratingStar;
     String productImage1;
     String productImage2;
     String productImage3;
@@ -74,7 +74,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         productImage2 = intent.getStringExtra("productImage2");
         productImage3 = intent.getStringExtra("productImage3");
         productImage4 = intent.getStringExtra("productImage4");
-        ratingStar = Float.parseFloat(intent.getStringExtra("ratingStar"));
+        ratingStar = intent.getDoubleExtra("ratingStar",0.0);
         userName = intent.getStringExtra("userName");
         productDescription = intent.getStringExtra("productDescription");
         publisherId = intent.getStringExtra("publisherId");
@@ -107,7 +107,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         txtDescription.setText(productDescription);
         txtSell.setText("Sell: "+String.valueOf(sold));
         tabDots.setupWithViewPager(pagerProductImage, true);
-        ratingBar.setRating(ratingStar);
+        ratingBar.setRating(ratingStar.floatValue());
 
 
 

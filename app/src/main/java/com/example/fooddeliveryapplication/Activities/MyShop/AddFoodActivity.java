@@ -37,7 +37,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 public class AddFoodActivity extends AppCompatActivity {
     ActivityAddFoodBinding binding;
-    String curentUser="";
+    String currentUser="";
     String TAG="Add Food";
     int position;
     ProgressDialog progressDialog;
@@ -267,7 +267,7 @@ public class AddFoodActivity extends AppCompatActivity {
                                     String amount=binding.lnAddFood.edtAmount.getText().toString();
                                     String description=binding.lnAddFood.edtDescp.getText().toString();
                                     Product tmp=new Product("null",name,img1,img2,img3,img4,Integer.valueOf(price),
-                                            binding.lnAddFood.rbFood.isSelected()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0,curentUser,curentUser);
+                                            binding.lnAddFood.rbFood.isSelected()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0,currentUser);
                                     uploadProduct(tmp);
                                 } else {
                                     if (count==1)  {

@@ -10,14 +10,14 @@ public class User {
     String userName;
     String birthDate;
     String phoneNumber;
-    Date registerDate;
-    Date saleRegisterDate;
+    String registerDate;
+    String saleRegisterDate;
 
 
     public User() {
     }
 
-    public User(String accountName, String userId, String email, String avatarURL, String nameOfUser, String birthDate, String phoneNumber, Date registerDate, Date saleRegisterDate) {
+    public User(String accountName, String userId, String email, String avatarURL, String nameOfUser, String birthDate, String phoneNumber, String registerDate, String saleRegisterDate) {
         this.accountName = accountName;
         this.userId = userId;
         this.email = email;
@@ -85,19 +85,19 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getRegisterDate() {
+    public String getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(String registerDate) {
         this.registerDate = registerDate;
     }
 
-    public Date getSaleRegisterDate() {
+    public String getSaleRegisterDate() {
         return saleRegisterDate;
     }
 
-    public void setSaleRegisterDate(Date saleRegisterDate) {
+    public void setSaleRegisterDate(String saleRegisterDate) {
         this.saleRegisterDate = saleRegisterDate;
     }
 

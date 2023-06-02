@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -30,7 +32,12 @@ import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityHomeBinding;
 import com.example.fooddeliveryapplication.databinding.LayoutNavigationHeaderBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +48,9 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String userId;
+    private FirebaseUser firebaseUser;
     FirebaseDatabase database= FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     ActivityHomeBinding binding;
@@ -57,7 +65,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //Todo take information of user just login here
-        userId = "randomUserId1";
+        userId ="randomUserId1";
+
         // request permission here
         checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
         //----------
@@ -106,6 +115,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void initUI() {
+        binding.navigationLeft.bringToFront();
         createActionBar();
 
         layoutMain=binding.layoutMain;
@@ -115,35 +125,10 @@ public class HomeActivity extends AppCompatActivity {
                 .commit();
         binding.navigationBottom.setItemSelected(R.id.home_menu,true);
         setEventNavigationBottom();
-        setEventLeftNavigation();
         setCartNavigation();
+        binding.navigationLeft.setNavigationItemSelectedListener(this);
     }
-
-    private void setEventLeftNavigation()
-    {
-        binding.navigationLeft.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId())
-                {
-                    case R.id.profileMenu:
-                        startActivity(new Intent(HomeActivity.this,ProfileActivity.class));
-                        Toast.makeText(HomeActivity.this, "profile", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.orderMenu:
-                        Toast.makeText(HomeActivity.this, "order", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.myShopMenu:
-                        Toast.makeText(HomeActivity.this, "shop", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.logoutMenu:
-                        Toast.makeText(HomeActivity.this, "log", Toast.LENGTH_SHORT).show();
-                        return true;
-                }
-                return true;
-            }
-        });
-    }
+    
     private void setCartNavigation()
     {
         binding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -162,10 +147,13 @@ public class HomeActivity extends AppCompatActivity {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 if (snapshot.getChildrenCount() == 0) {
+
                                                     startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
                                                 }
                                                 else {
-                                                    startActivity(new Intent(HomeActivity.this, CartActivity.class));
+                                                    Intent intent = new Intent(HomeActivity.this,CartActivity.class);
+                                                    intent.putExtra("userId",userId);
+                                                    startActivity(intent);
                                                 }
                                             }
                                             @Override
@@ -282,4 +270,40 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profileMenu:
+                Intent intent = new Intent(this,ProfileActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
+                break;
+            case R.id.orderMenu:
+                Toast.makeText(this, "order", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.myShopMenu:
+                break;
+            case R.id.logoutMenu:
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                builder.setTitle("Notice");
+                builder.setMessage("Thoát ứng dụng?");
+                builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        System.exit(0);
+                    }
+                });
+                builder.create().show();
+                break;
+        }
+        binding.drawLayoutHome.close();
+        return true;
+
+    }
 }
