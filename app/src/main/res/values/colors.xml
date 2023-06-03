@@ -8,8 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FD8C32</color>
-    <color name="completed_status_color">#48DC7D</color>
+    <color name="gray">#CACACA</color>
     <color name="yellow">#FCD621</color>
+    <color name="completed_status_color">#48DC7D</color>
     <color name="main">#FD8C32</color>
     <color name="colorPrimary">#fff</color>
     <color name="colorPrimaryDark">#fff</color>

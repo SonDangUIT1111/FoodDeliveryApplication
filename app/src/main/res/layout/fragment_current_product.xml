@@ -25,7 +25,7 @@
             android:orientation="vertical"
             android:padding="20dp">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_History_product"
+                android:id="@+id/rcv_Current_product"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/item_info_current_product"
