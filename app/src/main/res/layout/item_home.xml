@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:elevation="40dp"
+    android:id="@+id/parent_of_item_in_home"
+    >
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgFood"
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="top|center"
+
+
+            android:elevation="1dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tmp2"
+            app:shapeAppearanceOverlay="@style/Circle_Image"
+
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:background="@drawable/rectangle_item_home2">
+
+            <TextView
+
+                android:id="@+id/txtFoodName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="88dp"
+                android:fontFamily="@font/sfpro_regular"
+                android:text="TextView"
+                android:textColor="#555555"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtFoodPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textColor="#FF6363"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/txtFoodName"
+                app:layout_constraintHorizontal_bias="0.52"
+                app:layout_constraintStart_toStartOf="@+id/txtFoodName"
+                app:layout_constraintTop_toBottomOf="@+id/txtFoodName" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+</LinearLayout>
