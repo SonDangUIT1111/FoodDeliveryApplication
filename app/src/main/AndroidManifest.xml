@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,28 +18,61 @@
         android:theme="@style/Theme.FoodDeliveryApplication"
         tools:targetApi="31">
         <activity
-            android:name=".RatingActivity"
+            android:name=".Activities.MyShop.MyFoodActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.MyOrderActivity"
+            android:name=".Activities.MyShop.AddFoodActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.ForgotPassActivity"
+            android:name=".Activities.Feedback.FeedBackActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.AddProductActivity"
+            android:name=".Activities.Order.OrderActivity"
             android:exported="false" />
         <activity
-            android:name=".MyShopActivity"
+            android:name=".Activities.MyShop.MyShopActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.Order.OrderDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".Activities.Cart_PlaceOrder.UpdateAddAddressActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".Activities.Home.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".IntroActivity"
+            android:name=".Activities.Cart_PlaceOrder.UpdateAddAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Cart_PlaceOrder.ChangeAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Cart_PlaceOrder.EmptyCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Cart_PlaceOrder.ProceedOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Cart_PlaceOrder.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Home.FindActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Home.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Home.SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Home.IntroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +80,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activities.OrderSellerManagement.DetailOfOrderDeliveryManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.OrderSellerManagement.DeliveryManagementActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".Activities.ProductInformation.ProductInfoActivity"
+            android:exported="false"></activity>
     </application>
 
 </manifest>
