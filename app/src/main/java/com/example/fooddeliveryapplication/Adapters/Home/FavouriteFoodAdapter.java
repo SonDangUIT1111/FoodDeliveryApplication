@@ -83,9 +83,9 @@ public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdap
 
             holder.txtFavouriteFoodName.setText(product.getProductName());
             holder.txtFavouriteRating.setText(product.getRatingStar()+"/5.0");
-            if (Float.valueOf(product.getRatingStar())>=5) {
+            if (product.getRatingStar()>=5) {
                 holder.imgFavouriteRate.setImageResource(R.drawable.rating_star_filled);
-            } else if (Float.valueOf(product.getRatingStar())>=3 && Float.valueOf(product.getRatingStar())<5) {
+            } else if (product.getRatingStar()>=3 && product.getRatingStar()<5) {
                 holder.imgFavouriteRate.setImageResource(R.drawable.rating_star_half);
             } else {
                 holder.imgFavouriteRate.setImageResource(R.drawable.rating_star_empty);

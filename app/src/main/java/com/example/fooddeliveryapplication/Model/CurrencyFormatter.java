@@ -5,18 +5,18 @@ import java.util.Locale;
 
 public class CurrencyFormatter {
     private static CurrencyFormatter formatter=null;
-    private NumberFormat VNFormartCurrency;
+    private NumberFormat VNFormatCurrency;
 
     private CurrencyFormatter() {
-            VNFormartCurrency=NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            VNFormatCurrency=NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     }
-    public static CurrencyFormatter getFommater() {
+    public static CurrencyFormatter getFormatter() {
         if (formatter==null)
             formatter=new CurrencyFormatter();
             return formatter;
     }
 
     public String format(Double plainText) {
-        return VNFormartCurrency.format(plainText);
+        return VNFormatCurrency.format(plainText);
     }
 }

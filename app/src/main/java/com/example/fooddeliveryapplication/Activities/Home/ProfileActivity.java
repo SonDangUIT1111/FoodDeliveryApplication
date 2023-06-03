@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.EditProfileActivity;
+import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
+import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private FirebaseUser firebaseUser;
+    String userId;
 
     private TextView userName;
     private TextView userEmail;
@@ -38,7 +40,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
 
         userName = (TextView) findViewById(R.id.user_name);
         userEmail = (TextView) findViewById(R.id.user_email);
@@ -53,28 +56,34 @@ public class ProfileActivity extends AppCompatActivity {
         cardViewOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Go to orders activity
+                Intent intent1 = new Intent(ProfileActivity.this, OrderActivity.class);
+                intent1.putExtra("userId",userId);
+                startActivity(intent1);
             }
         });
 
         cardViewMyShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Go to my shop activity
+                Intent intent2 = new Intent(ProfileActivity.this, MyShopActivity.class);
+                intent2.putExtra("userId",userId);
+                startActivity(intent2);
             }
         });
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
+                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                intent.putExtra("userId",userId);
+                startActivity(intent);
             }
         });
 
     }
 
     private void getUserInfo(Context mContext) {
-        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);

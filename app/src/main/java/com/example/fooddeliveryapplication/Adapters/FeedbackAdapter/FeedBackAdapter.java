@@ -43,13 +43,15 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
     Bill currentBill;
     DatabaseReference billInfoReference=FirebaseDatabase.getInstance().getReference("BillInfos");
     DatabaseReference billReference=FirebaseDatabase.getInstance().getReference("Bills");
+    String userId;
 
 
     //Contructor
-    public FeedBackAdapter(Context context, ArrayList<BillInfo> ds, Bill currentBill) {
+    public FeedBackAdapter(Context context, ArrayList<BillInfo> ds, Bill currentBill,String id) {
         this.context = context;
         this.ds = ds;
         this.currentBill=currentBill;
+        this.userId = id;
     }
 
     @NonNull
@@ -75,7 +77,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product tmp=snapshot.getValue(Product.class);
                 //set Thông tin
-                viewHolder.binding.lnBillInfo.txtPrice.setText(CurrencyFormatter.getFommater().format(item.getAmount()*tmp.getProductPrice())+"");
+                viewHolder.binding.lnBillInfo.txtPrice.setText(CurrencyFormatter.getFormatter().format(item.getAmount()*Double.valueOf(tmp.getProductPrice()))+"");
                 viewHolder.binding.lnBillInfo.txtName.setText(tmp.getProductName());
                 viewHolder.binding.lnBillInfo.txtCount.setText(item.getAmount()+"");
                 Glide.with(context)
@@ -116,8 +118,11 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
             if (viewHolder.binding.edtComment.getText().toString().isEmpty()==false) {
                 UploadDialog dialog=new UploadDialog(context);
                 dialog.show();
-                Comment comment=new Comment(viewHolder.binding.edtComment.getText().toString()
-                ,"", LoginActivity.getCurrentUser().getUserId(),starRating.getValue());
+                Comment comment=new Comment();
+                comment.setCommentDetail(((ViewHolder) holder).binding.edtComment.getText().toString());
+                comment.setCommentId("");
+                comment.setPublisherId(userId);
+                comment.setRating(starRating.getValue());
                 DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Comments").child(item.getProductId()).push();
                 comment.setCommentId(reference.getKey());
                 reference.setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {

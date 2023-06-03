@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Activities;
+package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
 import com.example.fooddeliveryapplication.Adapters.Cart.OrderProductAdapter;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Model.Address;
@@ -23,7 +24,6 @@ import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -45,6 +45,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
     private Button complete;
     private TextView totalPrice;
     String totalPriceDisplay;
+    String userId;
     private ActivityResultLauncher<Intent> changeAddressLauncher;
 
     @Override
@@ -66,6 +67,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
         orderProductAdapter = new OrderProductAdapter(this, cartInfoList);
         recyclerViewOrderProducts.setAdapter(orderProductAdapter);
         totalPriceDisplay = getIntent().getStringExtra("totalPrice");
+        userId = getIntent().getStringExtra("userId");
         complete = findViewById(R.id.complete);
         totalPrice = findViewById(R.id.total_price);
 
@@ -84,7 +86,8 @@ public class ProceedOrderActivity extends AppCompatActivity {
                 map.put("billId", billId);
                 map.put("orderDate", formatter.format(date));
                 map.put("orderStatus", "Confirm");
-                map.put("recipientId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                map.put("recipientId", userId);
+                map.put("checkAllComment",false);
                 map.put("totalPrice", convertMoneyToValue(totalPriceDisplay));
 
                 FirebaseDatabase.getInstance().getReference().child("Bills").child(billId).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -106,7 +109,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for (DataSnapshot ds : snapshot.getChildren()) {
                                             Cart cart = ds.getValue(Cart.class);
-                                            if (cart.getUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                            if (cart.getUserId().equals(userId)) {
                                                 FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).child(cartInfo.getCartInfoId()).removeValue();
                                                 FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
@@ -135,7 +138,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                             }
 
                             cartInfoList.clear();
-                            Intent intent = new Intent();
+                            Intent intent = new Intent(ProceedOrderActivity.this, HomeActivity.class);
                             setResult(RESULT_OK, intent);
                             finish();
                         }
@@ -148,7 +151,9 @@ public class ProceedOrderActivity extends AppCompatActivity {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeAddressLauncher.launch(new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class));
+                Intent intent = new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class);
+                intent.putExtra("userId",userId);
+                changeAddressLauncher.launch(intent);
                 //startActivity(new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class));
             }
         });
@@ -164,7 +169,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
     }
 
     private void loadAddressData() {
-        FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(GlobalConfig.choseAddressId).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Address").child(userId).child(GlobalConfig.choseAddressId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Address address = snapshot.getValue(Address.class);
@@ -200,7 +205,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
         totalPrice.setText(totalPriceDisplay);
 
         // Address
-        FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Address").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {

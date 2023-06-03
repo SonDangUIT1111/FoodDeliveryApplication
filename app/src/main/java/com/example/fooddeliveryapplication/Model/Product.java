@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication;
+package com.example.fooddeliveryapplication.Model;
 
 import java.io.Serializable;
 
@@ -9,19 +9,19 @@ public class Product implements Serializable {
     String productImage2;
     String productImage3;
     String productImage4;
-    Double productPrice;
+    int productPrice;
     String productType;
-    int remainAmmount;
+    int remainAmount;
+    int sold;
     String description;
     Double ratingStar;
 
     String publisherId;
-    String avatarURL;
 
     public Product() {
     }
 
-    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, Double productPrice, String productType, int remainAmmount, String description, Double ratingStar, String publisherId, String avatarURL) {
+    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, String publisherId) {
         this.productId = productId;
         this.productName = productName;
         this.productImage1 = productImage1;
@@ -30,11 +30,11 @@ public class Product implements Serializable {
         this.productImage4 = productImage4;
         this.productPrice = productPrice;
         this.productType = productType;
-        this.remainAmmount = remainAmmount;
+        this.remainAmount = remainAmount;
+        this.sold = sold;
         this.description = description;
         this.ratingStar = ratingStar;
         this.publisherId = publisherId;
-        this.avatarURL = avatarURL;
     }
 
     public String getProductId() {
@@ -85,11 +85,11 @@ public class Product implements Serializable {
         this.productImage4 = productImage4;
     }
 
-    public Double getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(Double productPrice) {
+    public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
     }
 
@@ -101,12 +101,20 @@ public class Product implements Serializable {
         this.productType = productType;
     }
 
-    public int getRemainAmmount() {
-        return remainAmmount;
+    public int getRemainAmount() {
+        return remainAmount;
     }
 
-    public void setRemainAmmount(int remainAmmount) {
-        this.remainAmmount = remainAmmount;
+    public void setRemainAmount(int remainAmount) {
+        this.remainAmount = remainAmount;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 
     public String getDescription() {
@@ -125,8 +133,6 @@ public class Product implements Serializable {
         this.ratingStar = ratingStar;
     }
 
-
-
     public String getPublisherId() {
         return publisherId;
     }
@@ -135,13 +141,6 @@ public class Product implements Serializable {
         this.publisherId = publisherId;
     }
 
-    public String getAvatarURL() {
-        return avatarURL;
-    }
-
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
-    }
 
     @Override
     public String toString() {
@@ -154,11 +153,10 @@ public class Product implements Serializable {
                 ", productImage4='" + productImage4 + '\'' +
                 ", productPrice=" + productPrice +
                 ", productType='" + productType + '\'' +
-                ", remainAmmount=" + remainAmmount +
+                ", remainAmount=" + remainAmount +
                 ", description='" + description + '\'' +
                 ", ratingStar=" + ratingStar +
                 ", publisherId='" + publisherId + '\'' +
-                ", avatarURL='" + avatarURL + '\'' +
-                '}';
+                "}";
     }
 }

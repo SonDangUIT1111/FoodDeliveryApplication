@@ -52,7 +52,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     String productName;
     int productPrice;
     String productDescription;
-    Float ratingStar;
+    Double ratingStar;
     String productImage1;
     String productImage2;
     String productImage3;
@@ -65,7 +65,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
-        //ToDo received input from search product navigate to here
+
         Intent intent = getIntent();
         productId = intent.getStringExtra("productId");
         productName = intent.getStringExtra("productName");
@@ -74,7 +74,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         productImage2 = intent.getStringExtra("productImage2");
         productImage3 = intent.getStringExtra("productImage3");
         productImage4 = intent.getStringExtra("productImage4");
-        ratingStar = Float.parseFloat(intent.getStringExtra("ratingStar"));
+        ratingStar = intent.getDoubleExtra("ratingStar",0.0);
         userName = intent.getStringExtra("userName");
         productDescription = intent.getStringExtra("productDescription");
         publisherId = intent.getStringExtra("publisherId");
@@ -101,13 +101,12 @@ public class ProductInfoActivity extends AppCompatActivity {
 
         // set up default value
 
-        //Todo setText for the product name and price and image
         txtNameProduct.setText(productName);
         txtPriceProduct.setText(String.valueOf(productPrice)+" VNĐ");
         txtDescription.setText(productDescription);
         txtSell.setText("Sell: "+String.valueOf(sold));
         tabDots.setupWithViewPager(pagerProductImage, true);
-        ratingBar.setRating(ratingStar);
+        ratingBar.setRating(ratingStar.floatValue());
 
 
 
@@ -190,7 +189,6 @@ public class ProductInfoActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo take amount from user input
                 updateCart(isCartExists[0],isProductExists[0],currentCart[0],currentCartInfo[0],1);
             }
         });

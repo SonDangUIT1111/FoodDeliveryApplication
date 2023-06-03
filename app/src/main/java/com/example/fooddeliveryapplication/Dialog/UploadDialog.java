@@ -16,7 +16,7 @@ public class UploadDialog {
             dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
-            dialog.setContentView(R.layout.upload_loading_dialog);
+            dialog.setContentView(R.layout.upload_dialog);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         }

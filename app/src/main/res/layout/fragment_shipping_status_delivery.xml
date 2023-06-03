@@ -16,4 +16,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/txtNoneItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/orange"
+        android:textStyle="bold"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:text="Hiện không có sản phẩm nào trong danh sách này." />
 </FrameLayout>

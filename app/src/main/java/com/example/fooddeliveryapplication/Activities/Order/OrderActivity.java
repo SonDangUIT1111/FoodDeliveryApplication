@@ -1,13 +1,16 @@
 package com.example.fooddeliveryapplication.Activities.Order;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fooddeliveryapplication.Adapter.OrderViewPaperAdapter;
+import com.example.fooddeliveryapplication.Adapters.OrderAdapter.OrderViewPaperAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.Bill;
+import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityOrderBinding;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity {
-    String idCurrentUser;
+    String userId;
     ActivityOrderBinding binding;
     public static final int CURRENT_ORDER=10001;
     public static final int HISTORY_ORDER=10002;
@@ -26,19 +29,29 @@ public class OrderActivity extends AppCompatActivity {
     ArrayList <Bill> dsHistoryOrder=new ArrayList<>();
     private LoadingDialog dialog;
 
+    ImageView imgBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        userId = getIntent().getStringExtra("userId");
+        imgBack = (ImageView) findViewById(R.id.imgBack);
         dialog=new LoadingDialog(this);
         dialog.show();
         initData();
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void initUI() {
-        OrderViewPaperAdapter viewPaperAdapter=new OrderViewPaperAdapter(OrderActivity.this,dsCurrentOrder,dsHistoryOrder);
+        OrderViewPaperAdapter viewPaperAdapter=new OrderViewPaperAdapter(OrderActivity.this,dsCurrentOrder,dsHistoryOrder,userId);
         binding.viewPaper2.setAdapter(viewPaperAdapter);
         binding.viewPaper2.setUserInputEnabled(false);
         new TabLayoutMediator(binding.tabLayout,binding.viewPaper2, ((tab, position) -> {
@@ -62,7 +75,7 @@ public class OrderActivity extends AppCompatActivity {
                 dsHistoryOrder.clear();
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Bill tmp=item.getValue(Bill.class);
-//                    if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))
+                    if (tmp.getRecipientId().equalsIgnoreCase(userId))
 //                    Dòng dưới là test sản phẩm
                         if (!tmp.getOrderStatus().equalsIgnoreCase("Completed")) {
                             dsCurrentOrder.add(tmp);
