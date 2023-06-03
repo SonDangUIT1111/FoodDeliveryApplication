@@ -24,16 +24,18 @@ public class CurrentOrderFragment extends Fragment {
     FragmentCurrentOrderBinding binding;
     ArrayList<Bill> dsBill;
     FirebaseDatabase db=FirebaseDatabase.getInstance();
+    String userId;
 
-    public CurrentOrderFragment(ArrayList<Bill> ds) {
+    public CurrentOrderFragment(ArrayList<Bill> ds,String id) {
         dsBill=ds;
+        userId = id;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding=FragmentCurrentOrderBinding.inflate(inflater,container,false);
-        OrderAdapter adapter=new OrderAdapter(getContext(),dsBill, OrderActivity.CURRENT_ORDER);
+        OrderAdapter adapter=new OrderAdapter(getContext(),dsBill, OrderActivity.CURRENT_ORDER,userId);
         binding.ryc.setAdapter(adapter);
         binding.ryc.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
         return binding.getRoot();

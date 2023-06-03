@@ -34,10 +34,12 @@ public class OrderAdapter extends RecyclerView.Adapter {
     ArrayList<Bill> dsOrder;
     int type;
 
-    public OrderAdapter(Context context, ArrayList<Bill> dsOrder, int type) {
+    String userId;
+    public OrderAdapter(Context context, ArrayList<Bill> dsOrder, int type, String id) {
         this.context = context;
         this.dsOrder = dsOrder;
         this.type = type;
+        this.userId = id;
     }
 
     @NonNull
@@ -84,6 +86,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent=new Intent(context, OrderDetailActivity.class);
                     intent.putExtra("Bill",tmp);
+                    intent.putExtra("userId",userId);
                     context.startActivity(intent);
                 }
             });
@@ -102,6 +105,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent=new Intent(context, OrderDetailActivity.class);
                     intent.putExtra("Bill",tmp);
+                    intent.putExtra("userId",userId);
                     context.startActivity(intent);
                 }
             });

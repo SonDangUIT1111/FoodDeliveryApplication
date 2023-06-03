@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,8 +18,11 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.fooddeliveryapplication.Activities.CartActivity;
-import com.example.fooddeliveryapplication.Activities.EmptyCartActivity;
+import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivity;
+import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
+import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
+import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
+import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DeliveryManagementActivity;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HistoryFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
@@ -31,12 +32,7 @@ import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityHomeBinding;
-import com.example.fooddeliveryapplication.databinding.LayoutNavigationHeaderBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //Todo take information of user just login here
+        //Todo take information of user just login here using firebaseuser.getuid() whatever ...
         userId ="randomUserId1";
 
         // request permission here
@@ -279,9 +275,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.orderMenu:
-                Toast.makeText(this, "order", Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(this, OrderActivity.class);
+                intent1.putExtra("userId",userId);
+                startActivity(intent1);
                 break;
             case R.id.myShopMenu:
+                Intent intent2 = new Intent(this, MyShopActivity.class);
+                intent2.putExtra("userId",userId);
+                startActivity(intent2);
                 break;
             case R.id.logoutMenu:
                 AlertDialog.Builder builder=new AlertDialog.Builder(this);

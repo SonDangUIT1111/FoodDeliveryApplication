@@ -13,7 +13,7 @@ public class Bill implements Serializable {
     String senderId;
     int totalPrice;
 
-    public Bill(String addressId, String billId, String orderDate, String orderStatus, boolean checkAllComment, String recipientId, String senderId, int totalPrice) {
+    public Bill(String addressId, String billId, String orderDate, String orderStatus, boolean checkAllComment, String recipientId,String senderId, int totalPrice) {
         this.addressId = addressId;
         this.billId = billId;
         this.orderDate = orderDate;

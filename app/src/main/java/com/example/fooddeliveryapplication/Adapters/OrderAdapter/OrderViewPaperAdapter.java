@@ -16,23 +16,23 @@ public class OrderViewPaperAdapter extends FragmentStateAdapter {
 
     ArrayList<Bill> dsCurrentOrder=new ArrayList<>();
     ArrayList <Bill> dsHistoryOrder=new ArrayList<>();
+    String userId;
 
-    public OrderViewPaperAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<Bill> dsCurrentOrder, ArrayList <Bill> dsHistoryOrder) {
+    public OrderViewPaperAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<Bill> dsCurrentOrder, ArrayList <Bill> dsHistoryOrder,String id) {
         super(fragmentActivity);
         this.dsCurrentOrder=dsCurrentOrder;
         this.dsHistoryOrder=dsHistoryOrder;
+        this.userId = id;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 0:
-                return new CurrentOrderFragment(dsCurrentOrder);
             case 1:
-                return new HistoryOrderFragment(dsHistoryOrder);
+                return new HistoryOrderFragment(dsHistoryOrder,userId);
             default:
-                return new CurrentOrderFragment(dsCurrentOrder);
+                return new CurrentOrderFragment(dsCurrentOrder,userId);
         }
     }
 

@@ -50,10 +50,17 @@ public class ListOfItemInOrderAdapter extends RecyclerView.Adapter<ListOfItemInO
                 holder.txtCountInDetail.setText("Count: "+String.valueOf(billInfo.getAmount()));
                 holder.imgProductImageInDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-                Glide.with(mContext)
-                        .asBitmap()
-                        .load(product.getProductImage1())
-                        .into(holder.imgProductImageInDetail);
+                try
+                {
+                    Glide.with(mContext)
+                            .asBitmap()
+                            .load(product.getProductImage1())
+                            .placeholder(R.drawable.background_loading_layout)
+                            .into(holder.imgProductImageInDetail);
+                }catch (Exception ex)
+                {
+
+                }
             }
 
             @Override

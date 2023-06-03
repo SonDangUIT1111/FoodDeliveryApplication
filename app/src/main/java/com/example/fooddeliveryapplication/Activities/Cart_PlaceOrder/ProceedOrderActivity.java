@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Activities;
+package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
 import com.example.fooddeliveryapplication.Adapters.Cart.OrderProductAdapter;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Model.Address;
@@ -23,7 +24,6 @@ import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -87,6 +87,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                 map.put("orderDate", formatter.format(date));
                 map.put("orderStatus", "Confirm");
                 map.put("recipientId", userId);
+                map.put("checkAllComment",false);
                 map.put("totalPrice", convertMoneyToValue(totalPriceDisplay));
 
                 FirebaseDatabase.getInstance().getReference().child("Bills").child(billId).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -137,7 +138,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                             }
 
                             cartInfoList.clear();
-                            Intent intent = new Intent();
+                            Intent intent = new Intent(ProceedOrderActivity.this, HomeActivity.class);
                             setResult(RESULT_OK, intent);
                             finish();
                         }
@@ -150,7 +151,9 @@ public class ProceedOrderActivity extends AppCompatActivity {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeAddressLauncher.launch(new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class));
+                Intent intent = new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class);
+                intent.putExtra("userId",userId);
+                changeAddressLauncher.launch(intent);
                 //startActivity(new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class));
             }
         });

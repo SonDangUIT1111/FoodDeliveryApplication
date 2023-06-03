@@ -29,11 +29,13 @@ public class MyShopAdapter extends RecyclerView.Adapter {
     private ArrayList<Product> ds;
     private ViewBinderHelper viewBinderHelper=new ViewBinderHelper();
     private Context context;
+    String userId;
 
-    public MyShopAdapter(ArrayList<Product> ds, Context context) {
+    public MyShopAdapter(ArrayList<Product> ds, Context context,String id) {
         viewBinderHelper.setOpenOnlyOne(true);
         this.ds = ds;
         this.context = context;
+        this.userId = id;
     }
 
     @NonNull

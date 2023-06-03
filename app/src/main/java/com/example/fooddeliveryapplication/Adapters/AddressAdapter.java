@@ -18,7 +18,7 @@ import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Model.Address;
 import com.example.fooddeliveryapplication.R;
-import com.example.fooddeliveryapplication.Activities.UpdateAddAddressActivity;
+import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.UpdateAddAddressActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,10 +31,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     private List<Address> mAddresses;
     private RadioButton checkedRadioButton;
     private IAddressAdapterListener addressAdapterListener;
+    private String userId;
 
-    public AddressAdapter(Context mContext, List<Address> mAddresses) {
+    public AddressAdapter(Context mContext, List<Address> mAddresses, String id) {
         this.mContext = mContext;
         this.mAddresses = mAddresses;
+        this.userId = id;
     }
 
     @NonNull
@@ -91,6 +93,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 GlobalConfig.updateAddressId = address.getAddressId();
                 Intent intent = new Intent(mContext, UpdateAddAddressActivity.class);
                 intent.putExtra("mode", "update");
+                intent.putExtra("userId",userId);
                 mContext.startActivity(intent);
             }
         });

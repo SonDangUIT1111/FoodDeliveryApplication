@@ -294,7 +294,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        //Todo: update in authetification
+        //Todo: not update in auth due to link
 //        firebaseUser.updateEmail(email.getText().toString());
 
         finish();

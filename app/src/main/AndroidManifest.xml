@@ -36,25 +36,25 @@
             android:name=".Activities.Order.OrderDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.UpdateAddAddressActivity"
+            android:name=".Activities.Cart_PlaceOrder.UpdateAddAddressActivity"
             android:exported="false"/>
         <activity
             android:name=".Activities.Home.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.UpdateAddAddressActivity"
+            android:name=".Activities.Cart_PlaceOrder.UpdateAddAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.ChangeAddressActivity"
+            android:name=".Activities.Cart_PlaceOrder.ChangeAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.EmptyCartActivity"
+            android:name=".Activities.Cart_PlaceOrder.EmptyCartActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.ProceedOrderActivity"
+            android:name=".Activities.Cart_PlaceOrder.ProceedOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.CartActivity"
+            android:name=".Activities.Cart_PlaceOrder.CartActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.EditProfileActivity"

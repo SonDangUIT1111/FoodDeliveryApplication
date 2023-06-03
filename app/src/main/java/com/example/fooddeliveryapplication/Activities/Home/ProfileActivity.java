@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.EditProfileActivity;
+import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
+import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,14 +56,18 @@ public class ProfileActivity extends AppCompatActivity {
         cardViewOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Go to orders activity
+                Intent intent1 = new Intent(ProfileActivity.this, OrderActivity.class);
+                intent1.putExtra("userId",userId);
+                startActivity(intent1);
             }
         });
 
         cardViewMyShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO - Go to my shop activity
+                Intent intent2 = new Intent(ProfileActivity.this, MyShopActivity.class);
+                intent2.putExtra("userId",userId);
+                startActivity(intent2);
             }
         });
 

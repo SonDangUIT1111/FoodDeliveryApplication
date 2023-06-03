@@ -1,6 +1,8 @@
 package com.example.fooddeliveryapplication.Model;
 
-public class BillInfo {
+import java.io.Serializable;
+
+public class BillInfo implements Serializable {
     int amount;
     String billInfoId;
     String productId;

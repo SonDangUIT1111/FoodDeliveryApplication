@@ -65,7 +65,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
-        //ToDo received input from search product navigate to here
+
         Intent intent = getIntent();
         productId = intent.getStringExtra("productId");
         productName = intent.getStringExtra("productName");
@@ -101,7 +101,6 @@ public class ProductInfoActivity extends AppCompatActivity {
 
         // set up default value
 
-        //Todo setText for the product name and price and image
         txtNameProduct.setText(productName);
         txtPriceProduct.setText(String.valueOf(productPrice)+" VNĐ");
         txtDescription.setText(productDescription);
@@ -190,7 +189,6 @@ public class ProductInfoActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo take amount from user input
                 updateCart(isCartExists[0],isProductExists[0],currentCart[0],currentCartInfo[0],1);
             }
         });

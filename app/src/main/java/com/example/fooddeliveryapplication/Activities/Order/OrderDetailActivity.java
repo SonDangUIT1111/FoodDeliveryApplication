@@ -32,6 +32,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     ArrayList<BillInfo> dsBillInfo=new ArrayList<>();
     Bill currentBill;
     private LoadingDialog loadingDialog;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         Intent intent=getIntent();
         //Khởi tạo dữ liệu
         currentBill= (Bill) intent.getSerializableExtra("Bill");
+        userId = intent.getStringExtra("userId");
         loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
     }
@@ -119,6 +121,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                Intent intent=new Intent(OrderDetailActivity.this, FeedBackActivity.class);
                intent.putExtra("Current Bill",currentBill);
                intent.putExtra("List of billInfo",dsBillInfo);
+               intent.putExtra("userId",userId);
                startActivity(intent);
            }
        });

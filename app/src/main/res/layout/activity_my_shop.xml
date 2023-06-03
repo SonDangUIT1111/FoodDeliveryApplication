@@ -64,7 +64,6 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="20dp"
                     android:layout_weight="5"
-                    android:fontFamily="@font/baloo"
                     android:gravity="center"
                     android:text="Sản phẩm"
                     android:textAlignment="inherit"
@@ -79,7 +78,6 @@
                     android:layout_height="0dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="5"
-                    android:fontFamily="@font/baloo"
                     android:gravity="center"
                     android:text="0"
                     android:textSize="24sp" />
@@ -100,7 +98,6 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="20dp"
                     android:layout_weight="5"
-                    android:fontFamily="@font/baloo"
                     android:gravity="center"
                     android:text="Chờ lấy hàng"
                     android:textAlignment="inherit"
@@ -114,7 +111,6 @@
                     android:layout_height="0dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="5"
-                    android:fontFamily="@font/baloo"
                     android:gravity="center"
                     android:text="0"
                     android:textSize="24sp" />
@@ -157,7 +153,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
-                    android:fontFamily="@font/baloo"
                     android:text="My Food"
                     android:textSize="20sp" />
 
@@ -197,7 +192,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
-                    android:fontFamily="@font/baloo"
                     android:text="Delivery Manage"
                     android:textSize="20sp" />
 
@@ -236,8 +230,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
-
-                    android:fontFamily="@font/baloo"
                     android:text="History"
                     android:textSize="20sp" />
 
