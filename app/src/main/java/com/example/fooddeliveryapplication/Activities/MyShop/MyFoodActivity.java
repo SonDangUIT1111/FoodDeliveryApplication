@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fooddeliveryapplication.Adapter.MyShopAdapter;
+
+import com.example.fooddeliveryapplication.Adapters.MyShopAdapter.MyShopAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.ActivityMyFoodBinding;

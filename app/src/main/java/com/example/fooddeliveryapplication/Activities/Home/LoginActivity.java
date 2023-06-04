@@ -82,12 +82,20 @@ public class LoginActivity extends AppCompatActivity {
                 launcher.launch(intent);
             }
         });
+        TextView txtForgot=findViewById(R.id.forgotpassText);
+        txtForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,ForgotActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void anhxa() {
         edtPasswordLogin=findViewById(R.id.edtPasswordLogin);
-        edtUserNameLogin=findViewById(R.id.edtUserNameLogin);
-        btnLogin=findViewById(R.id.btnLogin);
+        edtUserNameLogin=findViewById(R.id.edtForgot);
+        btnLogin=findViewById(R.id.btnForgot);
     }
 
 

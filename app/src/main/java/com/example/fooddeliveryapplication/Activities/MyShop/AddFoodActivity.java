@@ -266,7 +266,7 @@ public class AddFoodActivity extends AppCompatActivity {
                                     String price=binding.lnAddFood.edtPrice.getText().toString();
                                     String amount=binding.lnAddFood.edtAmount.getText().toString();
                                     String description=binding.lnAddFood.edtDescp.getText().toString();
-                                    Product tmp=new Product("null",name,img1,img2,img3,img4,Double.valueOf(price),
+                                    Product tmp=new Product("null",name,img1,img2,img3,img4,5,
                                             binding.lnAddFood.rbFood.isSelected()?"Food":"Drink",Integer.valueOf(amount),description,0.0,curentUser,curentUser);
                                     uploadProduct(tmp);
                                 } else {

@@ -87,9 +87,9 @@ public class FindAdapter extends RecyclerView.Adapter implements Filterable {
 
                 viewHolder.binding.txtFoodName.setText(item.getProductName());
                 viewHolder.binding.txtRating.setText(item.getRatingStar()+"/5.0");
-                if (Float.valueOf(item.getRatingStar())>=5) {
+                if (Double.valueOf(item.getRatingStar())>=5) {
                     viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_filled);
-                } else if (Float.valueOf(item.getRatingStar())>=3 && Float.valueOf(item.getRatingStar())<5) {
+                } else if (Double.valueOf(item.getRatingStar())>=3 && Double.valueOf(item.getRatingStar())<5) {
                     viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_half);
                 } else {
                     viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_empty);
@@ -109,7 +109,7 @@ public class FindAdapter extends RecyclerView.Adapter implements Filterable {
                         intent.putExtra("ratingStar",item.getRatingStar());
                         intent.putExtra("productDescription",item.getDescription());
                         intent.putExtra("publisherId",item.getPublisherId());
-                        intent.putExtra("sold",item.getSold());
+                        intent.putExtra("sold",0);
                         intent.putExtra("userId",userId);
                         intent.putExtra("userName",userName);
                         mContext.startActivity(intent);

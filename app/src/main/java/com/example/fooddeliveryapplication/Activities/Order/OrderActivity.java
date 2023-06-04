@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.fooddeliveryapplication.Adapter.OrderViewPaperAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.databinding.ActivityOrderBinding;
