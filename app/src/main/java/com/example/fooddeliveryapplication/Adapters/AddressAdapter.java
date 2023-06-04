@@ -18,7 +18,7 @@ import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Model.Address;
 import com.example.fooddeliveryapplication.R;
-import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.UpdateAddAddressActivity;
+import com.example.fooddeliveryapplication.Adapters.Cart_PlaceOrder.UpdateAddAddressActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

@@ -17,8 +17,6 @@ import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
