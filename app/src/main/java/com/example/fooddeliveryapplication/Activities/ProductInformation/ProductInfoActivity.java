@@ -455,7 +455,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     {
         String title = "Sản phẩm yêu thích";
         String content = userName + " đã thích sản phẩm "+ productName + " của bạn. Nhấn vào để xem lượt yêu thích nào.";
-        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1);
+        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,productId,"None","None");
         new FirebaseNotificationHelper(this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList) {

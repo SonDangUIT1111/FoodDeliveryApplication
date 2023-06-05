@@ -87,6 +87,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 {
                     binding.navigationBottom.showBadge(R.id.notification_menu,count);
                 }
+                else if (count == 0)
+                {
+                    binding.navigationBottom.dismissBadge(R.id.notification_menu);
+                }
             }
 
             @Override

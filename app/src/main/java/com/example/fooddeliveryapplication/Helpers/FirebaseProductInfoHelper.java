@@ -3,6 +3,7 @@ package com.example.fooddeliveryapplication.Helpers;
 import androidx.annotation.NonNull;
 
 import com.example.fooddeliveryapplication.Model.Comment;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,13 @@ public class FirebaseProductInfoHelper {
 
     public interface DataStatusCountFavourite{
         void DataIsLoaded(int countFavourite);
+        void DataIsInserted();
+        void DataIsUpdated();
+        void DataIsDeleted();
+
+    }
+    public interface DataStatusInformationOfProduct{
+        void DataIsLoaded(Product product);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -78,6 +86,22 @@ public class FirebaseProductInfoHelper {
                     }
                 }
                 dataStatusCountFavourite.DataIsLoaded(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void readInformationById(final FirebaseProductInfoHelper.DataStatusInformationOfProduct dataStatusInformationOfProduct)
+    {
+        mReference.child("Products").child(productId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Product item = snapshot.getValue(Product.class);
+                dataStatusInformationOfProduct.DataIsLoaded(item);
             }
 
             @Override

@@ -2,7 +2,9 @@ package com.example.fooddeliveryapplication.Helpers;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,7 +13,12 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
+import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DeliveryManagementActivity;
+import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
+import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Notification;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -68,19 +75,22 @@ public class FirebaseNotificationHelper {
                         return o2.getTime().compareTo(o1.getTime());
                     }
                 });
-                if (notificationList.size() > 0 && notificationList.get(0).isRead() == false && notificationList.get(0).isNotified() == false)
+                for (int i = 0;i < notificationList.size(); i++)
                 {
-                    boolean flag = false;
-                    mReference.child("Notification").child(userId).child(notificationList.get(0).getNotificationId()).child("notified").setValue(true)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                }
-                            });
-                    if (!flag)
+                    if (notificationList.get(i).isNotified() == false)
                     {
-                        notificationPush(notificationList.get(0).getTitle(),notificationList.get(0).getContent());
-                        flag = true;
+                        boolean flag = false;
+                        mReference.child("Notification").child(userId).child(notificationList.get(i).getNotificationId()).child("notified").setValue(true)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                    }
+                                });
+                        if (!flag)
+                        {
+                            notificationPush(notificationList.get(i),userId);
+                            flag = true;
+                        }
                     }
                 }
                 dataStatus.DataIsLoaded(notificationList);
@@ -114,7 +124,7 @@ public class FirebaseNotificationHelper {
                     }
                 });
     }
-    public void notificationPush(String title,String content)
+    public void notificationPush(Notification notification,String userId)
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
@@ -128,15 +138,17 @@ public class FirebaseNotificationHelper {
         Bitmap largeIcon = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.bkg);
 
 
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.bkg)
                 .setContentTitle("Food services")
-                .setContentText(title)
+                .setContentText(notification.getTitle())
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .setBigContentTitle(title)
-                        .bigText(content))
+                        .setBigContentTitle(notification.getTitle())
+                        .bigText(notification.getContent()))
                 .setLargeIcon(largeIcon)
                 .setColor(Color.RED)
+                .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
 
@@ -149,7 +161,7 @@ public class FirebaseNotificationHelper {
         return (int) new Date().getTime();
     }
 
-    public static Notification createNotification(String title,String content,String imageNotificationURL)
+    public static Notification createNotification(String title,String content,String imageNotificationURL,String productId,String billId,String confirmId)
     {
         Notification notification = new Notification();
         notification.setRead(false);
@@ -157,6 +169,9 @@ public class FirebaseNotificationHelper {
         notification.setContent(content);
         notification.setImageURL(imageNotificationURL);
         notification.setTitle(title);
+        notification.setProductId(productId);
+        notification.setBillId(billId);
+        notification.setConfirmId(confirmId);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String currentDateAndTime = sdf.format(new Date());
         notification.setTime(currentDateAndTime);
