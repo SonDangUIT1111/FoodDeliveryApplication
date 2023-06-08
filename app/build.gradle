@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-database-ktx:20.2.0'
+    implementation 'com.android.car.ui:car-ui-lib:2.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
     implementation 'com.github.bumptech.glide:glide:4.15.1'

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         app:layout_constraintHeight_percent="0.1"
         android:background="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,15 +18,14 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="192dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/sfpro_regular"
-            android:text="Favourite"
-            android:textStyle="bold"
-            android:textColor="#E91E63"
-            android:textSize="34sp"
+            android:layout_width="190dp"
+            android:layout_height="90dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/briston"
+            android:text="My favourite food"
+            android:textColor="#000000"
+            android:textSize="40sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

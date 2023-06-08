@@ -11,25 +11,29 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/txtNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:text="Notification"
             android:textStyle="bold"
-            android:textSize="24dp"
+            android:textSize="34dp"
+            android:fontFamily="@font/briston"
             android:textColor="@color/orange"
             app:layout_constraintBottom_toTopOf="@+id/recNotification"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recNotification"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            app:layout_constraintCircleRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.9"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.95" />
+            app:layout_constraintTop_toBottomOf="@id/txtNotification" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ProgressBar
         android:id="@+id/progressBarNotification"

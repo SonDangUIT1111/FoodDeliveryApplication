@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".Activity.AddFoodActivity">
+    tools:context=".Activities.AddProductActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,9 +25,8 @@
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="6"
             android:gravity="center_vertical"
             android:text="My Shop"
             android:textSize="16sp" />

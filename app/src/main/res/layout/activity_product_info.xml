@@ -71,7 +71,7 @@
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/pagerProductImage"
-                    android:layout_width="0dp"
+                    android:layout_width="260dp"
                     android:layout_height="260dp"
                     android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -234,21 +234,11 @@
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:paddingBottom="64dp"
                     android:nestedScrollingEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtComment" />
-
-                <TextView
-                    android:id="@+id/txtBlank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    app:layout_constraintHeight_percent="0.4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recComment" />
-
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -257,8 +247,8 @@
 
     <Button
         android:id="@+id/btnAddToCart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintWidth_percent="0.8"
         android:textSize="20dp"
