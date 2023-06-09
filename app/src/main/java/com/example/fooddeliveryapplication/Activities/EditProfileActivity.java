@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -263,17 +264,26 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void updateInfo() {
-        if (email.getText().toString().equals("")) {
+        String emailTxt = email.getText().toString().trim();
+        String phoneNumberTxt = phoneNumber.getText().toString().trim();
+        String userNameTxt = userName.getText().toString().trim();
+
+        if (emailTxt.equals("")) {
             Toast.makeText(this, "Email must not be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (phoneNumber.getText().toString().equals("")) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
+            Toast.makeText(this, "Invalid email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (phoneNumberTxt.equals("")) {
             Toast.makeText(this, "Phone number must not be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (userName.getText().toString().equals("")) {
+        if (userNameTxt.equals("")) {
             Toast.makeText(this, "User name must not be empty!", Toast.LENGTH_SHORT).show();
             return;
         }

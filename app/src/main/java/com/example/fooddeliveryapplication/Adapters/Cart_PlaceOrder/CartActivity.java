@@ -92,10 +92,7 @@ public class CartActivity extends AppCompatActivity {
         // Init launcher
         proceedOrderLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                reloadCartProducts();
-                buyProducts.clear();
-                selected.setText("Selected: 0");
-                totalPrice.setText("Total price: 0đ");
+                finish();
             }
         });
     }
@@ -179,6 +176,11 @@ public class CartActivity extends AppCompatActivity {
 
                             @Override
                             public void onSubtractClicked() {
+                                reloadCartProducts();
+                            }
+
+                            @Override
+                            public void onDeleteProduct() {
                                 reloadCartProducts();
                             }
                         });

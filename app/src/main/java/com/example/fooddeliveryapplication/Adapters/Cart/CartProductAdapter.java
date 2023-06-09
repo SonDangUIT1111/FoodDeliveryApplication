@@ -85,7 +85,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     private void deleteCartInfo(CartInfo cartInfo) {
-        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int remainAmount = snapshot.getValue(int.class);
@@ -134,6 +134,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(mContext, "Delete product successfully!", Toast.LENGTH_SHORT).show();
+                    if (adapterItemListener != null) {
+                        adapterItemListener.onDeleteProduct();
+                    }
                 }
             }
         });
