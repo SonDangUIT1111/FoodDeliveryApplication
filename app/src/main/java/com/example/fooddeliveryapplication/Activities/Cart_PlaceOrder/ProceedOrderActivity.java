@@ -75,7 +75,6 @@ public class ProceedOrderActivity extends AppCompatActivity {
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 for (CartInfo cartInfo : cartInfoList) {
                     String billId = FirebaseDatabase.getInstance().getReference().push().getKey();
 
@@ -96,6 +95,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                             map.put("senderId", product.getPublisherId());
                             map.put("checkAllComment",false);
                             map.put("totalPrice", convertMoneyToValue(totalPriceDisplay));
+                            FirebaseDatabase.getInstance().getReference().child("Bills").child(billId).setValue(map);
                         }
 
                         @Override
