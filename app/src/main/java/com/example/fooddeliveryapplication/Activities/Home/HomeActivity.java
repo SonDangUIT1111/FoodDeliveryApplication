@@ -18,8 +18,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.fooddeliveryapplication.Adapters.Cart_PlaceOrder.CartActivity;
-import com.example.fooddeliveryapplication.Adapters.Cart_PlaceOrder.EmptyCartActivity;
+import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivity;
+import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
