@@ -90,6 +90,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
                 Set<String> cartInfoKeySet = cartInfoMap.keySet();
                 HashMap<String, List<CartInfo>> filterCartInfoMap = new HashMap<>();
+                HashMap<String, Long> filterCartInfoPriceMap = new HashMap<String, Long>();
                 FirebaseDatabase.getInstance().getReference().child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,12 +99,23 @@ public class ProceedOrderActivity extends AppCompatActivity {
                             for (String productId : cartInfoKeySet) {
                                 if (product.getProductId().equals(productId)) {
                                     if (filterCartInfoMap.containsKey(product.getPublisherId())) {
+                                        // filterCartInfoMap
                                         filterCartInfoMap.get(product.getPublisherId()).add(cartInfoMap.get(productId));
+
+                                        // filterCartInfoPriceMap
+                                        long totalPrice = filterCartInfoPriceMap.get(product.getPublisherId());
+                                        totalPrice += product.getProductPrice();
+                                        filterCartInfoPriceMap.put(product.getPublisherId(), totalPrice);
                                     }
                                     else {
+                                        // filterCartInfoMap
                                         List<CartInfo> tempList = new ArrayList<>();
                                         tempList.add(cartInfoMap.get(productId));
                                         filterCartInfoMap.put(product.getPublisherId(), tempList);
+
+                                        // filterCartInfoPriceMap
+                                        long currentTotalPrice = product.getProductPrice();
+                                        filterCartInfoPriceMap.put(product.getPublisherId(), currentTotalPrice);
                                     }
                                 }
                             }
@@ -125,7 +137,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                             map.put("recipientId", userId);
                             map.put("senderId", senderId);
                             map.put("checkAllComment", false);
-                            map.put("totalPrice", convertMoneyToValue(totalPriceDisplay));
+                            map.put("totalPrice", filterCartInfoPriceMap.get(senderId));
                             FirebaseDatabase.getInstance().getReference().child("Bills").child(billId).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
