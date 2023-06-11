@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:viewBindingIgnore="true"
-    tools:context=".Activity.SignupActivity">
+    tools:context=".Activities.Home.SignupActivity">
 
 
     <LinearLayout
@@ -142,17 +141,18 @@
                     android:background="@drawable/button_login_signup"
                     android:backgroundTint="@color/orange"
                     android:text="Sign Up"
+                    app:backgroundTint="@null"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:cornerRadius="20dp" />
 
                 <TextView
-                    android:id="@+id/haveanaccText"
+                    android:id="@+id/txtLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="You have an account? Sign in ->"
+                    android:text="You have an account?  Login ->"
                     android:textColor="@color/orange"
                     android:textSize="15sp"
                     android:textStyle="bold" />

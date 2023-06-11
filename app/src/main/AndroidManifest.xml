@@ -60,16 +60,19 @@
             android:name=".Activities.Home.FindActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Home.LoginActivity"
+            android:name=".Activities.Home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Home.SignupActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.Home.ForgotActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Home.IntroActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Home.HomeActivity"
+            android:name=".Activities.Home.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

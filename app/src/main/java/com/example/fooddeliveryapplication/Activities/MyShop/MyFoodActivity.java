@@ -51,49 +51,7 @@ public class MyFoodActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        firebaseDatabase.getReference("Products").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                Products products=snapshot.getValue(Products.class);
-//                ds.add(products);
-//                adapter.notifyItemInserted(ds.size()-1);
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                Products updatedProduct = snapshot.getValue(Products.class);
-//                int index = -1;
-//                for (int i = 0; i < ds.size(); i++) {
-//                    if (ds.get(i).getProductId().equals(updatedProduct.getProductId())) {
-//                        index = i;
-//                        break;
-//                    }
-//                }
-//                if (index != -1) {
-//                    ds.set(index, updatedProduct);
-//                    adapter.notifyItemChanged(index);
-//                }
-//                LayoutFoodItemBinding foodItemBinding=LayoutFoodItemBinding.inflate(getLayoutInflater());
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//                Products products=snapshot.getValue(Products.class);
-//                ds.remove(products);
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+
     }
 
     @Override
@@ -107,7 +65,9 @@ public class MyFoodActivity extends AppCompatActivity {
                 ds.clear();
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Product tmp=item.getValue(Product.class);
-                    ds.add(tmp);
+                    if (tmp.getPublisherId()==userId) {
+                        ds.add(tmp);
+                    }
                 }
                 dialog.dismiss();
                 adapter.notifyDataSetChanged();

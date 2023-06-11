@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                                     currentUser=snapshot.getValue(User.class);
                                     Log.d(TAG, "đăng nhập thành công", task.getException());
                                     Toast.makeText(LoginActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
-                                    Intent intent=new Intent(LoginActivity.this, OrderActivity.class);
+                                    Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                 }
 
@@ -75,6 +75,16 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+
+        TextView txtForgot=findViewById(R.id.forgotpassText);
+        txtForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,ForgotActivity.class);
+                startActivity(intent);
+            }
+        });
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,8 +96,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void anhxa() {
         edtPasswordLogin=findViewById(R.id.edtPasswordLogin);
-        edtUserNameLogin=findViewById(R.id.edtUserNameLogin);
-        btnLogin=findViewById(R.id.btnLogin);
+        edtUserNameLogin=findViewById(R.id.edtEmail);
+        btnLogin=findViewById(R.id.btnReset);
     }
 
 

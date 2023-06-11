@@ -5,16 +5,18 @@
     android:id="@+id/signupBtn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".Activities.Home.ForgotActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/intro_image_layout"
+        android:layout_height="254.04dp"
         android:background="@drawable/bkg"
         android:orientation="vertical"
         tools:context=".MainActivity"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,76 +33,58 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            android:id="@+id/txtResetPassword"
+            android:id="@+id/loginText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reset Password"
+            android:text="Reset password"
             android:textAlignment="center"
             android:textColor="@color/orange"
             android:textSize="36sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtGmail"
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:paddingLeft="3dp"
-            android:text="Gmail"
+            android:text="Email"
             android:textColor="#000000"
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/edittxtgmail"
+
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:ems="10"
-            android:hint="abc@gmail.com"
+            android:hint="123@gmail.com"
             android:inputType="textPersonName" />
 
-        <TextView
-            android:id="@+id/txtNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:text="Enter your new password"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/edittxtNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="Your new password"
-            android:inputType="textPassword" />
-        <TextView
-            android:id="@+id/txtNewPasswordAgain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:text="Enter your new password"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/edittxtRe_NewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="Your new password"
-            android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btnResetPass"
-            android:layout_marginTop="30dp"
+            android:id="@+id/btnReset"
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:background="@color/orange"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_login_signup"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Reset Pass"
+            android:hint="if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))"
+            android:text="Reset"
             android:textColor="#000000"
             app:backgroundTint="@null" />
+
+        <TextView
+            android:id="@+id/forgotpassText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Already having account ?"
+            android:textColor="@color/orange"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

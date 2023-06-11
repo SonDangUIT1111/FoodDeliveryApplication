@@ -55,7 +55,7 @@
 
         <EditText
 
-            android:id="@+id/edtUserNameLogin"
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:ems="10"
@@ -82,7 +82,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnReset"
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
