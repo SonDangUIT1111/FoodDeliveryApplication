@@ -25,8 +25,9 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/orange"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/white"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:menu="@menu/menu_home_top" />
@@ -34,26 +35,27 @@
         <LinearLayout
             android:id="@+id/layout_main"
             android:layout_width="match_parent"
-            android:layout_height="530dp"
-            android:layout_weight="9"
-            android:orientation="vertical"/>
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:background="#FDFDFD"
+            android:orientation="vertical" />
 
 
         <com.ismaeldivita.chipnavigation.ChipNavigationBar
             android:id="@+id/navigation_bottom"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="20dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="#FFFFFF"
             app:cnb_addBottomInset="false"
             app:cnb_addLeftInset="false"
             app:cnb_addRightInset="false"
             app:cnb_addTopInset="false"
             app:cnb_animationDuration="200"
-            app:cnb_iconSize="24dp"
 
+            app:cnb_iconSize="24dp"
             app:cnb_menuResource="@menu/menu_home"
-            app:cnb_orientationMode="horizontal"/>
+            app:cnb_orientationMode="horizontal" />
 
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

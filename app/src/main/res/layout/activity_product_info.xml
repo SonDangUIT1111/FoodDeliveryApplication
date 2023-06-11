@@ -9,7 +9,7 @@
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/orange"
+        android:background="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
@@ -22,7 +22,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back_ios" />
+
+            app:srcCompat="@drawable/round_arrow_back_ios_24" />
 
         <ImageButton
             android:id="@+id/btnAddFavourite"
@@ -34,6 +35,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_favourite" />
+
         <ImageButton
             android:id="@+id/btnCancelFavourite"
             android:layout_width="wrap_content"
@@ -44,6 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_pink_favourite" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -51,7 +54,13 @@
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:fillViewport="true"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+        app:layout_constraintVertical_bias="0.5">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -69,80 +78,96 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.viewpager.widget.ViewPager
+                <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/pagerProductImage"
-                    android:layout_width="260dp"
+                    android:layout_width="0dp"
                     android:layout_height="260dp"
                     android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.494"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.7" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.tabs.TabLayout
+                <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
                     android:id="@+id/tabDots"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    app:dotsColor="@color/main"
+                    app:dotsCornerRadius="8dp"
+                    app:dotsSize="16dp"
+                    app:dotsSpacing="4dp"
+                    app:dotsStrokeColor="@color/gray"
+                    app:dotsStrokeWidth="2dp"
+                    app:layout_constraintBottom_toTopOf="@+id/txtNameProduct"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.494"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pagerProductImage"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp" />
+                    app:layout_constraintVertical_bias="0.5" />
+
 
                 <TextView
                     android:id="@+id/txtNameProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:text="Product Name"
                     android:textSize="34sp"
                     android:textStyle="bold|normal"
+                    app:layout_constraintBottom_toTopOf="@+id/txtPriceProduct"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tabDots" />
+                    app:layout_constraintTop_toBottomOf="@+id/tabDots"
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <TextView
                     android:id="@+id/txtPriceProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:text="100 000 VND"
-                    android:textColor="#FD8C32"
+                    android:textColor="#FF6363"
                     android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtNameProduct" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtNameProduct"
+                    app:layout_constraintVertical_bias="0.5" />
 
-                <TextView
-                    android:id="@+id/txtSell"
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:text="Sell: 100"
-                    android:textColor="#FF7700"
-                    android:textStyle="bold"
+                    android:orientation="horizontal"
+
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtPriceProduct" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtPriceProduct"
+                    app:layout_constraintVertical_bias="0.5">
 
+                    <TextView
+                        android:id="@+id/txtSell"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:drawableStart="@drawable/baseline_shopping_cart_checkout_24"
+                        android:text="100"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtFavourite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Favourite: 100"
-                    android:textColor="#E91E63"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtSell"
-                    app:layout_constraintStart_toEndOf="@+id/txtSell"
-                    app:layout_constraintTop_toTopOf="@+id/txtSell" />
+                    <TextView
+                        android:id="@+id/txtFavourite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_favourite"
+                        android:text="100"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -182,13 +207,13 @@
                 <RatingBar
                     android:id="@+id/ratingBar"
                     android:layout_width="263dp"
-                    android:theme="@style/RatingBar"
                     android:layout_height="53dp"
                     android:layout_marginTop="32dp"
                     android:isIndicator="true"
                     android:numStars="5"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:theme="@style/RatingBar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -197,10 +222,12 @@
                     android:id="@+id/txt1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
                     android:text="Description"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -208,11 +235,12 @@
                     android:id="@+id/txtDesciption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_marginTop="4dp"
                     android:maxLines="10"
                     android:minLines="1"
                     android:text="This is a description of the product"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt1"
                     app:layout_constraintWidth_percent="0.8" />
@@ -221,24 +249,28 @@
                     android:id="@+id/txtComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:text="Comment"
                     android:textSize="16dp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtDesciption" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recComment"
-                    android:layout_width="320dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:paddingBottom="64dp"
+                    android:layout_marginBottom="70dp"
                     android:nestedScrollingEnabled="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtComment" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtComment"
+                    app:layout_constraintVertical_bias="0.5" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -247,26 +279,29 @@
 
     <Button
         android:id="@+id/btnAddToCart"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintWidth_percent="0.8"
-        android:textSize="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="24dp"
         android:text="Add To Cart"
+        android:background="@drawable/button_login_signup"
+        app:backgroundTint="@null"
+        android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+
     <ProgressBar
         android:id="@+id/progressBarProductInfo"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="32dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="32dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

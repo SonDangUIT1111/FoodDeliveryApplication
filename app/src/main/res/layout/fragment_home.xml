@@ -11,14 +11,13 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/textView"
-        android:layout_width="190dp"
-        android:layout_height="90dp"
+        android:layout_width="210dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="35dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/briston"
+        android:fontFamily="@font/sfpro_semibold"
         android:text="Delicious Food for you"
         android:textColor="#000000"
-        android:textSize="40sp" />
+        android:textSize="36sp" />
 
     <LinearLayout
         android:id="@+id/layout_searchView"
@@ -48,6 +47,7 @@
         app:tabIndicatorColor="#FD8C32"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="3dp"
+        android:background="@android:color/transparent"
         />
 
     <androidx.viewpager2.widget.ViewPager2

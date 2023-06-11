@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
     tools:context=".Fragments.NotificationFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        android:weightSum="7">
 
         <TextView
             android:id="@+id/txtNotification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/sfpro_semibold"
             android:text="Notification"
-            android:textStyle="bold"
-            android:textSize="34dp"
-            android:fontFamily="@font/briston"
-            android:textColor="@color/orange"
-            app:layout_constraintBottom_toTopOf="@+id/recNotification"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="#000000"
+            android:textSize="32dp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recNotification"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            app:layout_constraintCircleRadius="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtNotification" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="0dp"
+
+            android:layout_weight="6"
+            android:padding="10dp" />
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBarNotification"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
 </FrameLayout>
