@@ -14,7 +14,6 @@
         android:layout_gravity="end"
         android:layout_marginEnd="25dp"
         android:fontFamily="@font/sfpro_regular"
-        android:layout_marginBottom="12dp"
         android:text="See more"
         android:textColor="#FA4A0C"
         android:textSize="16sp" />
