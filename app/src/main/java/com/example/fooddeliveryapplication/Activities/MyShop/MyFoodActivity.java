@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.fooddeliveryapplication.Adapters.MyShopAdapter.MyShopAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.Product;
@@ -26,12 +25,15 @@ public class MyFoodActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
     private ArrayList<Product> ds=new ArrayList<>();
     private MyShopAdapter adapter;
+    String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityMyFoodBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        adapter=new MyShopAdapter(ds,MyFoodActivity.this);
+
+        userId = getIntent().getStringExtra("userId");
+        adapter=new MyShopAdapter(ds,MyFoodActivity.this, userId);
         binding.recycleView.setHasFixedSize(true);
         binding.recycleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
         binding.recycleView.setAdapter(adapter);
@@ -45,6 +47,7 @@ public class MyFoodActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(MyFoodActivity.this,AddFoodActivity.class);
+                intent.putExtra("userId",userId);
                 startActivity(intent);
             }
         });

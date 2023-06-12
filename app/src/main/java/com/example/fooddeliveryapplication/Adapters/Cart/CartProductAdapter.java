@@ -48,13 +48,15 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     private long checkedItemPrice = 0;
     private IAdapterItemListener adapterItemListener;
     private boolean isCheckAll;
+    String userId;
     private ArrayList<CartInfo> selectedItems = new ArrayList<>();
 
-    public CartProductAdapter(Context mContext, List<CartInfo> mCartInfos, String cartId, boolean isCheckAll) {
+    public CartProductAdapter(Context mContext, List<CartInfo> mCartInfos, String cartId, boolean isCheckAll,String id) {
         this.mContext = mContext;
         this.mCartInfos = mCartInfos;
         this.cartId = cartId;
         this.isCheckAll = isCheckAll;
+        this.userId = id;
         viewBinderHelper.setOpenOnlyOne(true);
     }
 
@@ -83,7 +85,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     private void deleteCartInfo(CartInfo cartInfo) {
-        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int remainAmount = snapshot.getValue(int.class);
@@ -132,6 +134,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(mContext, "Delete product successfully!", Toast.LENGTH_SHORT).show();
+                    if (adapterItemListener != null) {
+                        adapterItemListener.onDeleteProduct();
+                    }
                 }
             }
         });
@@ -277,9 +282,9 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             @Override
             public void onClick(View view) {
                 if (holder.like.getTag().equals("like"))
-                    FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(cartInfo.getProductId()).setValue(true);
+                    FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).setValue(true);
                 else if (holder.like.getTag().equals("liked")) {
-                    FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(cartInfo.getProductId()).removeValue();
+                    FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).removeValue();
                 }
             }
         });
@@ -325,7 +330,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     }
 
     private void isLiked(ImageButton imageButton, String productId) {
-        FirebaseDatabase.getInstance().getReference().child("Favorites").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(productId).exists()) {

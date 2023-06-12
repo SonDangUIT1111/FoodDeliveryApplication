@@ -7,6 +7,8 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.fooddeliveryapplication.Adapters.Home.FindAdapter;
@@ -38,9 +40,7 @@ public class FindActivity extends AppCompatActivity {
         initData();
         adapter = new FindAdapter(dsAll, userId,this);
         binding.recycleFoodFinded.setAdapter(adapter);
-
         initUI();
-
     }
 
     private void initUI() {

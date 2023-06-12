@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller.StatusOrderRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
@@ -20,6 +21,7 @@ import java.util.List;
 
 
 public class ConfirmStatusDeliveryFragment extends Fragment {
+    TextView txtNoneItem;
 
     RecyclerView recConfirmDelivery;
     View view;
@@ -36,6 +38,7 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_confirm_status_delivery,container,false);
 
         // find view by id
+        txtNoneItem = (TextView) view.findViewById(R.id.txtNoneItem);
         recConfirmDelivery = (RecyclerView) view.findViewById(R.id.recConfirmDelivery);
         progressBarConfirmDelivery = (ProgressBar) view.findViewById(R.id.progressBarConfirmDelivery);
         //set data and adapter for list
@@ -47,6 +50,10 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
                 recConfirmDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 recConfirmDelivery.setAdapter(adapter);
                 progressBarConfirmDelivery.setVisibility(View.GONE);
+                if (bills.size() == 0)
+                {
+                    txtNoneItem.setVisibility(View.VISIBLE);
+                }
             }
 
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:viewBindingIgnore="true"
-    tools:context=".Activity.LoginActivity">
+    tools:context=".Activities.Home.LoginActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -106,7 +106,7 @@
             android:textStyle="bold" />
 
 
-            <TextView android:id="@+id/donthaveaccText"
+        <TextView android:id="@+id/donthaveaccText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

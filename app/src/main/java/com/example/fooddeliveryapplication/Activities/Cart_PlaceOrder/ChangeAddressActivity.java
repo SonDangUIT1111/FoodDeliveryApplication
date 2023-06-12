@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Activities;
+package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -19,7 +19,6 @@ import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Model.Address;
 import com.example.fooddeliveryapplication.R;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeAddressActivity extends AppCompatActivity {
+    String userId;
     private ImageView add1;
     private TextView add2;
     private RecyclerView recyclerViewAddresses;
@@ -41,6 +41,8 @@ public class ChangeAddressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_address);
 
+        userId = getIntent().getStringExtra("userId");
+
         initToolbar();
         initUpdateAddAddressActivity();
 
@@ -50,7 +52,7 @@ public class ChangeAddressActivity extends AppCompatActivity {
         recyclerViewAddresses.setHasFixedSize(true);
         recyclerViewAddresses.setLayoutManager(new LinearLayoutManager(this));
         addressList = new ArrayList<>();
-        addressAdapter = new AddressAdapter(this, addressList);
+        addressAdapter = new AddressAdapter(this, addressList, userId);
         addressAdapter.setAddressAdapterListener(new IAddressAdapterListener() {
             @Override
             public void onCheckedChanged(Address selectedAddress) {
@@ -68,6 +70,7 @@ public class ChangeAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
+                intent.putExtra("userId",userId);
                 intent.putExtra("mode", "add");
                 updateAddAddressLauncher.launch(intent);
             }
@@ -77,6 +80,7 @@ public class ChangeAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
+                intent.putExtra("userId",userId);
                 intent.putExtra("mode", "add");
                 updateAddAddressLauncher.launch(intent);
             }
@@ -93,7 +97,7 @@ public class ChangeAddressActivity extends AppCompatActivity {
     }
 
     private void loadInfo() {
-        FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Address").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 addressList.clear();

@@ -19,6 +19,7 @@ public class FeedBackActivity extends AppCompatActivity {
     ActivityFeedBackBinding binding;
     ArrayList<BillInfo> dsBillInfo;
     Bill currentBill;
+    String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,16 +28,17 @@ public class FeedBackActivity extends AppCompatActivity {
         Intent intent=getIntent();
         dsBillInfo= (ArrayList<BillInfo>) intent.getSerializableExtra("List of billInfo");
         currentBill= (Bill) intent.getSerializableExtra("Current Bill");
+        userId = intent.getStringExtra("userId");
         initUI();
     }
 
 
 
     private void initUI() {
-        FeedBackAdapter adapter=new FeedBackAdapter(this,dsBillInfo,currentBill);
+        FeedBackAdapter adapter=new FeedBackAdapter(this,dsBillInfo,currentBill,userId);
         binding.ryc.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
-        binding.ryc.setAdapter(adapter);
         binding.ryc.setHasFixedSize(true);
+        binding.ryc.setAdapter(adapter);
         //Set sự kiện cho nút back
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override

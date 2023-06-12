@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Activities;
+package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -15,15 +15,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.Cart.CartProductAdapter;
 import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
-    private FirebaseUser firebaseUser;
+    String userId;
 
     private RecyclerView recyclerViewCartProducts;
     private CartProductAdapter cartProductAdapter;
@@ -52,7 +49,8 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
 
         initToolbar();
         initProceedOrderLauncher();
@@ -84,6 +82,7 @@ public class CartActivity extends AppCompatActivity {
                 intent.putExtra("buyProducts", buyProducts);
                 String totalPriceDisplay = totalPrice.getText().toString();
                 intent.putExtra("totalPrice", totalPriceDisplay.substring(13));
+                intent.putExtra("userId",userId);
                 proceedOrderLauncher.launch(intent);
             }
         });
@@ -93,11 +92,7 @@ public class CartActivity extends AppCompatActivity {
         // Init launcher
         proceedOrderLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                reloadCartProducts();
-                buyProducts.clear();
-                Toast.makeText(this, String.valueOf(buyProducts.size()), Toast.LENGTH_SHORT).show();
-                selected.setText("Selected: 0");
-                totalPrice.setText("Total price: 0đ");
+                finish();
             }
         });
     }
@@ -108,7 +103,7 @@ public class CartActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Cart cart = ds.getValue(Cart.class);
-                    if (cart.getUserId().equals(firebaseUser.getUid())) {
+                    if (cart.getUserId().equals(userId)) {
                         FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -157,8 +152,8 @@ public class CartActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Cart cart = ds.getValue(Cart.class);
-                    if (cart.getUserId().equals(firebaseUser.getUid())) {
-                        cartProductAdapter = new CartProductAdapter(CartActivity.this, cartInfoList, cart.getCartId(), isCheckAll);
+                    if (cart.getUserId().equals(userId)) {
+                        cartProductAdapter = new CartProductAdapter(CartActivity.this, cartInfoList, cart.getCartId(), isCheckAll,userId);
                         cartProductAdapter.setAdapterItemListener(new IAdapterItemListener() {
                             @Override
                             public void onCheckedItemCountChanged(int count, long price, ArrayList<CartInfo> selectedItems) {
@@ -181,6 +176,11 @@ public class CartActivity extends AppCompatActivity {
 
                             @Override
                             public void onSubtractClicked() {
+                                reloadCartProducts();
+                            }
+
+                            @Override
+                            public void onDeleteProduct() {
                                 reloadCartProducts();
                             }
                         });

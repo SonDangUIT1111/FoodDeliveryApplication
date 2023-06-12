@@ -8,8 +8,11 @@ public class Notification {
     String time;
     boolean read;
     boolean notified;
+    String productId;
+    String billId;
+    String confirmId;
 
-    public Notification(String notificationId, String title, String content, String imageURL, String time, boolean read, boolean notified) {
+    public Notification(String notificationId, String title, String content, String imageURL, String time, boolean read, boolean notified, String productId, String billId, String confirmId) {
         this.notificationId = notificationId;
         this.title = title;
         this.content = content;
@@ -17,6 +20,9 @@ public class Notification {
         this.time = time;
         this.read = read;
         this.notified = notified;
+        this.productId = productId;
+        this.billId = billId;
+        this.confirmId = confirmId;
     }
 
     public Notification() {
@@ -77,4 +83,29 @@ public class Notification {
     public void setNotified(boolean notified) {
         this.notified = notified;
     }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getBillId() {
+        return billId;
+    }
+
+    public void setBillId(String billId) {
+        this.billId = billId;
+    }
+
+    public String getConfirmId() {
+        return confirmId;
+    }
+
+    public void setConfirmId(String confirmId) {
+        this.confirmId = confirmId;
+    }
 }
+

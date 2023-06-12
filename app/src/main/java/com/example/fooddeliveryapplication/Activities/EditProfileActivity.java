@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -57,14 +58,15 @@ public class EditProfileActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private String imageUrl;
 
-    private FirebaseUser firebaseUser;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
 
         initToolbar();
         initDatePickerDialog();
@@ -109,7 +111,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
@@ -141,7 +143,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
@@ -173,7 +175,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
@@ -205,7 +207,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
@@ -262,17 +264,26 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void updateInfo() {
-        if (email.getText().toString().equals("")) {
+        String emailTxt = email.getText().toString().trim();
+        String phoneNumberTxt = phoneNumber.getText().toString().trim();
+        String userNameTxt = userName.getText().toString().trim();
+
+        if (emailTxt.equals("")) {
             Toast.makeText(this, "Email must not be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (phoneNumber.getText().toString().equals("")) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
+            Toast.makeText(this, "Invalid email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (phoneNumberTxt.equals("")) {
             Toast.makeText(this, "Phone number must not be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (userName.getText().toString().equals("")) {
+        if (userNameTxt.equals("")) {
             Toast.makeText(this, "User name must not be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -284,7 +295,7 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("phoneNumber", phoneNumber.getText().toString());
         map.put("userName", userName.getText().toString());
 
-        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -293,7 +304,8 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        firebaseUser.updateEmail(email.getText().toString());
+        //Todo: not update in auth due to link
+//        firebaseUser.updateEmail(email.getText().toString());
 
         finish();
     }
@@ -319,7 +331,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void getInfo() {
-        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
@@ -376,14 +388,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
         int style = AlertDialog.BUTTON_NEGATIVE;
 
-        FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 String txtBirthDate = user.getBirthDate();
-                int date = Integer.parseInt(txtBirthDate.substring(0, 2));
-                int month = Integer.parseInt(txtBirthDate.substring(3, 5));
-                int year = Integer.parseInt(txtBirthDate.substring(6));
+                String[] dateSplit = cutDay(txtBirthDate);
+                int date = Integer.parseInt(dateSplit[0]);
+                int month = Integer.parseInt(dateSplit[1]);
+                int year = Integer.parseInt(dateSplit[2]);
 
                 datePickerDialog = new DatePickerDialog(EditProfileActivity.this, style, dateSetListener, year, month - 1, date);
             }
@@ -429,5 +442,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private String getFileExtension(Uri uri) {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(getContentResolver().getType(uri));
+    }
+
+    private String[] cutDay(String date)
+    {
+        String[] arrOfStr = date.split("/");
+        return arrOfStr;
     }
 }

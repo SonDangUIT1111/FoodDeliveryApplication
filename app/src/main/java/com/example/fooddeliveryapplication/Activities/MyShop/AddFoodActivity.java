@@ -48,6 +48,7 @@ public class AddFoodActivity extends AppCompatActivity {
     String imgOld1="",imgOld2="",imgOld3="",imgOld4="";
     Product productUpdate=null;
     boolean checkUpdate=false;
+    String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +56,13 @@ public class AddFoodActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         //Nhận intent từ edit--------------
         Intent intentUpdate=getIntent();
+        userId = getIntent().getStringExtra("userId");
         if (intentUpdate!=null&&intentUpdate.hasExtra("Product updating")) {
             productUpdate= (Product) intentUpdate.getSerializableExtra("Product updating");
             checkUpdate=true;
             binding.lnAddFood.btnAddProduct.setText("Update");
             binding.lnAddFood.edtNameOfProduct.setText(productUpdate.getProductName());
-            binding.lnAddFood.edtAmount.setText(productUpdate.getRemainAmmount()+"");
+            binding.lnAddFood.edtAmount.setText(productUpdate.getRemainAmount()+"");
             binding.lnAddFood.edtDescp.setText(productUpdate.getDescription());
             binding.lnAddFood.edtPrice.setText(productUpdate.getProductPrice()+"");
             imgOld1=productUpdate.getProductImage1();
@@ -266,8 +268,8 @@ public class AddFoodActivity extends AppCompatActivity {
                                     String price=binding.lnAddFood.edtPrice.getText().toString();
                                     String amount=binding.lnAddFood.edtAmount.getText().toString();
                                     String description=binding.lnAddFood.edtDescp.getText().toString();
-                                    Product tmp=new Product("null",name,img1,img2,img3,img4,5,
-                                            binding.lnAddFood.rbFood.isSelected()?"Food":"Drink",Integer.valueOf(amount),description,0.0,curentUser,curentUser);
+                                    Product tmp=new Product("null",name,img1,img2,img3,img4,Integer.valueOf(price),
+                                            binding.lnAddFood.rbFood.isSelected()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0,userId);
                                     uploadProduct(tmp);
                                 } else {
                                     if (count==1)  {

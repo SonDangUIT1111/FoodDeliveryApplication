@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
-import com.example.fooddeliveryapplication.Product;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ItemBillinfoBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +47,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Product tmp=snapshot.getValue(Product.class);
                         viewHolder.binding.txtName.setText(tmp.getProductName());
-                        viewHolder.binding.txtPrice.setText(CurrencyFormatter.getFommater().format(tmp.getProductPrice()* billInfo.getAmount())+"");
+                        viewHolder.binding.txtPrice.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(tmp.getProductPrice())* billInfo.getAmount())+"");
                         Glide.with(context)
                                 .load(tmp.getProductImage1())
                                 .placeholder(R.drawable.default_image)

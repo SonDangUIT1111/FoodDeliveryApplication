@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapplication.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
+import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
+import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
+import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DeliveryManagementActivity;
+import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
+import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Notification;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -96,6 +108,71 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
                         }
                     });
+                }
+                if (!notification.getBillId().equals("None"))
+                {
+                    Bill bill = new Bill();
+                    bill.setBillId(notification.getBillId());
+                    Intent intent=new Intent(mContext, OrderDetailActivity.class);
+                    intent.putExtra("Bill", bill);
+                    intent.putExtra("userId",userId);
+                    mContext.startActivity(intent);
+                }
+                else if (!notification.getProductId().equals("None"))
+                {
+                    final String[] userName = new String[1];
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            userName[0] = snapshot.child("userName").getValue(String.class);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                    new FirebaseProductInfoHelper(notification.getProductId()).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
+                        @Override
+                        public void DataIsLoaded(Product item) {
+                            Intent intent = new Intent(mContext, ProductInfoActivity.class);
+                            intent.putExtra("productId",item.getProductId());
+                            intent.putExtra("productName",item.getProductName());
+                            intent.putExtra("productPrice",item.getProductPrice());
+                            intent.putExtra("productImage1",item.getProductImage1());
+                            intent.putExtra("productImage2",item.getProductImage2());
+                            intent.putExtra("productImage3",item.getProductImage3());
+                            intent.putExtra("productImage4",item.getProductImage4());
+                            intent.putExtra("ratingStar",item.getRatingStar());
+                            intent.putExtra("productDescription",item.getDescription());
+                            intent.putExtra("publisherId",item.getPublisherId());
+                            intent.putExtra("sold",item.getSold());
+                            intent.putExtra("userId",userId);
+                            intent.putExtra("userName", userName[0]);
+                            mContext.startActivity(intent);
+                        }
+
+                        @Override
+                        public void DataIsInserted() {
+
+                        }
+
+                        @Override
+                        public void DataIsUpdated() {
+
+                        }
+
+                        @Override
+                        public void DataIsDeleted() {
+
+                        }
+                    });
+                }
+                else if (!notification.getConfirmId().equals("None"))
+                {
+                    Intent intent=new Intent(mContext, DeliveryManagementActivity.class);
+                    intent.putExtra("userId",userId);
+                    mContext.startActivity(intent);
                 }
             }
         });

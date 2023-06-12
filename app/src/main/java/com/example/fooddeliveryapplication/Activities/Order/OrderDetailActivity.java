@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fooddeliveryapplication.Activities.Feedback.FeedBackActivity;
+import com.example.fooddeliveryapplication.Adapters.OrderAdapter.OrderDetailAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
@@ -30,6 +32,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     ArrayList<BillInfo> dsBillInfo=new ArrayList<>();
     Bill currentBill;
     private LoadingDialog loadingDialog;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         Intent intent=getIntent();
         //Khởi tạo dữ liệu
         currentBill= (Bill) intent.getSerializableExtra("Bill");
+        userId = intent.getStringExtra("userId");
         loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
     }
@@ -95,7 +99,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding.lnOderDetail.ryc.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
         binding.lnOderDetail.ryc.setAdapter(adapter);
         binding.lnOderDetail.ryc.setHasFixedSize(true);
-        binding.lnOderDetail.txtTotalPrice.setText(CurrencyFormatter.getFommater().format(currentBill.getTotalPrice())+"");
+        binding.lnOderDetail.txtTotalPrice.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(currentBill.getTotalPrice()))+"");
         binding.txtId.setText(currentBill.getBillId());
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +121,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                Intent intent=new Intent(OrderDetailActivity.this,FeedBackActivity.class);
                intent.putExtra("Current Bill",currentBill);
                intent.putExtra("List of billInfo",dsBillInfo);
+               intent.putExtra("userId",userId);
                startActivity(intent);
            }
        });
