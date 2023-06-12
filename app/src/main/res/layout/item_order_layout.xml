@@ -168,6 +168,7 @@
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/background_feedback_enable_button"
                 android:padding="10dp"
+                app:backgroundTint="@null"
                 android:textColor="@color/white"
                 android:text="Button" />
         </LinearLayout>

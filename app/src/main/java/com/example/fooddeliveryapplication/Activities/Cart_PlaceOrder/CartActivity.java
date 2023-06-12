@@ -1,4 +1,4 @@
-package com.example.fooddeliveryapplication.Adapters.Cart_PlaceOrder;
+package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;

@@ -19,8 +19,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="top|center"
-
-
             android:elevation="1dp"
             android:scaleType="centerCrop"
             android:src="@drawable/tmp2"
@@ -28,14 +26,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="160dp"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/rectangle_item_home">
 
             <TextView
 
                 android:id="@+id/txtFavouriteFoodName"
                 android:layout_width="99dp"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
                 android:fontFamily="@font/sfpro_regular"
                 android:gravity="center"
