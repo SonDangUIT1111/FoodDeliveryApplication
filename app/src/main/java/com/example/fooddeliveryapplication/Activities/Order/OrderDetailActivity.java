@@ -118,7 +118,7 @@ public class OrderDetailActivity extends AppCompatActivity {
            @Override
            public void onClick(View view) {
                filterItemChecked();
-               Intent intent=new Intent(OrderDetailActivity.this, FeedBackActivity.class);
+               Intent intent=new Intent(OrderDetailActivity.this,FeedBackActivity.class);
                intent.putExtra("Current Bill",currentBill);
                intent.putExtra("List of billInfo",dsBillInfo);
                intent.putExtra("userId",userId);

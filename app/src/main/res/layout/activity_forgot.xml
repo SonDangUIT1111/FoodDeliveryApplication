@@ -5,8 +5,7 @@
     android:id="@+id/signupBtn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:viewBindingIgnore="true"
-    tools:context=".Activities.Home.LoginActivity">
+    tools:context=".Activities.Home.ForgotActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -23,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
         android:padding="@dimen/padding_dimen"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,16 +32,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints">
-
-        <TextView
-            android:id="@+id/loginText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:textAlignment="center"
-            android:textColor="@color/orange"
-            android:textSize="36sp"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView"
@@ -63,24 +53,6 @@
             android:inputType="textPersonName" />
 
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:paddingLeft="3dp"
-            android:text="Password"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/edtPasswordLogin"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="password"
-            android:inputType="textPassword" />
-
         <Button
             android:id="@+id/btnForgot"
             android:layout_width="170dp"
@@ -91,32 +63,19 @@
             android:background="@drawable/button_login_signup"
             android:foreground="?attr/selectableItemBackground"
             android:hint="if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))"
-            android:text="Login"
+            android:text="Forgot"
             android:textColor="#000000"
             app:backgroundTint="@null" />
 
         <TextView
-            android:id="@+id/forgotpassText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Forgot password?"
             android:textColor="@color/orange"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
-        <TextView android:id="@+id/donthaveaccText"
-            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:id="@+id/textView22"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Or don't have an account? Sign Up ->"
-            android:textColor="@color/orange"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
-
+            android:text="<- Sign In" />
 
 
     </LinearLayout>
