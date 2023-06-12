@@ -1,10 +1,5 @@
 package com.example.fooddeliveryapplication.Activities.ProductInformation;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +10,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
@@ -24,26 +24,27 @@ import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
+import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
-import com.google.android.material.tabs.TabLayout;
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductInfoActivity extends AppCompatActivity {
 
-    ViewPager pagerProductImage;
-    TabLayout tabDots;
+    ViewPager2 pagerProductImage;
     ImageButton btnBack;
     ImageButton btnAddFavourite;
     ImageButton btnCancelFavourite;
     TextView txtNameProduct;
+    Button btnAddToCart;
     TextView txtPriceProduct;
     TextView txtDescription;
     TextView txtSell;
     TextView txtFavourite;
     TextView txtRate;
-    Button btnAddToCart;
     RatingBar ratingBar;
     RecyclerView recComment;
     ProgressBar progressBarProductInfo;
@@ -86,8 +87,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         btnBack = (ImageButton) findViewById(R.id.btnBack);
         btnAddFavourite = (ImageButton) findViewById(R.id.btnAddFavourite);
         btnCancelFavourite = (ImageButton) findViewById(R.id.btnCancelFavourite);
-        pagerProductImage = (ViewPager) findViewById(R.id.pagerProductImage);
-        tabDots = (TabLayout) findViewById(R.id.tabDots);
+        pagerProductImage = (ViewPager2) findViewById(R.id.pagerProductImage);
         txtNameProduct = (TextView) findViewById(R.id.txtNameProduct);
         txtDescription = (TextView) findViewById(R.id.txtDesciption);
         txtPriceProduct = (TextView) findViewById(R.id.txtPriceProduct);
@@ -96,44 +96,43 @@ public class ProductInfoActivity extends AppCompatActivity {
         txtFavourite = (TextView) findViewById(R.id.txtFavourite);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         recComment = (RecyclerView) findViewById(R.id.recComment);
-        btnAddToCart = (Button) findViewById(R.id.btnAddToCart);
+        btnAddToCart = findViewById(R.id.btnAddToCart);
         progressBarProductInfo = (ProgressBar) findViewById(R.id.progressBarProductInfo);
 
         // set up default value
 
         txtNameProduct.setText(productName);
-        txtPriceProduct.setText(String.valueOf(productPrice)+" VNĐ");
+        txtPriceProduct.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(productPrice)));
         txtDescription.setText(productDescription);
-        txtSell.setText("Sell: "+String.valueOf(sold));
-        tabDots.setupWithViewPager(pagerProductImage, true);
+        txtSell.setText(String.valueOf(sold));
         ratingBar.setRating(ratingStar.floatValue());
 
 
-
         // set Adapter for image slider
-        ProductInfoImageAdapter adapterPager = new ProductInfoImageAdapter(this);
-        String[] imageUrl = new String[4];
+        ArrayList<String> dsImage =new ArrayList<>();
         if (productImage1 != null) {
-            imageUrl[0] = productImage1;
+            dsImage.add(productImage1);
         }
         if (productImage2 != null) {
-            imageUrl[1] = productImage2;
+            dsImage.add(productImage2);
         }
-        if (productImage1 != null) {
-            imageUrl[2] = productImage3;
+        if (productImage3 != null) {
+            dsImage.add(productImage3);
         }
-        if (productImage1 != null) {
-            imageUrl[3] = productImage4;
+        if (productImage4 != null) {
+            dsImage.add(productImage4);
         }
-        adapterPager.insertImageUrl(imageUrl);
-        pagerProductImage.setAdapter(adapterPager);
+        ProductInfoImageAdapter imageAdapter2=new ProductInfoImageAdapter(this,dsImage);
+        pagerProductImage.setAdapter(imageAdapter2);
+        WormDotsIndicator dotsIndicator=findViewById(R.id.tabDots);
+        dotsIndicator.attachTo(pagerProductImage);
 
 
         // load sell, favourite
         new FirebaseProductInfoHelper(productId).countFavourite(new FirebaseProductInfoHelper.DataStatusCountFavourite() {
             @Override
             public void DataIsLoaded(int countFavourite) {
-                txtFavourite.setText("Favourite: "+String.valueOf(countFavourite));
+                txtFavourite.setText(String.valueOf(countFavourite));
             }
 
             @Override
@@ -192,6 +191,9 @@ public class ProductInfoActivity extends AppCompatActivity {
                 updateCart(isCartExists[0],isProductExists[0],currentCart[0],currentCartInfo[0],1);
             }
         });
+
+
+
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -455,7 +457,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     {
         String title = "Sản phẩm yêu thích";
         String content = userName + " đã thích sản phẩm "+ productName + " của bạn. Nhấn vào để xem lượt yêu thích nào.";
-        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1);
+        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,productId,"None","None");
         new FirebaseNotificationHelper(this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList) {

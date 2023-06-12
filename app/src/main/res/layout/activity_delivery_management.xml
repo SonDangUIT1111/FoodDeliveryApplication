@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:viewBindingIgnore="true"
     android:background="#F5F5F8"
     tools:context=".Activities.OrderSellerManagement.DeliveryManagementActivity">
 

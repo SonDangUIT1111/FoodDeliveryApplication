@@ -37,6 +37,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 public class AddFoodActivity extends AppCompatActivity {
     ActivityAddFoodBinding binding;
+    String curentUser="";
     String TAG="Add Food";
     int position;
     ProgressDialog progressDialog;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,7 +18,7 @@
         android:theme="@style/Theme.FoodDeliveryApplication"
         tools:targetApi="31" >
         <activity
-            android:name=".Activities.MyShop.MyShopActivity"
+            android:name=".Activities.Home.ForgotActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.MyShop.MyFoodActivity"
@@ -33,25 +33,29 @@
             android:name=".Activities.Order.OrderActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Order.OrderDetailActivity"
+            android:name=".Activities.MyShop.MyShopActivity"
             android:exported="false" />
         <activity
-            android:name=".Adapters.Cart_PlaceOrder.UpdateAddAddressActivity"
+            android:name=".Activities.Order.OrderDetailActivity"
             android:exported="false" />
+
         <activity
             android:name=".Activities.Home.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".Adapters.Cart_PlaceOrder.ChangeAddressActivity"
+            android:name=".Activities.Cart_PlaceOrder.UpdateAddAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".Adapters.Cart_PlaceOrder.EmptyCartActivity"
+            android:name=".Activities.Cart_PlaceOrder.ChangeAddressActivity"
             android:exported="false" />
         <activity
-            android:name=".Adapters.Cart_PlaceOrder.ProceedOrderActivity"
+            android:name=".Activities.Cart_PlaceOrder.EmptyCartActivity"
             android:exported="false" />
         <activity
-            android:name=".Adapters.Cart_PlaceOrder.CartActivity"
+            android:name=".Activities.Cart_PlaceOrder.ProceedOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Cart_PlaceOrder.CartActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.EditProfileActivity"
@@ -60,20 +64,17 @@
             android:name=".Activities.Home.FindActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Home.HomeActivity"
+            android:name=".Activities.Home.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Home.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Home.ForgotActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activities.Home.IntroActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Home.LoginActivity"
-            android:exported="true" >
+            android:name=".Activities.Home.HomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -85,10 +86,10 @@
             android:exported="false" />
         <activity
             android:name=".Activities.OrderSellerManagement.DeliveryManagementActivity"
-            android:exported="false" />
+            android:exported="false"></activity>
         <activity
             android:name=".Activities.ProductInformation.ProductInfoActivity"
-            android:exported="false" />
+            android:exported="false"></activity>
     </application>
 
 </manifest>

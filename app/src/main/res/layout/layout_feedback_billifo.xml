@@ -155,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint=""
-                        android:background="@null"
+                        android:background="@android:color/transparent"
                         android:maxHeight="100dp"
                         android:maxLength="200"
                         android:minHeight="48dp" />
@@ -190,6 +190,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Send"
+            app:backgroundTint="@null"
             android:background="@drawable/background_feedback_enable_button"
             app:layout_constraintBottom_toTopOf="@+id/space"
             app:layout_constraintEnd_toEndOf="@+id/cardView3"

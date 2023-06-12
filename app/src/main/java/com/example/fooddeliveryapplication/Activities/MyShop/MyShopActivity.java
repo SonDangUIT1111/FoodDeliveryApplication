@@ -30,6 +30,14 @@ public class MyShopActivity extends AppCompatActivity {
             }
         });
 
+
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         binding.cardDelivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
