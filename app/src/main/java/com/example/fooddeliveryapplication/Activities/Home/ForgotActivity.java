@@ -21,13 +21,13 @@ public class ForgotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityForgotBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.btnForgot.setOnClickListener(new View.OnClickListener() {
+        binding.btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (binding.edtForgot.getText().toString().isEmpty()) {
+                if (binding.edtEmail.getText().toString().isEmpty()) {
                     Toast.makeText(ForgotActivity.this, "Hãy nhập email mà bạn muốn reset mật khẩu", Toast.LENGTH_SHORT).show();
                 } else {
-                    mFirebaseAuth.sendPasswordResetEmail(binding.edtForgot.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mFirebaseAuth.sendPasswordResetEmail(binding.edtEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:viewBindingIgnore="true"
-    tools:context=".Activities.Home.LoginActivity">
+    tools:context=".Activity.LoginActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -55,7 +55,7 @@
 
         <EditText
 
-            android:id="@+id/edtForgot"
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:ems="10"
@@ -82,7 +82,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btnForgot"
+            android:id="@+id/btnReset"
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_gravity="center"

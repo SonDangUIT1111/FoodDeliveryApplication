@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
         android:orientation="vertical"
         android:padding="@dimen/padding_dimen"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,6 +31,16 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reset password"
+            android:textAlignment="center"
+            android:textColor="@color/orange"
+            android:textSize="36sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView"
@@ -45,7 +54,7 @@
 
         <EditText
 
-            android:id="@+id/edtForgot"
+            android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:ems="10"
@@ -54,7 +63,7 @@
 
 
         <Button
-            android:id="@+id/btnForgot"
+            android:id="@+id/btnReset"
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -63,19 +72,19 @@
             android:background="@drawable/button_login_signup"
             android:foreground="?attr/selectableItemBackground"
             android:hint="if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))"
-            android:text="Forgot"
+            android:text="Reset"
             android:textColor="#000000"
             app:backgroundTint="@null" />
 
         <TextView
-            android:textColor="@color/orange"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:id="@+id/textView22"
-            android:layout_width="match_parent"
+            android:id="@+id/forgotpassText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="<- Sign In" />
+            android:layout_marginTop="10dp"
+            android:text="Already having account ?"
+            android:textColor="@color/orange"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

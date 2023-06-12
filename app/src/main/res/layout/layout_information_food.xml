@@ -28,7 +28,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="0dp"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/archivo"
+                    android:fontFamily="@font/sfpro_bold"
                     android:text="Tên sản phẩm"
                     android:textColor="@color/main"
                     android:textSize="20sp" />
@@ -43,7 +43,7 @@
                     android:layout_marginEnd="30dp"
                     android:background="@drawable/home2"
                     android:ems="10"
-                    android:fontFamily="@font/baloo"
+                    android:fontFamily="@font/sfpro_light"
                     android:hint="name"
                     android:inputType="textPersonName"
                     android:paddingStart="10dp"
@@ -57,7 +57,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/archivo"
+                    android:fontFamily="@font/sfpro_bold"
                     android:text="Giá"
                     android:textColor="@color/main"
                     android:textSize="20sp" />
@@ -71,7 +71,7 @@
                     android:layout_marginEnd="30dp"
                     android:background="@drawable/home2"
                     android:ems="10"
-                    android:fontFamily="@font/baloo"
+                    android:fontFamily="@font/sfpro_light"
                     android:hint="10xxx"
                     android:inputType="textPersonName"
                     android:paddingStart="10dp"
@@ -85,7 +85,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/archivo"
+                    android:fontFamily="@font/sfpro_bold"
                     android:text="Add description"
                     android:textColor="@color/main"
                     android:textSize="20sp" />
@@ -99,7 +99,7 @@
                     android:layout_marginEnd="30dp"
                     android:background="@drawable/home2"
                     android:ems="10"
-                    android:fontFamily="@font/baloo"
+                    android:fontFamily="@font/sfpro_light"
                     android:hint="bla bla............"
                     android:inputType="textPersonName"
                     android:maxLength="150"
@@ -122,19 +122,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="0dp"
                         android:layout_weight="0.5"
-                        android:fontFamily="@font/archivo"
+                        android:fontFamily="@font/sfpro_bold"
                         android:text="Amount"
                         android:textColor="@color/main"
                         android:textSize="20sp" />
 
                     <EditText
-                        android:layout_marginStart="4dp"
                         android:id="@+id/edtAmount"
                         android:layout_width="0dp"
                         android:layout_height="48dp"
+                        android:layout_marginStart="4dp"
                         android:layout_weight="1.5"
                         android:background="@drawable/home2"
                         android:ems="10"
+                        android:fontFamily="@font/sfpro_light"
                         android:hint="0"
                         android:inputType="textPersonName"
                         android:paddingStart="20dp"
@@ -158,7 +159,7 @@
                         android:layout_height="48dp"
                         android:layout_marginEnd="0dp"
                         android:layout_weight="0.5"
-                        android:fontFamily="@font/archivo"
+                        android:fontFamily="@font/sfpro_bold"
                         android:gravity="center|left"
                         android:text="Type"
                         android:textColor="@color/main"
@@ -176,7 +177,7 @@
                             android:layout_height="48dp"
                             android:layout_marginEnd="50dp"
                             android:checked="true"
-                            android:fontFamily="@font/archivo"
+                            android:fontFamily="@font/sfpro_bold"
                             android:text="Food"
                             android:textColorHighlight="#FFEDCC" />
 
@@ -184,7 +185,7 @@
                             android:id="@+id/rbDrink"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:fontFamily="@font/archivo"
+                            android:fontFamily="@font/sfpro_bold"
                             android:text="Drink" />
                     </RadioGroup>
 
