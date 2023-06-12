@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="left"
         app:headerLayout="@layout/layout_navigation_header"
+
         app:cnb_orientationMode="vertical"
         app:menu="@menu/menu_navigation" />
 
@@ -25,7 +26,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:minHeight="?attr/actionBarSize"
@@ -35,18 +36,20 @@
         <LinearLayout
             android:id="@+id/layout_main"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="530dp"
             android:layout_weight="8"
-            android:background="#FDFDFD"
-            android:orientation="vertical" />
+            android:background="@color/white"
+            android:orientation="vertical">
 
+        </LinearLayout>
 
         <com.ismaeldivita.chipnavigation.ChipNavigationBar
             android:id="@+id/navigation_bottom"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="#FFFFFF"
+            android:background="@color/white"
+            android:paddingBottom="10dp"
             app:cnb_addBottomInset="false"
             app:cnb_addLeftInset="false"
             app:cnb_addRightInset="false"
@@ -55,7 +58,7 @@
 
             app:cnb_iconSize="24dp"
             app:cnb_menuResource="@menu/menu_home"
-            app:cnb_orientationMode="horizontal" />
+            app:cnb_orientationMode="horizontal"></com.ismaeldivita.chipnavigation.ChipNavigationBar>
 
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

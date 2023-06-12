@@ -19,6 +19,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="top|center"
+
+
             android:elevation="1dp"
             android:scaleType="centerCrop"
             android:src="@drawable/tmp2"
@@ -28,23 +30,26 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_item_home">
+            android:layout_height="250dp"
+            android:background="@drawable/rectangle_item_home"
+            android:minHeight="250dp">
 
             <TextView
 
                 android:id="@+id/txtFoodName"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
-                android:fontFamily="@font/sfpro_semibold"
+                android:fontFamily="@font/sfpro_regular"
                 android:gravity="center"
                 android:text="TextView"
                 android:textColor="#555555"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/txtFoodPrice"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
 
             <TextView
                 android:id="@+id/txtFoodPrice"
@@ -53,20 +58,24 @@
                 android:text="TextView"
                 android:textColor="#FF6363"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
                 app:layout_constraintEnd_toEndOf="@+id/txtFoodName"
                 app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="@+id/txtFoodName"
-                app:layout_constraintTop_toBottomOf="@+id/txtFoodName" />
+                app:layout_constraintTop_toBottomOf="@+id/txtFoodName"
+                app:layout_constraintVertical_bias="0.5" />
 
             <LinearLayout
+                android:id="@+id/linearLayout6"
                 android:layout_width="99dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal"
-                android:paddingBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/txtFoodPrice"
                 app:layout_constraintStart_toStartOf="@+id/txtFoodPrice"
-                app:layout_constraintTop_toBottomOf="@+id/txtFoodPrice">
+                app:layout_constraintTop_toBottomOf="@+id/txtFoodPrice"
+                app:layout_constraintVertical_bias="0.5">
 
                 <ImageView
                     android:id="@+id/imgRate"

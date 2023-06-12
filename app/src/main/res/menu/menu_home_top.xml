@@ -5,7 +5,7 @@
     <item
             android:id="@+id/cart_menu"
             app:showAsAction="always"
-            android:iconTint="@color/white"
-            android:icon="@drawable/shopping_cart_10941"
+            android:iconTint="#000000"
+            android:icon="@drawable/ic_cart"
             android:title="Cart" />
 </menu>
