@@ -19,7 +19,18 @@ public class ProductInfoImageAdapter extends RecyclerView.Adapter {
 
     public ProductInfoImageAdapter(Context mContext, ArrayList<String> dsImage) {
         this.mContext = mContext;
-        this.dsImage = dsImage;
+        ArrayList<String> copyCat = new ArrayList<String>();
+
+        if (dsImage.get(0) != null && !dsImage.get(0).equals(""))
+            copyCat.add(dsImage.get(0));
+        if (dsImage.get(1) != null && !dsImage.get(1).equals(""))
+            copyCat.add(dsImage.get(1));
+        if (dsImage.get(2) != null && !dsImage.get(2).equals(""))
+            copyCat.add(dsImage.get(2));
+        if (dsImage.get(3) != null && !dsImage.get(3).equals(""))
+            copyCat.add(dsImage.get(3));
+
+        this.dsImage = copyCat;
     }
 
     @NonNull
