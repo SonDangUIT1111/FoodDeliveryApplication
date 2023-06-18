@@ -50,7 +50,7 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                User tmp=new User(name,task.getResult().getUser().getUid(),email,"",name,"",phone,
+                                User tmp=new User(name,task.getResult().getUser().getUid(),email,"https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg",name,"1/1/2000",phone,
                                         new SimpleDateFormat("dd/MM/yyyy").format(new Date()),"");
                                 FirebaseDatabase.getInstance().getReference("Users").child(tmp.getUserId())
                                         .setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {

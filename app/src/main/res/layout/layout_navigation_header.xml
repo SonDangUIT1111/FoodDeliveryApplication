@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/headerOfNavigationLeft"
     android:background="@color/orange">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgAvatarInNavigationBar"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:padding="2dp"
@@ -24,31 +25,32 @@
         app:strokeWidth="1dp" />
 
     <TextView
-        android:id="@+id/txtName"
-        android:layout_width="142dp"
+        android:id="@+id/txtNameInNavigationBar"
+        android:layout_width="0dp"
         android:layout_height="55dp"
+        app:layout_constraintWidth_percent="0.8"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/sfpro_semibold"
         android:gravity="center"
         android:text="Hi, Ngọc"
         android:textColor="#000000"
-        android:textSize="34sp"
+        android:textSize="32sp"
 
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="@+id/imgAvatarInNavigationBar"
+        app:layout_constraintStart_toStartOf="@+id/imgAvatarInNavigationBar"
+        app:layout_constraintTop_toBottomOf="@+id/imgAvatarInNavigationBar" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtHelloInNavigationBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sfpro_regularitalic"
         android:shadowColor="#AF6B6B"
         android:text="Have a good day!"
         android:textColor="#7E7A7A"
-        app:layout_constraintEnd_toEndOf="@+id/txtName"
-        app:layout_constraintStart_toStartOf="@id/txtName"
-        app:layout_constraintTop_toBottomOf="@id/txtName" />
+        app:layout_constraintEnd_toEndOf="@+id/txtNameInNavigationBar"
+        app:layout_constraintStart_toStartOf="@id/txtNameInNavigationBar"
+        app:layout_constraintTop_toBottomOf="@id/txtNameInNavigationBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

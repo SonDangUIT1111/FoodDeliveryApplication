@@ -6,7 +6,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.Manifest;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -18,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivity;
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
@@ -27,10 +31,13 @@ import com.example.fooddeliveryapplication.Fragments.Home.HistoryFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
 import com.example.fooddeliveryapplication.Fragments.NotificationFragment;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseUserInfoHelper;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.Notification;
+import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityHomeBinding;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayout layoutMain;
 
     private static final int NOTIFICATION_PERMISSION_CODE = 10023;
+    private static final int STORAGE_PERMISSION_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +68,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //Todo take information of user just login here using firebaseuser.getuid() whatever ...
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // request permission here
         checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
+        checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",STORAGE_PERMISSION_CODE);
         //----------
         initUI();
         //----------------------
@@ -72,43 +80,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //----------------------
 
 
-        // load number of notification not read in bottom navigation bar
-        new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
-            @Override
-            public void DataIsLoaded(List<Notification> notificationList) {
-                int count = 0;
-                for (int i = 0;i<notificationList.size();i++)
-                {
-                    if (notificationList.get(i).isRead() == false)
-                    {
-                        count++;
-                    }
-                }
-                if (count > 0 )
-                {
-                    binding.navigationBottom.showBadge(R.id.notification_menu,count);
-                }
-                else if (count == 0)
-                {
-                    binding.navigationBottom.dismissBadge(R.id.notification_menu);
-                }
-            }
+        loadInformationForNavigationBar();
 
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
     }
 
 
@@ -127,6 +100,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setEventNavigationBottom();
         setCartNavigation();
         binding.navigationLeft.setNavigationItemSelectedListener(this);
+
     }
     
     private void setCartNavigation()
@@ -146,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if (snapshot.getChildrenCount() == 0) {
+                                                if (snapshot.getChildrenCount() == 0 || snapshot.exists() == false) {
 
                                                     startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
                                                 }
@@ -266,7 +240,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         }
-        // there something other permission require here
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+            else {
+
+            }
+        }
 
     }
 
@@ -309,6 +290,77 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         binding.drawLayoutHome.close();
         return true;
+
+    }
+    public void loadInformationForNavigationBar()
+    {
+        // load number of notification not read in bottom navigation bar
+        new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Notification> notificationList) {
+                int count = 0;
+                for (int i = 0;i<notificationList.size();i++)
+                {
+                    if (notificationList.get(i).isRead() == false)
+                    {
+                        count++;
+                    }
+                }
+                if (count > 0 )
+                {
+                    binding.navigationBottom.showBadge(R.id.notification_menu,count);
+                }
+                else if (count == 0)
+                {
+                    binding.navigationBottom.dismissBadge(R.id.notification_menu);
+                }
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
+        new FirebaseUserInfoHelper(this).readUserInfo(userId, new FirebaseUserInfoHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(User user) {
+                View headerView = binding.navigationLeft.getHeaderView(0);
+                ShapeableImageView imgAvatarInNavigationBar = (ShapeableImageView) headerView.findViewById(R.id.imgAvatarInNavigationBar);
+                TextView txtNameInNavigationBar = (TextView) headerView.findViewById(R.id.txtNameInNavigationBar);
+                txtNameInNavigationBar.setText("Hi, "+ user.getUserName());
+                Glide.with(HomeActivity.this)
+                        .load(user.getAvatarURL())
+                        .into(imgAvatarInNavigationBar);
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
+
 
     }
 }
