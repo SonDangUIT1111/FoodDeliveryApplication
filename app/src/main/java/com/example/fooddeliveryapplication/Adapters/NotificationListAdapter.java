@@ -89,7 +89,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     notification.setRead(true);
                     new FirebaseNotificationHelper(mContext).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
                         @Override
-                        public void DataIsLoaded(List<Notification> notificationList) {
+                        public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
 
                         }
 

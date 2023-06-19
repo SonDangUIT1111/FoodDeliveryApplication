@@ -39,10 +39,11 @@ public class FirebaseNotificationHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
     private List<Notification> notificationList = new ArrayList<>();
+    private List<Notification> notificationListToNotify = new ArrayList<>();
     private int index = -1;
 
     public interface DataStatus{
-        void DataIsLoaded(List<Notification> notificationList);
+        void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -60,6 +61,7 @@ public class FirebaseNotificationHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 notificationList.clear();
+                notificationListToNotify.clear();
                 DataSnapshot snapchild = snapshot.child("Notification").child(userId);
                 for (DataSnapshot snap:snapchild.getChildren())
                 {
@@ -76,21 +78,22 @@ public class FirebaseNotificationHelper {
                         return o2.getTime().compareTo(o1.getTime());
                     }
                 });
-                for (int i = 0;i < 1; i++)
+                for (int i = 0;i < notificationList.size(); i++)
                 {
                     if (notificationList.get(i).isNotified() == false)
                     {
                         index = i;
+                        notificationListToNotify.add(notificationList.get(i));
                         mReference.child("Notification").child(userId).child(notificationList.get(i).getNotificationId()).child("notified").setValue(true)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
-                                        notificationPush(notificationList.get(index),userId);
+
                                     }
                                 });
                     }
                 }
-                dataStatus.DataIsLoaded(notificationList);
+                dataStatus.DataIsLoaded(notificationList,notificationListToNotify);
             }
 
             @Override

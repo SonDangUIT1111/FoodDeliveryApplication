@@ -258,7 +258,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
                 Notification notification = FirebaseNotificationHelper.createNotification(title,content,product.getProductImage1(),product.getProductId(),"None","None");
                 new FirebaseNotificationHelper(context).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override
-                    public void DataIsLoaded(List<Notification> notificationList) {
+                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
 
                     }
 

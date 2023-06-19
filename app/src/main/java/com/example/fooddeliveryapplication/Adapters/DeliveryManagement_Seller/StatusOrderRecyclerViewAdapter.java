@@ -185,7 +185,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,"None",billId,"None");
         new FirebaseNotificationHelper(mContext).addNotification(receiverId, notification, new FirebaseNotificationHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Notification> notificationList) {
+            public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
 
             }
 

@@ -48,7 +48,7 @@ public class NotificationFragment extends Fragment {
     {
         new FirebaseNotificationHelper(getContext()).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Notification> notificationList) {
+            public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
                 NotificationListAdapter adapter = new NotificationListAdapter(getContext(),notificationList,userId);
                 recNotification.setHasFixedSize(true);
                 recNotification.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -114,29 +114,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot ds : snapshot.getChildren()) {
-                                    Cart cart = ds.getValue(Cart.class);
-                                    if (cart.getUserId().equals(userId)) {
-                                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if (snapshot.getChildrenCount() == 0 || snapshot.exists() == false) {
+                                    for (DataSnapshot ds : snapshot.getChildren()) {
+                                        Cart cart = ds.getValue(Cart.class);
+                                        if (cart.getUserId().equals(userId)) {
+                                            FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    if (snapshot.getChildrenCount() == 0) {
 
-                                                    startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
+                                                        startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
+                                                        return;
+                                                    }
+                                                    else {
+                                                        Intent intent = new Intent(HomeActivity.this,CartActivity.class);
+                                                        intent.putExtra("userId",userId);
+                                                        startActivity(intent);
+                                                        return;
+                                                    }
                                                 }
-                                                else {
-                                                    Intent intent = new Intent(HomeActivity.this,CartActivity.class);
-                                                    intent.putExtra("userId",userId);
-                                                    startActivity(intent);
-                                                }
-                                            }
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
 
-                                            }
-                                        });
+                                                }
+                                            });
+                                        }
                                     }
-                                }
+
                             }
 
                             @Override
@@ -294,7 +297,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // load number of notification not read in bottom navigation bar
         new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Notification> notificationList) {
+            public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
                 int count = 0;
                 for (int i = 0;i<notificationList.size();i++)
                 {
@@ -310,6 +313,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 else if (count == 0)
                 {
                     binding.navigationBottom.dismissBadge(R.id.notification_menu);
+                }
+
+                for (int i = 0;i<notificationListToNotify.size(); i++)
+                {
+                    new FirebaseNotificationHelper(HomeActivity.this).notificationPush(notificationListToNotify.get(i),userId);
                 }
             }
 

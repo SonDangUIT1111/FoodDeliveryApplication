@@ -461,7 +461,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 Notification notification = FirebaseNotificationHelper.createNotification(title,content,product.getProductImage1(),product.getProductId(),"None","None");
                 new FirebaseNotificationHelper(mContext).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override
-                    public void DataIsLoaded(List<Notification> notificationList) {
+                    public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
 
                     }
 
