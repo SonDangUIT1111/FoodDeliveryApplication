@@ -154,18 +154,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
-                        android:drawableStart="@drawable/baseline_shopping_cart_checkout_24"
+                        android:drawableStart="@drawable/ic_cart"
                         android:text="100"
-                        android:textColor="@color/black"
+                        android:textColor="@color/orange"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtFavourite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_favourite"
+                        android:drawableStart="@drawable/ic_pink_favourite"
                         android:text="100"
-                        android:textColor="@color/black"
+                        android:textColor="#FD0D5E"
                         android:textStyle="bold" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -283,8 +283,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="24dp"
         android:text="Add To Cart"
-        android:background="@drawable/button_login_signup"
-        app:backgroundTint="@null"
+        android:backgroundTint="@color/orange"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

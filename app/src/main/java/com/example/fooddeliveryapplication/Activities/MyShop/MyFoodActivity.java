@@ -3,6 +3,7 @@ package com.example.fooddeliveryapplication.Activities.MyShop;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +66,7 @@ public class MyFoodActivity extends AppCompatActivity {
                 ds.clear();
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Product tmp=item.getValue(Product.class);
-                    if (tmp.getPublisherId()==userId) {
+                    if (tmp.getPublisherId().equals(userId)) {
                         ds.add(tmp);
                     }
                 }

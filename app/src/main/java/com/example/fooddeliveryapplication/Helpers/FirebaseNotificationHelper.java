@@ -39,6 +39,7 @@ public class FirebaseNotificationHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
     private List<Notification> notificationList = new ArrayList<>();
+    private int index = -1;
 
     public interface DataStatus{
         void DataIsLoaded(List<Notification> notificationList);
@@ -75,22 +76,18 @@ public class FirebaseNotificationHelper {
                         return o2.getTime().compareTo(o1.getTime());
                     }
                 });
-                for (int i = 0;i < notificationList.size(); i++)
+                for (int i = 0;i < 1; i++)
                 {
                     if (notificationList.get(i).isNotified() == false)
                     {
-                        boolean flag = false;
+                        index = i;
                         mReference.child("Notification").child(userId).child(notificationList.get(i).getNotificationId()).child("notified").setValue(true)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
+                                        notificationPush(notificationList.get(index),userId);
                                     }
                                 });
-                        if (!flag)
-                        {
-                            notificationPush(notificationList.get(i),userId);
-                            flag = true;
-                        }
                     }
                 }
                 dataStatus.DataIsLoaded(notificationList);

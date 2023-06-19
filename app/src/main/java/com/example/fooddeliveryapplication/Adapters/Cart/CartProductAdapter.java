@@ -21,10 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseUserInfoHelper;
 import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.Product;
+import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -49,6 +54,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     private IAdapterItemListener adapterItemListener;
     private boolean isCheckAll;
     String userId;
+    String userName;
     private ArrayList<CartInfo> selectedItems = new ArrayList<>();
 
     public CartProductAdapter(Context mContext, List<CartInfo> mCartInfos, String cartId, boolean isCheckAll,String id) {
@@ -58,6 +64,27 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         this.isCheckAll = isCheckAll;
         this.userId = id;
         viewBinderHelper.setOpenOnlyOne(true);
+        new FirebaseUserInfoHelper(mContext).readUserInfo(userId, new FirebaseUserInfoHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(User user) {
+                userName = user.getUserName();
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
     }
 
     private void initDialogBuilder(CartInfo cartInfo) {
@@ -281,8 +308,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.like.getTag().equals("like"))
+                if (holder.like.getTag().equals("like")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).setValue(true);
+                    pushNotificationFavourite(cartInfo);
+                }
                 else if (holder.like.getTag().equals("liked")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).removeValue();
                 }
@@ -422,4 +451,53 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             checkBox = itemView.findViewById(R.id.check_box);
         }
     }
+    public void pushNotificationFavourite(CartInfo cartInfo)
+    {
+        new FirebaseProductInfoHelper(cartInfo.getProductId()).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
+            @Override
+            public void DataIsLoaded(Product product) {
+                String title = "Sản phẩm yêu thích";
+                String content = userName + " đã thích sản phẩm "+ product.getProductName() + " của bạn. Nhấn vào để xem lượt yêu thích nào.";
+                Notification notification = FirebaseNotificationHelper.createNotification(title,content,product.getProductImage1(),product.getProductId(),"None","None");
+                new FirebaseNotificationHelper(mContext).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
+    }
+
 }

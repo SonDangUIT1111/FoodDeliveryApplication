@@ -19,10 +19,13 @@ import android.widget.Toast;
 import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
 import com.example.fooddeliveryapplication.Adapters.Cart.OrderProductAdapter;
 import com.example.fooddeliveryapplication.GlobalConfig;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Address;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -128,7 +131,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                             String billId = FirebaseDatabase.getInstance().getReference().push().getKey();
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             Date date = new Date();
-
+                            final String[] idProductForNotification = new String[1];
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("addressId", GlobalConfig.choseAddressId);
                             map.put("billId", billId);
@@ -146,6 +149,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                         for (CartInfo cartInfo : cartInfoList1) {
                                             // Add to BillInfos
                                             String billInfoId = FirebaseDatabase.getInstance().getReference().push().getKey();
+                                            idProductForNotification[0] = cartInfo.getProductId();
                                             HashMap<String, Object> map1 = new HashMap<>();
                                             map1.put("amount", cartInfo.getAmount());
                                             map1.put("billInfoId", billInfoId);
@@ -185,12 +189,13 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                                 }
                                             });
                                         }
+                                        pushNotificationCartComplete(billId, idProductForNotification[0],senderId);
+                                        pushNotificationCartCompleteForSeller(billId, idProductForNotification[0],senderId);
                                     }
                                 }
                             });
                         }
 
-                        Toast.makeText(ProceedOrderActivity.this, "Order completed!", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -294,4 +299,101 @@ public class ProceedOrderActivity extends AppCompatActivity {
         }
         return Long.parseLong(output);
     }
+
+    public void pushNotificationCartComplete(String billId,String productId,String senderId) {
+        new FirebaseProductInfoHelper(productId).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
+            @Override
+            public void DataIsLoaded(Product product) {
+                String title = "Đặt hàng thành công";
+                String content = "Đơn hàng " + billId + " đã đặt hàng thành công và đang chờ người bán xác nhận. Vào My Order để theo dõi tình trạng đơn hàng nào.";
+                Notification notification = FirebaseNotificationHelper.createNotification(title, content, product.getProductImage1(), "None", billId, "None");
+                new FirebaseNotificationHelper(ProceedOrderActivity.this).addNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
+    }
+
+    public void pushNotificationCartCompleteForSeller(String billId,String productId,String senderId) {
+        new FirebaseProductInfoHelper(productId).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
+            @Override
+            public void DataIsLoaded(Product product) {
+                String title2 = "Vừa có đơn hàng mới";
+                String content2 = "Nhanh nào, vừa có đơn hàng mới. Vào Food Delivery để kiểm tra và phục vụ nhanh tay khách hàng nào.";
+                Notification notification2 = FirebaseNotificationHelper.createNotification(title2, content2, product.getProductImage1(), "None", "None", billId);
+                new FirebaseNotificationHelper(ProceedOrderActivity.this).addNotification(senderId, notification2, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
+    }
+
 }

@@ -18,11 +18,6 @@
             android:icon="@drawable/heart_icon"
             app:cnb_iconColor="#E91E63"/>
 
-        <item
-            android:id="@+id/history_menu"
-            android:title="History"
-            android:icon="@drawable/history_icon"
-            app:cnb_iconColor="@color/completed_status_color"/>
 
         <item
             android:id="@+id/notification_menu"

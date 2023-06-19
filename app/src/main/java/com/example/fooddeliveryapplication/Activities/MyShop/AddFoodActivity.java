@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Dialog.UploadDialog;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
@@ -37,7 +38,6 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 public class AddFoodActivity extends AppCompatActivity {
     ActivityAddFoodBinding binding;
-    String curentUser="";
     String TAG="Add Food";
     int position;
     ProgressDialog progressDialog;
@@ -69,6 +69,39 @@ public class AddFoodActivity extends AppCompatActivity {
             imgOld2=productUpdate.getProductImage2();
             imgOld3=productUpdate.getProductImage3();
             imgOld4=productUpdate.getProductImage4();
+            if (!imgOld1.isEmpty())
+            {
+                Glide.with(this)
+                        .asBitmap()
+                        .load(imgOld1)
+                        .placeholder(R.drawable.background_loading_layout)
+                        .into(binding.imgProduct1);
+            }
+            if (!imgOld2.isEmpty())
+            {
+                Glide.with(this)
+                        .asBitmap()
+                        .load(imgOld2)
+                        .placeholder(R.drawable.background_loading_layout)
+                        .into(binding.imgProduct2);
+            }
+            if (!imgOld3.isEmpty())
+            {
+                Glide.with(this)
+                        .asBitmap()
+                        .load(imgOld3)
+                        .placeholder(R.drawable.background_loading_layout)
+                        .into(binding.imgProduct3);
+            }
+            if (!imgOld4.isEmpty())
+            {
+                Glide.with(this)
+                        .asBitmap()
+                        .load(imgOld4)
+                        .placeholder(R.drawable.background_loading_layout)
+                        .into(binding.imgProduct4);
+            }
+
         }
         //---------------------------------
         position=-1;

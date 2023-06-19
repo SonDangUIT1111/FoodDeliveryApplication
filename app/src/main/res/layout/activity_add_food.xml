@@ -73,7 +73,7 @@
                     android:layout_margin="14dp"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/default_image" />
 
                 <ImageView
@@ -83,7 +83,7 @@
                     android:layout_margin="14dp"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/default_image" />
             </LinearLayout>
 
@@ -101,7 +101,7 @@
                     android:layout_margin="14dp"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/default_image" />
 
                 <ImageView
@@ -111,7 +111,7 @@
                     android:layout_margin="14dp"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/default_image" />
             </LinearLayout>
         </LinearLayout>

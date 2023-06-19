@@ -159,9 +159,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.favorite_menu:
                         fragment=new FavoriteFragment(userId);
                         break;
-                    case R.id.history_menu:
-                        fragment=new HistoryFragment();
-                        break;
                     case R.id.notification_menu:
                         fragment = new NotificationFragment(userId);
                         break;

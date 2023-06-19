@@ -107,5 +107,7 @@ public class Notification {
     public void setConfirmId(String confirmId) {
         this.confirmId = confirmId;
     }
+
+
 }
 

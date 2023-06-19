@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DetailOfOrderDeliveryManagementActivity;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import android.content.Context;
 import android.widget.Button;
@@ -46,7 +48,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Bill bill = billList.get(position);
         holder.txtOrderId.setText(bill.getBillId());
         holder.txtStatus.setText(bill.getOrderStatus());
@@ -79,6 +81,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái đang giao hàng", Toast.LENGTH_SHORT).show();
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(),listImage.get(position));
                         }
 
                         @Override
@@ -109,6 +112,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái hoàn thành", Toast.LENGTH_SHORT).show();
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(),listImage.get(position));
                         }
 
                         @Override
@@ -172,6 +176,34 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         NumberFormat nfi = NumberFormat.getInstance(new Locale("vn","VN"));
         String price = nfi.format(value);
         return price;
+    }
+
+    public void pushNotificationOrderStatusForReceiver(String billId,String status,String receiverId,String productImage1)
+    {
+        String title = "Tình trạng đơn hàng";
+        String content = "Đơn hàng "+ billId+" đã chuyển sang trạng thái "+ status+", vào My Order để xem tình trạng đơn hàng nào";
+        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,"None",billId,"None");
+        new FirebaseNotificationHelper(mContext).addNotification(receiverId, notification, new FirebaseNotificationHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Notification> notificationList) {
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
     }
 
 }

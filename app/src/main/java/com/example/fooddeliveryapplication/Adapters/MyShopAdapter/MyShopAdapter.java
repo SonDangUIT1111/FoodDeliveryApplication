@@ -69,7 +69,7 @@ public class MyShopAdapter extends RecyclerView.Adapter {
                             Toast.makeText(context, "Đã xóa thành công", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(context, "Xóa không thành công", Toast.LENGTH_SHORT).show();
-                            Log.e("My Shop","Erro remove");
+                            Log.e("My Shop","Error remove");
                         }
                     }
                 });

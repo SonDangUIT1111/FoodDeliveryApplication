@@ -18,10 +18,13 @@ import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.Feedback.FeedBackActivity;
 import com.example.fooddeliveryapplication.Activities.Home.LoginActivity;
 import com.example.fooddeliveryapplication.Dialog.UploadDialog;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.LayoutFeedbackBillifoBinding;
@@ -34,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FeedBackAdapter extends RecyclerView.Adapter {
 
@@ -133,6 +137,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
                                 @Override
                                 public void run() {
                                     Toast.makeText(context,"Cảm ơn bạn đã đánh giá cho sản phẩm",Toast.LENGTH_SHORT).show();
+                                    pushNotificationFeedBack(item);
                                     dialog.dismiss();
                                     updateListBillInfo(item);
                                 }
@@ -241,5 +246,54 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
         public void setValue(int value) {
             this.value = value;
         }
+    }
+
+    public void pushNotificationFeedBack(BillInfo billInfo)
+    {
+        new FirebaseProductInfoHelper(billInfo.getProductId()).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
+            @Override
+            public void DataIsLoaded(Product product) {
+                String title = "Đánh giá sản phẩm";
+                String content = "Yay, vừa có một đánh giá mới cho sản phẩm '"+product.getProductName() +"' của bạn ở ngay rating đầu tiên đó, vô xem liền nào.";
+                Notification notification = FirebaseNotificationHelper.createNotification(title,content,product.getProductImage1(),product.getProductId(),"None","None");
+                new FirebaseNotificationHelper(context).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
     }
 }
