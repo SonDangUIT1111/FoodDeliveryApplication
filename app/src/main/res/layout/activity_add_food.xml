@@ -38,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:fontFamily="@font/archivo"
         android:gravity="center"
         android:text="New product"
         android:textColor="@color/main"

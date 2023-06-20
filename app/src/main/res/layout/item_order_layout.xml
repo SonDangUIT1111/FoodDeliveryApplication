@@ -7,7 +7,7 @@
     android:layout_margin="15dp"
     app:cardCornerRadius="15dp"
     android:id="@+id/itemOrder"
-    tools:context=".Activity.OrderActivity">
+    tools:context=".Activities.Order.OrderActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

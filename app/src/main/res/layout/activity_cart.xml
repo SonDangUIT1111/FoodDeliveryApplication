@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,13 +14,14 @@
         android:id="@+id/toolbar"/>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/recycler_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/toolbar"
         android:layout_above="@id/text_container"
-        android:id="@+id/recycler_view_container"
-        android:elevation="-40dp">
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:elevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,72 +29,82 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_cart_product"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:id="@+id/recycler_view_cart_product"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
+
     <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginStart="50dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_button"
         android:layout_alignParentBottom="true"
-        android:text="Proceed order"
+        android:text="Order Now"
+        android:textSize="16dp"
         android:textColor="@color/white"
         android:enabled="false"
         android:layout_marginBottom="10dp"
         android:id="@+id/proceed_order"
         android:elevation="20dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_above="@id/proceed_order"
         android:layout_marginBottom="20dp"
-        android:paddingStart="10dp"
+        android:paddingStart="30dp"
         android:id="@+id/text_container">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:foreground="#B1B1B1"
+            app:cardElevation="0dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="-50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textView22"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total price: 0đ"
+            android:fontFamily="sans-serif-thin"
+            android:text="Total"
+            android:textColor="#878787"
             android:textSize="18sp"
-            android:fontFamily="sans-serif-black"
-            android:textColor="@color/app_color"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/total_price"
-            android:layout_marginTop="10dp"/>
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Selected: 0"
-            android:textSize="18sp"
+            android:layout_marginEnd="30dp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/app_color"
-            android:id="@+id/selected"
-            android:layout_marginTop="10dp"/>
+            android:text="0đ"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Check all"
-        android:textSize="18sp"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/app_color"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="10dp"
-        android:layout_above="@id/proceed_order"
-        android:buttonTint="@color/app_color"
-        android:id="@+id/check_all"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </RelativeLayout>

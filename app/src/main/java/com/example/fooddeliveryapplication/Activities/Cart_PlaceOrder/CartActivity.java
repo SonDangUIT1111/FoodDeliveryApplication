@@ -36,8 +36,6 @@ public class CartActivity extends AppCompatActivity {
     private CartProductAdapter cartProductAdapter;
     private List<CartInfo> cartInfoList;
     private TextView totalPrice;
-    private TextView selected;
-    private CheckBox checkAll;
     private Button proceedOrder;
 
     private boolean isCheckAll = false;
@@ -60,20 +58,11 @@ public class CartActivity extends AppCompatActivity {
         recyclerViewCartProducts.setLayoutManager(new LinearLayoutManager(this));
         cartInfoList = new ArrayList<>();
         totalPrice = findViewById(R.id.total_price);
-        selected = findViewById(R.id.selected);
-        checkAll = findViewById(R.id.check_all);
         proceedOrder = findViewById(R.id.proceed_order);
 
         getCartProducts();
 
-        checkAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                cartProductAdapter.setCheckAll(isChecked);
 
-                reloadCartProducts();
-            }
-        });
 
         proceedOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +70,7 @@ public class CartActivity extends AppCompatActivity {
                 Intent intent = new Intent(CartActivity.this, ProceedOrderActivity.class);
                 intent.putExtra("buyProducts", buyProducts);
                 String totalPriceDisplay = totalPrice.getText().toString();
-                intent.putExtra("totalPrice", totalPriceDisplay.substring(13));
+                intent.putExtra("totalPrice", totalPriceDisplay);
                 intent.putExtra("userId",userId);
                 proceedOrderLauncher.launch(intent);
             }
@@ -157,8 +146,7 @@ public class CartActivity extends AppCompatActivity {
                         cartProductAdapter.setAdapterItemListener(new IAdapterItemListener() {
                             @Override
                             public void onCheckedItemCountChanged(int count, long price, ArrayList<CartInfo> selectedItems) {
-                                selected.setText("Selected: " + String.valueOf(count));
-                                totalPrice.setText("Total price: " + convertToMoney(price) + "đ");
+                                totalPrice.setText("" + convertToMoney(price) + "đ");
                                 buyProducts = selectedItems;
 
                                 if (count > 0) {
@@ -215,7 +203,7 @@ public class CartActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Cart");
+        getSupportActionBar().setTitle("My cart");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
