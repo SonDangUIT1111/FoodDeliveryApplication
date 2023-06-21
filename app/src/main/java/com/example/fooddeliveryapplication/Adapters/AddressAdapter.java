@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -151,7 +152,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         public TextView receiverPhoneNumber;
         public TextView detailAddress;
         public TextView defaultText;
-        public TextView update;
+        public ImageView update;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

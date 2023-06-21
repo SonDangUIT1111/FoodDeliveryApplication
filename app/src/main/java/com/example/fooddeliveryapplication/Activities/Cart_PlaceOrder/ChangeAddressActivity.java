@@ -30,7 +30,6 @@ import java.util.List;
 public class ChangeAddressActivity extends AppCompatActivity {
     String userId;
     private ImageView add1;
-    private TextView add2;
     private RecyclerView recyclerViewAddresses;
     private AddressAdapter addressAdapter;
     private List<Address> addressList;
@@ -47,7 +46,6 @@ public class ChangeAddressActivity extends AppCompatActivity {
         initUpdateAddAddressActivity();
 
         add1 = findViewById(R.id.add1);
-        add2 = findViewById(R.id.add2);
         recyclerViewAddresses = findViewById(R.id.recycler_view_address);
         recyclerViewAddresses.setHasFixedSize(true);
         recyclerViewAddresses.setLayoutManager(new LinearLayoutManager(this));
@@ -67,16 +65,6 @@ public class ChangeAddressActivity extends AppCompatActivity {
         loadInfo();
 
         add1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
-                intent.putExtra("userId",userId);
-                intent.putExtra("mode", "add");
-                updateAddAddressLauncher.launch(intent);
-            }
-        });
-
-        add2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);

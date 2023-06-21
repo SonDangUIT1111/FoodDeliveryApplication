@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CBF6F6F6"
     tools:context=".Activities.Cart_PlaceOrder.CartActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="#CBF6F6F6"
         android:elevation="40dp"
         android:id="@+id/toolbar"/>
 
@@ -30,10 +31,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_cart_product"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="500dp" />
 
         </LinearLayout>
 

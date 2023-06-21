@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +48,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
     private TextView receiverName;
     private TextView detailAddress;
     private TextView receiverPhoneNumber;
-    private TextView change;
+    private ImageView change;
     private RecyclerView recyclerViewOrderProducts;
     private OrderProductAdapter orderProductAdapter;
     private ArrayList<CartInfo> cartInfoList;

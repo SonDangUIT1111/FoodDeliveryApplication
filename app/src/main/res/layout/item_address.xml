@@ -1,107 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/border_item"
+    android:layout_height="110dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="10dp">
-
-    <RadioButton
-        android:layout_width="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="15dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+    <RadioButton
+        android:layout_width="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:backgroundTint="@color/app_color"
         android:buttonTint="@color/app_color"
         android:id="@+id/choose"/>
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update"
-        android:textSize="15sp"
-        android:textColor="@color/app_color"
-        android:layout_marginTop="10dp"
+        android:src="@drawable/baseline_mode_edit_24"
+        android:layout_marginTop="12dp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         android:id="@+id/update"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:text="Do Minh Nhat"
-        android:textSize="15sp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:ellipsize="end"
         android:textColor="@color/black"
         android:layout_toEndOf="@id/choose"
-        android:layout_toStartOf="@id/block_1"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="10dp"
         android:id="@+id/receiver_name"/>
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@id/receiver_name"
+            android:layout_toStartOf="@+id/update"
+            android:background="@drawable/border_textview"
+            android:text="Default"
+            android:textColor="@color/app_color"
+            android:textSize="12sp"
+            android:id="@+id/default_text"/>
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="20dp"
-        android:background="@color/black"
-        android:layout_toStartOf="@id/receiver_phone_number"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:id="@+id/block_1"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0824670790"
-        android:textSize="15sp"
-        android:layout_toStartOf="@id/update"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:id="@+id/receiver_phone_number"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hoang Nhu Street, Hop Giang Ward, Cao Bang"
+        android:ellipsize="end"
+        android:text="Hoang Nhu Street, Hop Giang Ward, Cao Bang blahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
         android:textSize="12sp"
         android:maxLines="2"
         android:layout_below="@id/receiver_name"
         android:layout_toEndOf="@id/choose"
         android:layout_toStartOf="@id/update"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="5dp"
         android:id="@+id/detail_address"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/detail_address"
+        android:text="0824670790"
+        android:layout_toEndOf="@+id/choose"
+        android:layout_below="@+id/detail_address"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="#717171"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_toEndOf="@id/choose"
-        android:background="@drawable/border_textview"
-        android:text="Default"
-        android:textColor="@color/app_color"
-        android:textSize="12sp"
-        android:id="@+id/default_text"/>
+        android:id="@+id/receiver_phone_number"/>
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="10dp"-->
-<!--        android:elevation="100dp"-->
-<!--        app:cardCornerRadius="20dp">-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-
-<!--            -->
-
-<!--        </RelativeLayout>-->
-
-<!--    </androidx.cardview.widget.CardView>-->
-
-</RelativeLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
