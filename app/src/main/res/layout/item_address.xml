@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
     <RadioButton
-        android:layout_width="40dp"
+        android:layout_width="30dp"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
@@ -29,7 +29,7 @@
         android:id="@+id/update"/>
 
     <TextView
-        android:layout_width="225dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Do Minh Nhat"
         android:textSize="16sp"
@@ -37,17 +37,17 @@
         android:ellipsize="end"
         android:textColor="@color/black"
         android:layout_toEndOf="@id/choose"
+        android:layout_toStartOf="@+id/default_text"
         android:layout_marginTop="15dp"
         android:layout_marginStart="10dp"
         android:id="@+id/receiver_name"/>
         <TextView
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_toEndOf="@id/receiver_name"
             android:layout_toStartOf="@+id/update"
             android:background="@drawable/border_textview"
             android:text="Default"
