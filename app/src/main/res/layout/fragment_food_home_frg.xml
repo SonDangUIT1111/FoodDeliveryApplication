@@ -12,9 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="30dp"
         android:fontFamily="@font/sfpro_regular"
-        android:text="See more"
+        android:text="See more ->"
         android:textColor="#FA4A0C"
         android:textSize="16sp" />
 

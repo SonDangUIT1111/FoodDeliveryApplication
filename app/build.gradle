@@ -56,4 +56,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     implementation 'com.airbnb.android:lottie:6.0.0'
     implementation 'com.tbuonomo:dotsindicator:4.3'
+    implementation 'com.etebarian:meow-bottom-navigation:1.2.0'
 }

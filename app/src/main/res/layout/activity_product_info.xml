@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    app:dotsColor="@color/main"
+                    app:dotsColor="@color/app_color2"
                     app:dotsCornerRadius="8dp"
                     app:dotsSize="16dp"
                     app:dotsSpacing="4dp"
@@ -104,7 +104,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pagerProductImage"
-                    app:layout_constraintVertical_bias="0.5" />
+                    app:layout_constraintVertical_bias="0.51" />
 
 
                 <TextView
@@ -126,8 +126,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100 000 VND"
-                    android:textColor="#FF6363"
-                    android:textSize="20sp"
+                    android:textColor="@color/app_color2"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -141,32 +142,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtPriceProduct"
                     app:layout_constraintVertical_bias="0.5">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="Sold:"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtSell"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
-                        android:drawableStart="@drawable/ic_cart"
                         android:text="100"
-                        android:textColor="@color/orange"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="Liked:"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
-
                     <TextView
                         android:id="@+id/txtFavourite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_pink_favourite"
                         android:text="100"
-                        android:textColor="#FD0D5E"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -188,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
-                    android:text="RATE"
+                    android:text="Rating"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -224,6 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Description"
+                    android:layout_marginStart="24dp"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -236,6 +247,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
+                    android:layout_marginStart="24dp"
                     android:maxLines="10"
                     android:minLines="1"
                     android:text="This is a description of the product"
@@ -252,6 +264,7 @@
                     android:layout_marginTop="24dp"
                     android:text="Comment"
                     android:textSize="16dp"
+                    android:layout_marginStart="24dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -283,7 +296,6 @@
         android:layout_height="0dp"
         android:layout_marginBottom="24dp"
         android:text="Add To Cart"
-        android:backgroundTint="@color/orange"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

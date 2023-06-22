@@ -3,6 +3,7 @@ package com.example.fooddeliveryapplication.Activities.Home;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,12 +17,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivity;
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
@@ -49,7 +52,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 
+import java.util.Collections;
 import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String userId;
@@ -96,7 +103,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .beginTransaction()
                 .add(layoutMain.getId(),new HomeFragment(userId))
                 .commit();
-        binding.navigationBottom.setItemSelected(R.id.home_menu,true);
         setEventNavigationBottom();
         setCartNavigation();
         binding.navigationLeft.setNavigationItemSelectedListener(this);
@@ -154,26 +160,122 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
     private void setEventNavigationBottom() {
-        binding.navigationBottom.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(int i) {
-                Fragment fragment;
-                switch (i) {
-                    case R.id.favorite_menu:
-                        fragment=new FavoriteFragment(userId);
-                        break;
-                    case R.id.notification_menu:
-                        fragment = new NotificationFragment(userId);
-                        break;
-                    default:
-                        fragment=new HomeFragment(userId);
-                }
+        binding.bottomNavigation.show(2,true);
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1,R.drawable.ic_favourite));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2,R.drawable.ic_home));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3,R.drawable.notification_icon));
 
-                getSupportFragmentManager().beginTransaction()
-                        .replace(layoutMain.getId(),fragment)
-                        .commit();
+        binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                Fragment fragment;
+                View headerView = binding.navigationLeft.getHeaderView(0);
+                ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
+
+                switch (model.getId())
+                {
+                    case 1:
+                        fragment=new FavoriteFragment(userId);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(layoutMain.getId(),fragment)
+                                .commit();
+                        getWindow().setNavigationBarColor(Color.parseColor("#F64280"));
+                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#F64280"));
+                        getWindow().setStatusBarColor(Color.parseColor("#F64280"));
+                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#F64280"));
+                        break;
+                    case 2:
+                        fragment=new HomeFragment(userId);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(layoutMain.getId(),fragment)
+                                .commit();
+                        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
+                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#E8584D"));
+                        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#E8584D"));
+                        break;
+                    case 3:
+                        fragment = new NotificationFragment(userId);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(layoutMain.getId(),fragment)
+                                .commit();
+                        getWindow().setNavigationBarColor(Color.parseColor("#00B7FF"));
+                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#00B7FF"));
+                        getWindow().setStatusBarColor(Color.parseColor("#00B7FF"));
+                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#00B7FF"));
+                        break;
+                }
+                return null;
             }
         });
+
+        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch (model.getId())
+                {
+                    case 1:
+                        Fragment fragment;
+                        fragment=new FavoriteFragment(userId);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(layoutMain.getId(),fragment)
+                                .commit();
+                        getWindow().setNavigationBarColor(Color.parseColor("#F64280"));
+                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#F64280"));
+                        getWindow().setStatusBarColor(Color.parseColor("#F64280"));
+                        View headerView = binding.navigationLeft.getHeaderView(0);
+                        ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
+                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#F64280"));
+                        break;
+                }
+                return null;
+            }
+        });
+        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch (model.getId())
+                {
+                    case 2:
+                        Fragment fragment;
+                        fragment=new HomeFragment(userId);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(layoutMain.getId(),fragment)
+                                .commit();
+                        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
+                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#E8584D"));
+                        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+                        View headerView = binding.navigationLeft.getHeaderView(0);
+                        ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
+                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#E8584D"));
+                        break;
+                }
+                return null;
+            }
+        });
+        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch (model.getId())
+                {
+                    case 3:
+                        Fragment fragment;
+                        fragment = new NotificationFragment(userId);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(layoutMain.getId(),fragment)
+                                .commit();
+                        getWindow().setNavigationBarColor(Color.parseColor("#00B7FF"));
+                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#00B7FF"));
+                        getWindow().setStatusBarColor(Color.parseColor("#00B7FF"));
+                        View headerView = binding.navigationLeft.getHeaderView(0);
+                        ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
+                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#00B7FF"));
+                        break;
+                }
+                return null;
+            }
+        });
+
     }
 
 
@@ -308,11 +410,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 if (count > 0 )
                 {
-                    binding.navigationBottom.showBadge(R.id.notification_menu,count);
+                    binding.bottomNavigation.setCount(3, String.valueOf(count));
                 }
                 else if (count == 0)
                 {
-                    binding.navigationBottom.dismissBadge(R.id.notification_menu);
+                    binding.bottomNavigation.clearCount(3);
                 }
 
                 for (int i = 0;i<notificationListToNotify.size(); i++)

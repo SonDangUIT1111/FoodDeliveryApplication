@@ -16,7 +16,7 @@
             android:id="@+id/favorite_menu"
             android:title="Favourite"
             android:icon="@drawable/heart_icon"
-            app:cnb_iconColor="#E91E63"/>
+            app:cnb_iconColor="#F64280"/>
 
 
         <item

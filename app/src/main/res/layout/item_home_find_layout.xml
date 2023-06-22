@@ -30,21 +30,24 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="160dp"
-            android:layout_height="250dp"
-            android:background="@drawable/rectangle_item_home"
-            android:minHeight="250dp">
+            android:layout_height="260dp"
+            android:background="@drawable/rectangle_item_home">
 
             <TextView
 
                 android:id="@+id/txtFoodName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="60dp"
                 android:fontFamily="@font/sfpro_regular"
                 android:gravity="center"
-                android:text="TextView"
+                android:text="Text View product name of"
+                android:textStyle="bold"
                 android:textColor="#555555"
-                android:textSize="16sp"
+                android:textSize="20sp"
+                android:maxLines="2"
+                android:lines="2"
+                android:ellipsize="end"
                 app:layout_constraintBottom_toTopOf="@+id/txtFoodPrice"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,8 +59,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textColor="#FF6363"
+                android:textColor="#E8584D"
                 android:textSize="16sp"
+                android:layout_marginTop="-20dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
                 app:layout_constraintEnd_toEndOf="@+id/txtFoodName"
                 app:layout_constraintHorizontal_bias="0.52"
@@ -69,7 +73,7 @@
                 android:id="@+id/linearLayout6"
                 android:layout_width="99dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="0dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/txtFoodPrice"

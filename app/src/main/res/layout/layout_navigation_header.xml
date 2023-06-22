@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/headerOfNavigationLeft"
-    android:background="@color/orange">
+    android:paddingBottom="10dp"
+    android:background="@color/app_color2">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgAvatarInNavigationBar"
@@ -44,10 +45,12 @@
         android:id="@+id/txtHelloInNavigationBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
         android:fontFamily="@font/sfpro_regularitalic"
         android:shadowColor="#AF6B6B"
+        android:textSize="18dp"
         android:text="Have a good day!"
-        android:textColor="#7E7A7A"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="@+id/txtNameInNavigationBar"
         app:layout_constraintStart_toStartOf="@id/txtNameInNavigationBar"
         app:layout_constraintTop_toBottomOf="@id/txtNameInNavigationBar" />
