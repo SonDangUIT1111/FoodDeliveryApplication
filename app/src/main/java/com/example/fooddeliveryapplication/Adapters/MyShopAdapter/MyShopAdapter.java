@@ -51,7 +51,7 @@ public class MyShopAdapter extends RecyclerView.Adapter {
         viewBinderHelper.bind(viewHolder.binding.SwipeRevealLayout, product.getProductId());
 
        viewHolder.binding.txtNameProdiuct.setText(product.getProductName());
-       viewHolder.binding.txtPrice.setText(product.getProductPrice()+"");
+       viewHolder.binding.txtPrice.setText(product.getProductPrice()+"đ");
         Glide.with(context)
                 .load(product.getProductImage1())
                 .placeholder(R.drawable.baseline_image_search_24)

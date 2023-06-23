@@ -32,6 +32,8 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_of_order_delivery_management);
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         //find view by id
         txtOrderIdDetail = (TextView) findViewById(R.id.txtOrderIdDetail);
         txtAddressDetail = (TextView) findViewById(R.id.txtAddressDetail);
@@ -50,7 +52,7 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
             int price = intent.getIntExtra("totalBill",-1);
             try {
                 txtOrderIdDetail.setText("Order Id: "+billId);
-                txtBillTotalInDetail.setText(convertToVND(price)+ "VND");
+                txtBillTotalInDetail.setText(convertToVND(price)+ "đ");
                 txtStatusOrderDetail.setText(orderStatus);
                 if (orderStatus.equals("Completed"))
                 {

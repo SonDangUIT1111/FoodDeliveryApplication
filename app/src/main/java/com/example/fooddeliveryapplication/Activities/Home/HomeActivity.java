@@ -95,6 +95,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void initUI() {
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         binding.navigationLeft.bringToFront();
         createActionBar();
 
@@ -164,13 +166,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(1,R.drawable.ic_favourite));
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(2,R.drawable.ic_home));
         binding.bottomNavigation.add(new MeowBottomNavigation.Model(3,R.drawable.notification_icon));
-
         binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
                 Fragment fragment;
-                View headerView = binding.navigationLeft.getHeaderView(0);
-                ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
 
                 switch (model.getId())
                 {
@@ -179,30 +178,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         getSupportFragmentManager().beginTransaction()
                                 .replace(layoutMain.getId(),fragment)
                                 .commit();
-                        getWindow().setNavigationBarColor(Color.parseColor("#F64280"));
-                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#F64280"));
-                        getWindow().setStatusBarColor(Color.parseColor("#F64280"));
-                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#F64280"));
                         break;
                     case 2:
                         fragment=new HomeFragment(userId);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(layoutMain.getId(),fragment)
                                 .commit();
-                        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#E8584D"));
-                        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
-                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#E8584D"));
                         break;
                     case 3:
                         fragment = new NotificationFragment(userId);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(layoutMain.getId(),fragment)
                                 .commit();
-                        getWindow().setNavigationBarColor(Color.parseColor("#00B7FF"));
-                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#00B7FF"));
-                        getWindow().setStatusBarColor(Color.parseColor("#00B7FF"));
-                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#00B7FF"));
                         break;
                 }
                 return null;
@@ -220,12 +207,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         getSupportFragmentManager().beginTransaction()
                                 .replace(layoutMain.getId(),fragment)
                                 .commit();
-                        getWindow().setNavigationBarColor(Color.parseColor("#F64280"));
-                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#F64280"));
-                        getWindow().setStatusBarColor(Color.parseColor("#F64280"));
-                        View headerView = binding.navigationLeft.getHeaderView(0);
-                        ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
-                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#F64280"));
                         break;
                 }
                 return null;
@@ -242,12 +223,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         getSupportFragmentManager().beginTransaction()
                                 .replace(layoutMain.getId(),fragment)
                                 .commit();
-                        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#E8584D"));
-                        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
-                        View headerView = binding.navigationLeft.getHeaderView(0);
-                        ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
-                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#E8584D"));
                         break;
                 }
                 return null;
@@ -264,12 +239,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         getSupportFragmentManager().beginTransaction()
                                 .replace(layoutMain.getId(),fragment)
                                 .commit();
-                        getWindow().setNavigationBarColor(Color.parseColor("#00B7FF"));
-                        binding.bottomNavigation.setBackgroundBottomColor(Color.parseColor("#00B7FF"));
-                        getWindow().setStatusBarColor(Color.parseColor("#00B7FF"));
-                        View headerView = binding.navigationLeft.getHeaderView(0);
-                        ConstraintLayout headerOfNavigationLeft = (ConstraintLayout) headerView.findViewById(R.id.headerOfNavigationLeft);
-                        headerOfNavigationLeft.setBackgroundColor(Color.parseColor("#00B7FF"));
                         break;
                 }
                 return null;

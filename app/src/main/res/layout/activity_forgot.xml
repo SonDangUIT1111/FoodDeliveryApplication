@@ -38,52 +38,49 @@
             android:layout_height="wrap_content"
             android:text="Reset password"
             android:textAlignment="center"
-            android:textColor="@color/orange"
-            android:textSize="36sp"
+            android:textColor="@color/app_color2"
+            android:textSize="24sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:paddingLeft="3dp"
-            android:text="Email"
-            android:textColor="#000000"
-            android:textSize="14sp" />
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_marginTop="-10dp"
+            app:startIconDrawable="@drawable/baseline_email_24"
+            android:hint="Email">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:lines="1"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edtEmail"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-
-            android:id="@+id/edtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="123@gmail.com"
-            android:inputType="textPersonName" />
 
 
         <Button
             android:id="@+id/btnReset"
-            android:layout_width="170dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/button_login_signup"
             android:foreground="?attr/selectableItemBackground"
             android:hint="if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))"
-            android:text="Reset"
-            android:textColor="#000000"
-            app:backgroundTint="@null" />
+            android:text="Reset" />
 
         <TextView
             android:id="@+id/forgotpassText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Already having account ?"
-            android:textColor="@color/orange"
-            android:textSize="15sp"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="You already have an account ?"
+            android:textColor="@color/app_color2"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
 

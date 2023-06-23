@@ -109,8 +109,11 @@
 
                 <TextView
                     android:id="@+id/txtNameProduct"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:text="Product Name"
                     android:textSize="34sp"
                     android:textStyle="bold|normal"

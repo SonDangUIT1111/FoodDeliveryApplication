@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Activities.Order;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,6 +37,8 @@ public class OrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityOrderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
 
         userId = getIntent().getStringExtra("userId");
         imgBack = (ImageView) findViewById(R.id.imgBack);

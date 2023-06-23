@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapplication.Activities.Feedback;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -35,6 +36,8 @@ public class FeedBackActivity extends AppCompatActivity {
 
 
     private void initUI() {
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         FeedBackAdapter adapter=new FeedBackAdapter(this,dsBillInfo,currentBill,userId);
         binding.ryc.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
         binding.ryc.setHasFixedSize(true);

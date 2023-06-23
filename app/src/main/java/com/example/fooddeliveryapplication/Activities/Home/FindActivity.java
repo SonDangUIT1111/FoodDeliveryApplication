@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -44,7 +45,8 @@ public class FindActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         // Thêm adapter và layout của adapter
         binding.searhView.setIconifiedByDefault(false);
         StaggeredGridLayoutManager layoutManager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);

@@ -46,7 +46,7 @@ public class ListOfItemInOrderAdapter extends RecyclerView.Adapter<ListOfItemInO
             @Override
             public void DataIsLoaded(Product product) {
                 holder.txtProductNameInDetail.setText(product.getProductName());
-                holder.txtPriceOfItemInDetail.setText(convertToVND(product.getProductPrice())+" VND");
+                holder.txtPriceOfItemInDetail.setText(convertToVND(product.getProductPrice())+" đ");
                 holder.txtCountInDetail.setText("Count: "+String.valueOf(billInfo.getAmount()));
                 holder.imgProductImageInDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
 

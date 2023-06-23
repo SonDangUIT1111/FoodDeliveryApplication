@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
     tools:context=".Activities.MyShop.MyFoodActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -35,19 +36,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9">
+        android:layout_weight="9"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/flpAddFood"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:contentDescription="Floating Point"
-            app:elevation="5dp"
-            app:srcCompat="@drawable/round_add_24" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleView"
@@ -57,4 +48,15 @@
         </androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/flpAddFood"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:text="Add New Food"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

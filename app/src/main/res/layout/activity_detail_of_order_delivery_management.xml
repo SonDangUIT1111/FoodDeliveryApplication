@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.18"
-            app:srcCompat="@drawable/ic_back_ios" />
+            app:srcCompat="@drawable/round_arrow_back_ios_24" />
 
         <TextView
             android:id="@+id/txt8"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Detail Order"
-            android:textSize="34sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,11 +42,16 @@
 
         <TextView
             android:id="@+id/txtOrderIdDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textAlignment="center"
+            android:lines="1"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:layout_marginTop="10dp"
             android:text="Order ID: randomOrderId1"
-            android:textColor="@color/orange"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:text="Confirm"
-            android:textColor="@color/orange"
+            android:textColor="@color/app_color2"
             android:textStyle="bold"
             android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/txt4"

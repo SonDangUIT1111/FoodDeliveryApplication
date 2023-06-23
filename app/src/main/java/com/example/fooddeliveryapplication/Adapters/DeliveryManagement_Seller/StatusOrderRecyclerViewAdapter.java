@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,11 +50,12 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        int pos = position;
         Bill bill = billList.get(position);
         holder.txtOrderId.setText(bill.getBillId());
         holder.txtStatus.setText(bill.getOrderStatus());
         holder.txtDateOfOrder.setText(bill.getOrderDate());
-        holder.txtOrderTotal.setText(convertToVND(bill.getTotalPrice()) + " VND");
+        holder.txtOrderTotal.setText(convertToVND(bill.getTotalPrice()) + "đ");
 
         holder.imgProductImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         Glide.with(mContext)
@@ -81,7 +83,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái đang giao hàng", Toast.LENGTH_SHORT).show();
-                            pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(),listImage.get(position));
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(),listImage.get(pos));
                         }
 
                         @Override
@@ -112,7 +114,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái hoàn thành", Toast.LENGTH_SHORT).show();
-                            pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(),listImage.get(position));
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(),listImage.get(pos));
                         }
 
                         @Override
@@ -157,7 +159,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
         public TextView txtDateOfOrder;
         public TextView txtOrderTotal;
         public Button btnChangeStatus;
-        public ConstraintLayout parentOfItemCard;
+        public CardView parentOfItemCard;
         public String key;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

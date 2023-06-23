@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapplication.Activities.MyShop;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -32,6 +33,8 @@ public class MyFoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityMyFoodBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
 
         userId = getIntent().getStringExtra("userId");
         adapter=new MyShopAdapter(ds,MyFoodActivity.this, userId);

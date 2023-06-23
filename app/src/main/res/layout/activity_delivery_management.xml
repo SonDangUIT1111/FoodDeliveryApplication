@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.25"
-            app:srcCompat="@drawable/ic_back_ios" />
+            app:srcCompat="@drawable/round_arrow_back_ios_24" />
 
         <TextView
             android:id="@+id/txt3"

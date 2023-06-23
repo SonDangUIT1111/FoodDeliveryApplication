@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:viewBindingIgnore="true"
-    tools:context=".Activity.LoginActivity">
+    tools:context=".Activities.Home.LoginActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -37,82 +37,81 @@
             android:id="@+id/loginText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:text="Welcome to FIVEST"
             android:textAlignment="center"
-            android:textColor="@color/orange"
-            android:textSize="36sp"
+            android:textColor="@color/app_color2"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:paddingLeft="3dp"
-            android:text="Email"
-            android:textColor="#000000"
-            android:textSize="14sp" />
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_marginTop="-10dp"
+            app:startIconDrawable="@drawable/baseline_email_24"
+            android:hint="Email">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:lines="1"
+                android:id="@+id/edtEmail"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-
-            android:id="@+id/edtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="123@gmail.com"
-            android:inputType="textPersonName" />
-
-
-        <TextView
-            android:id="@+id/textView2"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:paddingLeft="3dp"
-            android:text="Password"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/edtPasswordLogin"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_marginTop="-10dp"
+            app:startIconDrawable="@drawable/baseline_lock_24"
+            android:hint="Password">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:lines="1"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:id="@+id/edtPasswordLogin"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="password"
-            android:inputType="textPassword" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/forgotpassText"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Forgot password"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/btnReset"
-            android:layout_width="170dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button_login_signup"
-            android:foreground="?attr/selectableItemBackground"
             android:hint="if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))"
-            android:text="Login"
-            android:textColor="#000000"
-            app:backgroundTint="@null" />
+            android:text="Login"/>
 
-        <TextView
-            android:id="@+id/forgotpassText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Forgot password?"
-            android:textColor="@color/orange"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+
 
 
         <TextView android:id="@+id/donthaveaccText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
-            android:text="Or don't have an account? Sign Up ->"
-            android:textColor="@color/orange"
-            android:textSize="15sp"
+            android:text="Don't have an account? Sign Up"
+            android:gravity="center"
+            android:textColor="@color/app_color2"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
 
