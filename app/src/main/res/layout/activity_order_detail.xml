@@ -19,20 +19,19 @@
 
             <ImageView
                 android:id="@+id/imgBack"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="20dp"
+                android:layout_height="60dp"
                 android:layout_weight="1"
-                android:padding="20dp"
-                app:srcCompat="@drawable/icon_back_myshop" />
+                android:padding="10dp"
+                app:srcCompat="@drawable/baseline_arrow_back_24" />
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Detail Order"
-                android:textSize="16sp" />
+                android:layout_height="60dp"
+                android:gravity="center_vertical"
+                android:text="Order Detail"
+                android:textSize="22sp" />
 
 
         </LinearLayout>

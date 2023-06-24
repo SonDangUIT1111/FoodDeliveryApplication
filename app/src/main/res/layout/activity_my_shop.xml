@@ -16,20 +16,19 @@
 
         <ImageView
             android:id="@+id/imgBack"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="20dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:padding="15dp"
-            app:srcCompat="@drawable/icon_back_myshop" />
+            android:padding="10dp"
+            app:srcCompat="@drawable/baseline_arrow_back_24" />
 
         <TextView
-            android:id="@+id/textView93"
+            android:id="@+id/textView9"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
             android:text="My Shop"
-            android:textSize="18sp" />
+            android:textSize="22sp" />
     </LinearLayout>
     <!--  end of header  -->
     <!-- start ShopInfo  -->

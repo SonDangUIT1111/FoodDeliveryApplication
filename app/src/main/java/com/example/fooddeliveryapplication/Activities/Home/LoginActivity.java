@@ -14,12 +14,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
+import com.example.fooddeliveryapplication.Adapters.Home.LoginSignUpAdapter;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,98 +31,59 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-    ActivityResultLauncher launcher;
-    String TAG="firebase - LOGIN";
-    EditText edtUserNameLogin,edtPasswordLogin;
-    Button btnLogin;
-    public static final int CODE_SUCCESS=100001;
-    private static User currentUser=new User();
+    ViewPager2 viewPager2;
+    TabLayout tabLayout2;
+
+    LoginSignUpAdapter myFragmentAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-        getLauncher();
-        anhxa();
-        TextView signup = findViewById(R.id.donthaveaccText);
-        btnLogin.setOnClickListener(view -> {
-            if (edtPasswordLogin.getText().toString().isEmpty()||edtUserNameLogin.getText().toString().isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Ô Trống", Toast.LENGTH_SHORT).show();
-            } else {
 
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtUserNameLogin.getText().toString(), edtPasswordLogin.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        viewPager2=findViewById(R.id.viewpaper2);
+        tabLayout2=findViewById(R.id.tablayoutHome);
 
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            String idCurrentUser=FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            FirebaseDatabase.getInstance().getReference("Users").child(idCurrentUser).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    currentUser=snapshot.getValue(User.class);
-                                    Log.d(TAG, "đăng nhập thành công", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
-                                    Intent intent=new Intent(LoginActivity.this, HomeActivity.class);
-                                    startActivity(intent);
-                                }
+        myFragmentAdapter =new LoginSignUpAdapter(LoginActivity.this);
+        viewPager2.setAdapter(myFragmentAdapter);
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                }
-                            });
+        TabLayout.Tab tabLogin=tabLayout2.newTab();
+        tabLogin.setText("Login");
 
 
-                        } else {
-                            Log.w(TAG, "đăng nhập thất bại", task.getException());
-                            Toast.makeText(LoginActivity.this, "Sai mật khẩu hoặc email", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-
-        TextView txtForgot=findViewById(R.id.forgotpassText);
-        txtForgot.setOnClickListener(new View.OnClickListener() {
+        tabLayout2.addTab(tabLayout2.newTab().setText("Login"));
+        tabLayout2.addTab(tabLayout2.newTab().setText("Sign Up"));
+        tabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(LoginActivity.this,ForgotActivity.class);
-                startActivity(intent);
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager2.setCurrentItem(tab.getPosition());
             }
-        });
 
-        signup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                launcher.launch(intent);
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout2.selectTab(tabLayout2.getTabAt(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
             }
         });
     }
 
-    private void anhxa() {
-        edtPasswordLogin=findViewById(R.id.edtPasswordLogin);
-        edtUserNameLogin=findViewById(R.id.edtEmail);
-        btnLogin=findViewById(R.id.btnReset);
-    }
 
-
-
-    public void getLauncher() {
-        launcher =registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result -> {
-            if (result.getResultCode()==CODE_SUCCESS) {
-                Intent tmp=result.getData();
-                currentUser= (User) tmp.getSerializableExtra("User");
-                edtUserNameLogin.setText(currentUser.getEmail().toString());
-            }
-        });
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    public void login(String email,String pass) {
-
-    }
 }

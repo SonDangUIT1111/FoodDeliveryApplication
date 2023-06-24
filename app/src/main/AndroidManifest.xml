@@ -70,9 +70,6 @@
             android:name=".Activities.Home.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Home.SignupActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activities.Home.IntroActivity"
             android:exported="true" >
         <intent-filter>

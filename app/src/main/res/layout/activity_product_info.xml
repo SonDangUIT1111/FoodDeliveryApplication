@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:srcCompat="@drawable/round_arrow_back_ios_24" />
+            app:srcCompat="@drawable/baseline_arrow_back_24" />
 
         <ImageButton
             android:id="@+id/btnAddFavourite"
