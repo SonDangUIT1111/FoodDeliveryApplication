@@ -20,15 +20,24 @@
         android:textSize="18sp"
         android:layout_below="@id/toolbar"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="30dp"
         android:id="@+id/addresses"/>
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/baseline_add_location_alt_24"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="20dp"
+        android:id="@+id/add1"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/addresses"
-        android:id="@+id/recycler_view_address_container"
-        android:layout_above="@id/add_container">
+        android:id="@+id/recycler_view_address_container">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,39 +47,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp"
+                android:padding="20dp"
                 android:id="@+id/recycler_view_address"/>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/add_container">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
-            android:id="@+id/add1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add new"
-            android:textSize="18sp"
-            android:textColor="@color/app_color"
-            android:layout_marginStart="5dp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/add2"/>
-
-    </LinearLayout>
 
 </RelativeLayout>

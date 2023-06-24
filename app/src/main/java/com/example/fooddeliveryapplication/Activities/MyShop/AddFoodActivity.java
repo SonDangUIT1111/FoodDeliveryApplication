@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,6 +55,8 @@ public class AddFoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityAddFoodBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         //Nhận intent từ edit--------------
         Intent intentUpdate=getIntent();
         userId = getIntent().getStringExtra("userId");
@@ -71,6 +74,7 @@ public class AddFoodActivity extends AppCompatActivity {
             imgOld4=productUpdate.getProductImage4();
             if (!imgOld1.isEmpty())
             {
+                binding.layout1.setVisibility(View.GONE);
                 Glide.with(this)
                         .asBitmap()
                         .load(imgOld1)
@@ -79,6 +83,7 @@ public class AddFoodActivity extends AppCompatActivity {
             }
             if (!imgOld2.isEmpty())
             {
+                binding.layout2.setVisibility(View.GONE);
                 Glide.with(this)
                         .asBitmap()
                         .load(imgOld2)
@@ -87,6 +92,7 @@ public class AddFoodActivity extends AppCompatActivity {
             }
             if (!imgOld3.isEmpty())
             {
+                binding.layout3.setVisibility(View.GONE);
                 Glide.with(this)
                         .asBitmap()
                         .load(imgOld3)
@@ -95,6 +101,7 @@ public class AddFoodActivity extends AppCompatActivity {
             }
             if (!imgOld4.isEmpty())
             {
+                binding.layout4.setVisibility(View.GONE);
                 Glide.with(this)
                         .asBitmap()
                         .load(imgOld4)
@@ -105,28 +112,28 @@ public class AddFoodActivity extends AppCompatActivity {
         }
         //---------------------------------
         position=-1;
-        binding.imgProduct1.setOnClickListener(new View.OnClickListener() {
+        binding.addImage1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position=1;
                 pickImg();
             }
         });
-        binding.imgProduct2.setOnClickListener(new View.OnClickListener() {
+        binding.addImage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position=2;
                 pickImg();
             }
         });
-        binding.imgProduct3.setOnClickListener(new View.OnClickListener() {
+        binding.addImage3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position=3;
                 pickImg();
             }
         });
-        binding.imgProduct4.setOnClickListener(new View.OnClickListener() {
+        binding.addImage4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position=4;
@@ -330,21 +337,25 @@ public class AddFoodActivity extends AppCompatActivity {
                         case 1:
                             uri1=intent.getData();
                             img1=uri1.toString();
+                            binding.layout1.setVisibility(View.GONE);
                             binding.imgProduct1.setImageURI(uri1);
                             break;
                         case 2:
                             uri2=intent.getData();
                             img2=uri2.toString();
+                            binding.layout2.setVisibility(View.GONE);
                             binding.imgProduct2.setImageURI(uri2);
                             break;
                         case 3:
                             uri3=intent.getData();
                             img3=uri3.toString();
+                            binding.layout3.setVisibility(View.GONE);
                             binding.imgProduct3.setImageURI(uri3);
                             break;
                         case 4:
                             uri4=intent.getData();
                             img4=uri4.toString();
+                            binding.layout4.setVisibility(View.GONE);
                             binding.imgProduct4.setImageURI(uri4);
                             break;
                     }

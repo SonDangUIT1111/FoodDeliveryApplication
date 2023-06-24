@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -202,6 +203,8 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (mode.equals("add")) {

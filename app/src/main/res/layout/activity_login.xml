@@ -1,123 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/signupBtn"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:viewBindingIgnore="true"
-    tools:context=".Activity.LoginActivity">
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="254.04dp"
-        android:background="@drawable/bkg"
-        android:orientation="vertical"
-        tools:context=".MainActivity"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+    android:orientation="vertical"
+    tools:context=".Activities.Home.LoginActivity"
+    android:background="#EDEDED">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="@dimen/padding_dimen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="MissingConstraints">
-
-        <TextView
-            android:id="@+id/loginText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:textAlignment="center"
-            android:textColor="@color/orange"
-            android:textSize="36sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:paddingLeft="3dp"
-            android:text="Email"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <EditText
-
-            android:id="@+id/edtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="123@gmail.com"
-            android:inputType="textPersonName" />
+        android:layout_height="258dp"
+        android:background="@color/white"
+        android:orientation="vertical">
 
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:paddingLeft="3dp"
-            android:text="Password"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/edtPasswordLogin"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:hint="password"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="170dp"
-            android:layout_height="50dp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="306dp"
+            android:layout_height="189dp"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button_login_signup"
-            android:foreground="?attr/selectableItemBackground"
-            android:hint="if (tmp.getRecipientId().equalsIgnoreCase(LoginActivity.getCurrentUser().getUserId()))"
-            android:text="Login"
-            android:textColor="#000000"
-            app:backgroundTint="@null" />
+            android:background="@drawable/bkg" />
 
-        <TextView
-            android:id="@+id/forgotpassText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Forgot password?"
-            android:textColor="@color/orange"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayoutHome"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:contentDescription="A description of my tablayout"
+            app:tabBackground="@drawable/tab_line"
+            app:tabIndicatorColor="@color/app_color2"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="3dp">
 
-
-        <TextView android:id="@+id/donthaveaccText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Or don't have an account? Sign Up ->"
-            android:textColor="@color/orange"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
-
+        </com.google.android.material.tabs.TabLayout>
 
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpaper2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

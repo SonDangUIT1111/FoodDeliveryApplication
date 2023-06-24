@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="Fragments.Home.SignUpFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:layout_gravity="center"
+                android:visibility="invisible"
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+
+                android:id="@+id/lnSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="24dp"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/loginText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sign up"
+                    android:textAlignment="center"
+                    android:textColor="@color/app_color2"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-10dp"
+                    app:startIconDrawable="@drawable/baseline_person_24"
+                    android:hint="Username">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/edtName"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-20dp"
+                    app:startIconDrawable="@drawable/baseline_email_24"
+                    android:hint="Email">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/edtEmail"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-20dp"
+                    app:startIconDrawable="@drawable/baseline_phone_24"
+                    android:hint="Phone Number">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/edtPhone"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-20dp"
+                    app:startIconDrawable="@drawable/baseline_lock_24"
+                    android:hint="Password">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/edtPass"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/btnSignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_login_signup"
+                    android:backgroundTint="@color/orange"
+                    android:text="Sign Up"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
+
+</LinearLayout>

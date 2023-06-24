@@ -16,107 +16,26 @@
 
         <ImageView
             android:id="@+id/imgBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="20dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:padding="20dp"
-            app:srcCompat="@drawable/icon_back_myshop" />
+            android:padding="10dp"
+            app:srcCompat="@drawable/baseline_arrow_back_24" />
 
         <TextView
-            android:id="@+id/textView93"
+            android:id="@+id/textView9"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
             android:text="My Shop"
-            android:textSize="16sp" />
+            android:textSize="22sp" />
     </LinearLayout>
     <!--  end of header  -->
     <!-- start ShopInfo  -->
-    <androidx.cardview.widget.CardView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
-        android:layout_weight="3"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="2">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/box_count_product"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="5"
-                android:fontFamily="@font/sfpro_black"
-                android:gravity="center"
-                android:text="Sản phẩm"
-                android:textAlignment="inherit"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_height="0dp"
-                android:layout_marginBottom="20dp"
-                android:layout_weight="5"
-                android:fontFamily="@font/sfpro_black"
-                android:gravity="center"
-                android:text="0"
-                android:textSize="24sp" />
-        </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/box_count_unprocess_product"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/textView222"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="5"
-                    android:fontFamily="@font/sfpro_black"
-                    android:gravity="center"
-                    android:text="Chờ lấy hàng"
-                    android:textAlignment="inherit"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView33333"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="5"
-                    android:fontFamily="@font/sfpro_black"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textSize="24sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+        android:layout_height="250dp"
+        android:src="@drawable/bkg"/>
     <!-- end of ShopInfo  -->
     <!-- start list option -->
     <LinearLayout
@@ -145,8 +64,8 @@
                 android:orientation="horizontal"
                 android:weightSum="10">
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     app:srcCompat="@drawable/foodicon" />
                 <TextView
                     android:layout_width="0dp"
@@ -156,12 +75,6 @@
                     android:layout_marginStart="10dp"
                     android:text="My Food"
                     android:textSize="20sp" />
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:rotation="180"
-                    app:srcCompat="@drawable/icon_back_myshop" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
@@ -183,8 +96,8 @@
                 android:orientation="horizontal"
                 android:weightSum="10">
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     app:srcCompat="@drawable/deliicon" />
                 <TextView
                     android:layout_width="0dp"
@@ -193,55 +106,9 @@
                     android:fontFamily="@font/sfpro_black"
                     android:text="Delivery Manage"
                     android:textSize="20sp" />
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:rotation="180"
-                    app:srcCompat="@drawable/icon_back_myshop" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardHistory"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="20dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="30dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    app:srcCompat="@drawable/historyicon" />
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="9"
-                    android:fontFamily="@font/sfpro_black"
-                    android:text="History"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:id="@+id/imageView92"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:rotation="180"
-                    app:srcCompat="@drawable/icon_back_myshop" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
     <!-- end of list option -->
 </LinearLayout>

@@ -83,7 +83,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
                 //set Thông tin
                 viewHolder.binding.lnBillInfo.txtPrice.setText(CurrencyFormatter.getFormatter().format(item.getAmount()*Double.valueOf(tmp.getProductPrice()))+"");
                 viewHolder.binding.lnBillInfo.txtName.setText(tmp.getProductName());
-                viewHolder.binding.lnBillInfo.txtCount.setText(item.getAmount()+"");
+                viewHolder.binding.lnBillInfo.txtCount.setText("Count: " +item.getAmount()+"");
                 Glide.with(context)
                         .load(tmp.getProductImage1())
                         .placeholder(R.drawable.default_image)

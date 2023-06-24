@@ -18,5 +18,6 @@
     <color name="textColorPrimary">#212121</color>
     <color name="textColorSecondary">#757575</color>
     <color name="app_color">#FD8C32</color>
+    <color name="app_color2">#E8584D</color>
     <color name="back_color">#FFCCCC</color>
 </resources>

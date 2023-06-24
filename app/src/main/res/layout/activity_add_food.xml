@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
-    tools:context=".Activities.AddProductActivity">
+    tools:context=".Activities.MyShop.AddFoodActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,33 +17,21 @@
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="20dp"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:padding="15dp"
-
-            app:srcCompat="@drawable/icon_back_myshop" />
+            android:padding="10dp"
+            app:srcCompat="@drawable/baseline_arrow_back_24" />
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="60dp"
             android:gravity="center_vertical"
             android:text="My Shop"
-            android:textSize="16sp" />
+            android:textSize="22sp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:fontFamily="@font/archivo"
-        android:gravity="center"
-        android:text="New product"
-        android:textColor="@color/main"
-        android:textSize="34sp"
-        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -51,7 +39,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_weight="3"
-        app:cardCornerRadius="30dp">
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,61 +47,241 @@
             android:orientation="vertical"
             android:weightSum="2">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imgProduct1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="14dp"
-                    android:layout_weight="1"
                     android:padding="5dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/default_image" />
+                    android:background="@drawable/border_item"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <ImageView
+                    android:id="@+id/layout1"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_margin="14dp"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_photo_album_24" />
+
+                <ImageView
+                    android:id="@+id/add_image_1"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="-4dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingTop="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/baseline_camera_enhance_24" />
 
                 <ImageView
                     android:id="@+id/imgProduct2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="14dp"
+                    android:background="@drawable/border_item"
                     android:layout_weight="1"
                     android:padding="5dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/default_image" />
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
+                <ImageView
+                    android:id="@+id/layout2"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_margin="14dp"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_photo_album_24" />
+
+                <ImageView
+                    android:id="@+id/add_image_2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="-4dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/baseline_camera_enhance_24" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="185dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imgProduct3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="14dp"
-                    android:layout_weight="1"
                     android:padding="5dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/default_image" />
+                    android:background="@drawable/border_item"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <ImageView
+                    android:id="@+id/layout3"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_margin="14dp"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_photo_album_24" />
+
+                <ImageView
+                    android:id="@+id/add_image_3"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="-4dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingTop="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/baseline_camera_enhance_24" />
 
                 <ImageView
                     android:id="@+id/imgProduct4"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_margin="14dp"
+                    android:background="@drawable/border_item"
                     android:layout_weight="1"
                     android:padding="5dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/default_image" />
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/layout4"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_margin="14dp"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/baseline_photo_album_24" />
+
+                <ImageView
+                    android:id="@+id/add_image_4"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="-4dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/baseline_camera_enhance_24" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="185dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:weightSum="2">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/imgProduct3"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_margin="14dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    app:srcCompat="@drawable/default_image" />-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/imgProduct4"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_margin="14dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:scaleType="centerCrop"-->
+<!--                    app:srcCompat="@drawable/default_image" />-->
+<!--            </LinearLayout>-->
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

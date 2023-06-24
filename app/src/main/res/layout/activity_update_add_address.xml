@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.Cart_PlaceOrder.UpdateAddAddressActivity">
@@ -18,78 +19,94 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
         android:text="Contact"
+        android:textStyle="bold"
         android:textSize="18sp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="10dp"
         android:id="@+id/contact"/>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/contact"
-        android:layout_marginTop="10dp"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_marginTop="-10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/rounded_edittext"
-        android:hint="Full name"
-        android:id="@+id/full_name"/>
+        app:startIconDrawable="@drawable/baseline_person_24"
+        android:hint="Full name">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contact"
+            android:maxLines="1"
+            android:lines="1"
+            android:id="@+id/full_name"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/full_name"
-        android:layout_marginTop="10dp"
+        app:startIconDrawable="@drawable/baseline_phone_24"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_marginTop="-20dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/rounded_edittext"
-        android:hint="Phone number"
-        android:inputType="phone"
-        android:id="@+id/phone_number"/>
+        android:hint="Phone number">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:lines="1"
+            android:layout_below="@id/contact"
+            android:id="@+id/phone_number"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/phone_number"
         android:text="Detail address"
+        android:textStyle="bold"
         android:textSize="18sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="25dp"
         android:id="@+id/txt_detail_address"/>
-
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_detail_address"
-        android:layout_marginTop="10dp"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_marginTop="-10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/rounded_edittext"
-        android:hint="Detail address"
-        android:id="@+id/detail_address"/>
+        app:startIconDrawable="@drawable/baseline_location_on_24"
+        android:hint="Detail address">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/contact"
+            android:maxLines="4"
+            android:id="@+id/detail_address"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detail_address"
-        android:text="Settings"
-        android:textSize="18sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:id="@+id/settings"/>
+
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/settings"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/border_item">
+        android:layout_marginTop="0dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Set as default address"
             android:textSize="18sp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
 
@@ -98,15 +115,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="25dp"
             android:buttonTint="@color/app_color"
             android:id="@+id/set_default"/>
 
     </RelativeLayout>
 
     <Button
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="25dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/rounded_button"
         android:text="Update"
@@ -116,4 +134,5 @@
         android:elevation="20dp"
         android:id="@+id/update_complete"/>
 
-</RelativeLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

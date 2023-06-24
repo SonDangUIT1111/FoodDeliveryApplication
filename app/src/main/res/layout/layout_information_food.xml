@@ -8,173 +8,73 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_drw"
         android:orientation="horizontal">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/background_drw">
+            android:layout_marginTop="30dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/txt4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/sfpro_bold"
-                    android:text="Tên sản phẩm"
-                    android:textColor="@color/main"
-                    android:textSize="20sp" />
-
-                <EditText
-
-                    android:id="@+id/edtNameOfProduct"
-                    android:layout_width="match_parent"
-                    android:layout_height="53dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:background="@drawable/home2"
-                    android:ems="10"
-                    android:fontFamily="@font/sfpro_light"
-                    android:hint="name"
-                    android:inputType="textPersonName"
-                    android:paddingStart="10dp"
-                    android:textColor="#AEACAC"
-                    android:textColorHint="#B3B3B3" />
 
                 <TextView
-                    android:id="@+id/txt6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/sfpro_bold"
-                    android:text="Giá"
-                    android:textColor="@color/main"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/edtPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="53dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:background="@drawable/home2"
-                    android:ems="10"
-                    android:fontFamily="@font/sfpro_light"
-                    android:hint="10xxx"
-                    android:inputType="textPersonName"
-                    android:paddingStart="10dp"
-                    android:textColor="#AEACAC"
-                    android:textColorHint="#B1B1B1" />
-
-                <TextView
-                    android:id="@+id/txt7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/sfpro_bold"
-                    android:text="Add description"
-                    android:textColor="@color/main"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/edtDescp"
-                    android:layout_width="match_parent"
-                    android:layout_height="75dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:background="@drawable/home2"
-                    android:ems="10"
-                    android:fontFamily="@font/sfpro_light"
-                    android:hint="bla bla............"
-                    android:inputType="textPersonName"
-                    android:maxLength="150"
-                    android:paddingStart="10dp"
-                    android:textColor="#AEACAC"
-                    android:textColorHint="#B1B1B1" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:id="@+id/textview111"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/sfpro_bold"
-                        android:text="Amount"
-                        android:textColor="@color/main"
-                        android:textSize="20sp" />
-
-                    <EditText
-                        android:id="@+id/edtAmount"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_weight="1.5"
-                        android:background="@drawable/home2"
-                        android:ems="10"
-                        android:fontFamily="@font/sfpro_light"
-                        android:hint="0"
-                        android:inputType="textPersonName"
-                        android:paddingStart="20dp"
-                        android:textColor="#AEACAC"
-                        android:textColorHint="#B1B1B1" />
-
-                </LinearLayout>
-
-                <LinearLayout
+                    android:text="Product Information"
+                    android:gravity="center"
+                    android:layout_marginStart="25dp"
+                    android:fontFamily="@font/sfpro_bold"
+                    android:textSize="24dp"
+                    app:layout_constraintStart_toStartOf="parent"/>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:startIconDrawable="@drawable/baseline_fastfood_24"
+                    android:hint="Product name">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:id="@+id/edtNameOfProduct"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginEnd="30dp"
+                    android:orientation="horizontal">
                     <TextView
-                        android:id="@+id/txt1111"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_marginEnd="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Type:"
+                        android:gravity="center"
                         android:fontFamily="@font/sfpro_bold"
-                        android:gravity="center|left"
-                        android:text="Type"
-                        android:textColor="@color/main"
-                        android:textSize="20sp" />
+                        android:textSize="18dp"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
                     <RadioGroup
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_weight="1.5">
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
 
                         <RadioButton
                             android:id="@+id/rbFood"
                             android:layout_width="wrap_content"
-                            android:layout_height="48dp"
+                            android:layout_height="match_parent"
                             android:layout_marginEnd="50dp"
                             android:checked="true"
                             android:fontFamily="@font/sfpro_bold"
@@ -183,30 +83,84 @@
 
                         <RadioButton
                             android:id="@+id/rbDrink"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:fontFamily="@font/sfpro_bold"
                             android:text="Drink" />
                     </RadioGroup>
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:startIconDrawable="@drawable/baseline_monetization_on_24"
+                    android:hint="Product price">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:lines="1"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:id="@+id/edtPrice"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:startIconDrawable="@drawable/baseline_description_24"
+                    android:hint="Description">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:lines="5"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:id="@+id/edtDescp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_marginTop="-10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:startIconDrawable="@drawable/baseline_storage_24"
+                    android:hint="Amount">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:lines="5"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:id="@+id/edtAmount"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <Button
                     android:id="@+id/btnAddProduct"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="50dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginBottom="50dp"
-                    android:background="@drawable/home3"
-                    android:fontFamily="@font/baloo"
-                    android:text="Add food"
+                    android:text="Add Food"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    app:backgroundTint="@null"
-
-                    />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 

@@ -7,13 +7,13 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.fooddeliveryapplication.Activities.EditProfileActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Model.User;
@@ -33,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView userAvatar;
     private CardView cardViewOrders;
     private CardView cardViewMyShop;
-    private TextView change;
+    private ImageView change;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
         userAvatar = (ImageView) findViewById(R.id.user_avatar);
         cardViewOrders = (CardView) findViewById(R.id.card_view_orders);
         cardViewMyShop = (CardView) findViewById(R.id.card_view_my_shop);
-        change = (TextView) findViewById(R.id.change);
+        change = (ImageView) findViewById(R.id.change);
 
         getUserInfo(ProfileActivity.this);
 
@@ -84,6 +84,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Profile");

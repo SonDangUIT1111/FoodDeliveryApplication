@@ -5,18 +5,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_horizontal"
-    android:padding="5dp"
     app:mode="same_level"
     app:dragEdge="right"
+    android:padding="2dp"
     android:id="@+id/swipe_reveal_layout">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:paddingStart="10dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="5dp"
-        android:padding="8dp"
         android:id="@+id/buttons_container">
 
         <ImageButton
@@ -41,20 +40,23 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:padding="10dp"
-        android:elevation="40dp"
-        android:backgroundTint="@color/back_color">
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp"
+        android:backgroundTint="@color/colorPrimary">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:padding="2dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="45dp"
+                app:cardCornerRadius="5dp"
                 android:id="@+id/product_image_container">
 
                 <ImageView
@@ -67,16 +69,18 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:orientation="vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:layout_toEndOf="@id/product_image_container">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:text="Food name"
+                    android:layout_marginTop="0dp"
+                    android:ellipsize="end"
                     android:textSize="18sp"
                     android:maxLines="1"
                     android:id="@+id/product_name"/>
@@ -84,25 +88,28 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/app_color"
-                    android:text="#1,000"
-                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:text="1,000"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
                     android:id="@+id/product_price"/>
 
             </LinearLayout>
 
             <CheckBox
+                android:id="@+id/check_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text=""
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-                android:buttonTint="@color/app_color"
-                android:id="@+id/check_box"/>
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="50dp"

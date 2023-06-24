@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapplication.Activities.Order;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -39,6 +40,8 @@ public class OrderDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityOrderDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         //Lấy Intent
         Intent intent=getIntent();
         //Khởi tạo dữ liệu

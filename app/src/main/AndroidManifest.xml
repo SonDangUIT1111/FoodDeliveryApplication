@@ -61,16 +61,13 @@
             android:name=".Activities.Cart_PlaceOrder.CartActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.EditProfileActivity"
+            android:name=".Activities.Home.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Home.FindActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Home.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.Home.SignupActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.Home.IntroActivity"
@@ -94,6 +91,10 @@
         <activity
             android:name=".Activities.ProductInformation.ProductInfoActivity"
             android:exported="false"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

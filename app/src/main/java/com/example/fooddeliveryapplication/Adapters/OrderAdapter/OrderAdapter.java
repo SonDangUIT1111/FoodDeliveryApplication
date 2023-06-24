@@ -79,7 +79,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
 
         }
         else {
-            viewHolder.binding.txtStatus.setTextColor(Color.parseColor("#00DEC1"));
+            viewHolder.binding.txtStatus.setTextColor(Color.parseColor("#48DC7D"));
             viewHolder.binding.btnSee.setText("Feedback & Rate");
             viewHolder.binding.btnSee.setOnClickListener(new View.OnClickListener() {
                 @Override

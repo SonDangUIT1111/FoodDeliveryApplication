@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -21,6 +22,9 @@ public class ForgotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding=ActivityForgotBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
+        getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         binding.btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delivery"
+        android:text="Delivery Information"
         android:textSize="34sp"
         android:layout_below="@id/toolbar"
         android:layout_marginStart="25dp"
@@ -26,87 +26,72 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Address details"
+        android:text="Address detail"
         android:textSize="18sp"
         android:layout_below="@id/delivery"
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:id="@+id/address_detail"/>
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="change"
-        android:textSize="15sp"
-        android:textColor="@color/app_color"
+        android:src="@drawable/baseline_edit_note_24"
         android:layout_below="@id/delivery"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="25dp"
         android:id="@+id/change"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="40dp"
         android:layout_below="@id/address_detail"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginStart="25dp"
         android:layout_marginEnd="25dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="15dp"
         android:id="@+id/address_container">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Do Minh Nhat"
+                android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:id="@+id/receiver_name"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"
-                android:alpha="0.5"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hoang Nhu Street, Hop Giang Ward, Cao Bang"
                 android:maxLines="2"
-                android:textSize="18sp"
-                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:textSize="16sp"
+                android:layout_marginTop="0dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:id="@+id/detail_address" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/black"
-                android:alpha="0.5"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0824670790"
                 android:textSize="18sp"
-                android:layout_marginTop="10dp"
+                android:textColor="#717171"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/receiver_phone_number"/>
@@ -118,7 +103,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Products"
+        android:text="Order detail"
         android:textSize="18sp"
         android:layout_below="@id/address_container"
         android:layout_marginTop="20dp"
@@ -161,9 +146,10 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="50dp"
         android:background="@drawable/rounded_button"
         android:layout_alignParentBottom="true"
         android:text="Complete"
@@ -175,7 +161,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total: "
+        android:text="Total "
         android:textSize="18sp"
         android:layout_above="@id/complete"
         android:layout_alignParentStart="true"
@@ -187,8 +173,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0đ"
+        android:textStyle="bold"
         android:textSize="18sp"
-        android:textColor="@color/app_color"
+        android:textColor="@color/black"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="25dp"
         android:layout_above="@id/complete"

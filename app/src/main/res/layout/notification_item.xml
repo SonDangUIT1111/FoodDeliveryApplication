@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="2dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginEnd="2dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginEnd="20dp"
     app:cardCornerRadius="15dp"
     app:cardElevation="4dp">
 
@@ -16,8 +15,8 @@
         android:id="@+id/background_notification_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:minHeight="150dp">
+        android:paddingBottom="10dp"
+        android:minHeight="100dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewImage"
@@ -81,10 +80,11 @@
                 android:id="@+id/txtContentNotification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:maxLines="4"
+                android:lines="4"
                 android:minWidth="10dp"
                 android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 android:textSize="12dp"
@@ -99,7 +99,7 @@
             android:id="@+id/linearLayout5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/content"
             app:layout_constraintTop_toBottomOf="@+id/content"
@@ -127,7 +127,7 @@
             android:layout_height="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:foreground="@color/orange"
+            android:foreground="#E8584D"
             app:cardCornerRadius="100dp"
             app:cardElevation="20dp"
             app:layout_constraintEnd_toEndOf="parent"

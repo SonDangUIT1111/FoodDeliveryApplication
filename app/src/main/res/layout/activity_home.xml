@@ -4,7 +4,7 @@
     android:id="@+id/drawLayoutHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="#FFFFFF">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_left"
@@ -36,29 +36,26 @@
         <LinearLayout
             android:id="@+id/layout_main"
             android:layout_width="match_parent"
-            android:layout_height="530dp"
+            android:layout_height="560dp"
             android:layout_weight="8"
             android:background="@color/white"
             android:orientation="vertical">
 
         </LinearLayout>
 
-        <com.ismaeldivita.chipnavigation.ChipNavigationBar
-            android:id="@+id/navigation_bottom"
+
+        <com.etebarian.meowbottomnavigation.MeowBottomNavigation
+            android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:paddingBottom="10dp"
-            app:cnb_addBottomInset="false"
-            app:cnb_addLeftInset="false"
-            app:cnb_addRightInset="false"
-            app:cnb_addTopInset="false"
-            app:cnb_animationDuration="200"
-
-            app:cnb_iconSize="24dp"
-            app:cnb_menuResource="@menu/menu_home"
-            app:cnb_orientationMode="horizontal"></com.ismaeldivita.chipnavigation.ChipNavigationBar>
-
+            android:layout_height="wrap_content"
+            app:mbn_circleColor="#ffffff"
+            app:mbn_backgroundBottomColor="#E8584D"
+            app:mbn_countBackgroundColor="@color/app_color"
+            app:mbn_countTextColor="#ffffff"
+            app:mbn_defaultIconColor="#FFFFFF"
+            app:mbn_rippleColor="#2f424242"
+            app:mbn_selectedIconColor="#3c415e"
+            app:mbn_shadowColor="#1f212121"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
