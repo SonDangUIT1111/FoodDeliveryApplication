@@ -81,18 +81,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
         checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",STORAGE_PERMISSION_CODE);
         //----------
+
+        //----------------------
+
+        //----------------------
         initUI();
-        //----------------------
-
-        //----------------------
-
-
         loadInformationForNavigationBar();
+
+
 
     }
 
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(layoutMain.getId(),new HomeFragment(userId))
+                .commit();
+    }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
@@ -103,12 +111,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         layoutMain=binding.layoutMain;
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(layoutMain.getId(),new HomeFragment(userId))
+                .replace(layoutMain.getId(),new HomeFragment(userId))
                 .commit();
         setEventNavigationBottom();
         setCartNavigation();
         binding.navigationLeft.setNavigationItemSelectedListener(this);
-
     }
     
     private void setCartNavigation()
