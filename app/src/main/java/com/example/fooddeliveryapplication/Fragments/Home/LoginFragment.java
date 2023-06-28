@@ -67,6 +67,7 @@ public class LoginFragment extends Fragment {
                                     Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                                     Intent intent=new Intent(getContext(), HomeActivity.class);
                                     startActivity(intent);
+                                    requireActivity().finish();
                                 }
 
                                 @Override

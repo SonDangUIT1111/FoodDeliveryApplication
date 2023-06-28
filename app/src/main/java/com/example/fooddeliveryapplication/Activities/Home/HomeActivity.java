@@ -94,6 +94,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(HomeActivity.this).setTitle("Notice")
+                .setMessage("Trở về màn hình đăng nhập")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create().show();
+    }
+
+
+    @Override
     protected void onStart() {
         super.onStart();
         getSupportFragmentManager()

@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -46,6 +49,7 @@ public class AddFoodActivity extends AppCompatActivity {
     ActivityAddFoodBinding binding;
     String TAG="Add Food";
     int position;
+    int PERMISION_REQUEST_CODE=10001;
     ProgressDialog progressDialog;
     UploadDialog uploadDialog;
     Uri uri1,uri2,uri3,uri4;
@@ -133,28 +137,28 @@ public class AddFoodActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 position=1;
-                pickImg();
+                checkRuntimePermission();
             }
         });
         binding.addImage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position=2;
-                pickImg();
+                checkRuntimePermission();
             }
         });
         binding.addImage3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position=3;
-                pickImg();
+                checkRuntimePermission();
             }
         });
         binding.addImage4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position=4;
-                pickImg();
+                checkRuntimePermission();
             }
         });
         binding.lnAddFood.btnAddProduct.setOnClickListener(new View.OnClickListener() {
@@ -452,5 +456,84 @@ public class AddFoodActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         binding=null;
+    }
+    private void checkRuntimePermission() {
+        if (isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            pickImg();
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            buildAlertPermissionDialog().create().show();
+        } else {
+            requestRuntimePermission();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==PERMISION_REQUEST_CODE) {
+            if (grantResults.length>0&&grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+                pickImg();
+            } else if (!ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                buildAlertDeniedPermissionDialog().create().show();
+            } else {
+                checkRuntimePermission();
+            }
+        }
+    }
+
+    private AlertDialog.Builder buildAlertPermissionDialog() {
+        AlertDialog.Builder builderDialog=new AlertDialog.Builder(this);
+        builderDialog.setTitle("Notice")
+                .setMessage("Bạn cần cấp quyền để thực hiện tính năng này")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        requestRuntimePermission();
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        return builderDialog;
+    }
+
+    private AlertDialog.Builder buildAlertDeniedPermissionDialog() {
+        AlertDialog.Builder builderDialog=new AlertDialog.Builder(this);
+        builderDialog.setTitle("Notice")
+                .setMessage("Bạn cần vào cài đặt để cài đặt cho tính năng này")
+                .setPositiveButton("Setting", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(createIntentToAppSetting());
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        return builderDialog;
+    }
+
+    private Intent createIntentToAppSetting() {
+        Intent intent=new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri= Uri.fromParts("package",getPackageName(),null);
+        intent.setData(uri);
+        return intent;
+    }
+
+    private void requestRuntimePermission() {
+        ActivityCompat.requestPermissions(AddFoodActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
+        },PERMISION_REQUEST_CODE);
+    }
+
+    private boolean isPermissionGranted(String permission) {
+        return checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED;
     }
 }
