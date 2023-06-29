@@ -28,6 +28,7 @@ import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
@@ -109,6 +110,11 @@ public class ProductInfoActivity extends AppCompatActivity {
         txtDescription.setText(productDescription);
         txtSell.setText(String.valueOf(sold));
         ratingBar.setRating(ratingStar.floatValue());
+        if (publisherId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            btnAddToCart.setVisibility(View.GONE);
+            btnAddFavourite.setVisibility(View.GONE);
+            btnCancelFavourite.setVisibility(View.GONE);
+        }
 
 
         // set Adapter for image slider

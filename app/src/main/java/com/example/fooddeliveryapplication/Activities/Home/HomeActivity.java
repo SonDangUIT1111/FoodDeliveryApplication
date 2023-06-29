@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.Manifest;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -60,9 +61,6 @@ import kotlin.jvm.functions.Function1;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String userId;
-    private FirebaseUser firebaseUser;
-    FirebaseDatabase database= FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference();
     ActivityHomeBinding binding;
     private LinearLayout layoutMain;
 
@@ -379,10 +377,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         dialogInterface.dismiss();
                     }
                 });
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.exit(0);
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                        Toast.makeText(HomeActivity.this, "Đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
                 builder.create().show();
