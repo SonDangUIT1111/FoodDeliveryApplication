@@ -64,6 +64,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     String userId;
     String publisherId;
     int sold;
+    boolean own;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,9 +112,11 @@ public class ProductInfoActivity extends AppCompatActivity {
         txtSell.setText(String.valueOf(sold));
         ratingBar.setRating(ratingStar.floatValue());
         if (publisherId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-            btnAddToCart.setVisibility(View.GONE);
-            btnAddFavourite.setVisibility(View.GONE);
-            btnCancelFavourite.setVisibility(View.GONE);
+            own = true;
+            btnAddToCart.setVisibility(View.INVISIBLE);
+        }
+        else {
+            own = false;
         }
 
 
@@ -335,18 +338,18 @@ public class ProductInfoActivity extends AppCompatActivity {
         final boolean[] isExistsFavourite = new boolean[1];
         final boolean[] isExistsFavouriteDetail = new boolean[1];
         new FirebaseFavouriteInfoProductHelper().readFavourite(productId, userId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
-
-
             @Override
             public void DataIsLoaded(boolean isFavouriteExists, boolean isFavouriteDetailExists) {
-                if (isFavouriteDetailExists == true)
-                {
-                    btnAddFavourite.setVisibility(View.GONE);
-                    btnCancelFavourite.setVisibility(View.VISIBLE);
-                }
-                else {
-                    btnAddFavourite.setVisibility(View.VISIBLE);
-                    btnCancelFavourite.setVisibility(View.GONE);
+                if (!own) {
+                    if (isFavouriteDetailExists)
+                    {
+                        btnAddFavourite.setVisibility(View.GONE);
+                        btnCancelFavourite.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        btnAddFavourite.setVisibility(View.VISIBLE);
+                        btnCancelFavourite.setVisibility(View.GONE);
+                    }
                 }
                 isExistsFavourite[0] = isFavouriteExists;
                 isExistsFavouriteDetail[0] = isFavouriteDetailExists;
