@@ -157,7 +157,7 @@ public class AddFoodActivity extends AppCompatActivity {
         binding.addImage4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                position=4;
+                position = 4;
                 checkRuntimePermission();
             }
         });
@@ -183,7 +183,7 @@ public class AddFoodActivity extends AppCompatActivity {
         StringBuilder imageURL=new StringBuilder();
         handleImagePosition(imageURL,position);
         if (!imageURL.toString().isEmpty()) {
-                FirebaseStorage.getInstance().getReferenceFromUrl(imageURL.toString()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            FirebaseStorage.getInstance().getReferenceFromUrl(imageURL.toString()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -234,37 +234,37 @@ public class AddFoodActivity extends AppCompatActivity {
 
 
     public void xoaHinhDaCo() {
-       FirebaseStorage reference= FirebaseStorage.getInstance();
-       reference.getReferenceFromUrl(imgOld1).delete();
-       reference.getReferenceFromUrl(imgOld2).delete();
-       reference.getReferenceFromUrl(imgOld3).delete();
-       reference.getReferenceFromUrl(imgOld4).delete();
+        FirebaseStorage reference= FirebaseStorage.getInstance();
+        reference.getReferenceFromUrl(imgOld1).delete();
+        reference.getReferenceFromUrl(imgOld2).delete();
+        reference.getReferenceFromUrl(imgOld3).delete();
+        reference.getReferenceFromUrl(imgOld4).delete();
 
     }
 
     public void pickImg() {
-           Dexter.withContext(this)
-                   .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                   .withListener(new PermissionListener() {
-                       @Override
-                       public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                           Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-                           intent.setType("image/*");
-                           pickImageLauncher.launch(intent);
-                       }
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("image/*");
+                        pickImageLauncher.launch(intent);
+                    }
 
-                       @Override
-                       public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                           Toast.makeText(AddFoodActivity.this,"Permission denied!",Toast.LENGTH_SHORT).show();
-                       }
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                        Toast.makeText(AddFoodActivity.this,"Permission denied!",Toast.LENGTH_SHORT).show();
+                    }
 
-                       @Override
-                       public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                           permissionToken.continuePermissionRequest();
-                           Toast.makeText(AddFoodActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                        Toast.makeText(AddFoodActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
 
-                       }
-                   }).check();
+                    }
+                }).check();
 
     }
 
@@ -300,59 +300,59 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     public AlertDialog.Builder createDialog(String content) {
-       AlertDialog.Builder builder=new AlertDialog.Builder(AddFoodActivity.this);
-       builder.setTitle("Thông báo");
-       builder.setMessage(content);
-       builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-           @Override
-           public void onClick(DialogInterface dialogInterface, int i) {
-               dialogInterface.cancel();
-           }
-       });
-       builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-           @Override
-           public void onClick(DialogInterface dialogInterface, int i) {
-               dialogInterface.cancel();
-           }
-       });
-       builder.setIcon(R.drawable.icon_dialog_alert_addfood);
-       return builder;
+        AlertDialog.Builder builder=new AlertDialog.Builder(AddFoodActivity.this);
+        builder.setTitle("Thông báo");
+        builder.setMessage(content);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        builder.setIcon(R.drawable.icon_dialog_alert_addfood);
+        return builder;
     }
 
     public void uploadProduct(Product tmp) {
-       if (checkUpdate==true) {
-           tmp.setProductId(productUpdate.getProductId());
-           FirebaseDatabase.getInstance().getReference().child("Products").child(productUpdate.getProductId())
-                   .setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
-                       @Override
-                       public void onComplete(@NonNull Task<Void> task) {
-                           if (task.isSuccessful()) {
-                               deleteOldImage(FRIST_IMAGE);
-                           } else {
-                               uploadDialog.dismiss();
-                               Toast.makeText(AddFoodActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+        if (checkUpdate==true) {
+            tmp.setProductId(productUpdate.getProductId());
+            FirebaseDatabase.getInstance().getReference().child("Products").child(productUpdate.getProductId())
+                    .setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                deleteOldImage(FRIST_IMAGE);
+                            } else {
+                                uploadDialog.dismiss();
+                                Toast.makeText(AddFoodActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
                                 finish();
-                           }
-                       }
-                   });
-       } else {
-           DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("Products").push();
-           tmp.setProductId(reference.getKey()+"");
-           reference.setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
-               @Override
-               public void onComplete(@NonNull Task<Void> task) {
-                   if (task.isSuccessful()) {
-                       uploadDialog.dismiss();
-                       finish();
-                       Toast.makeText(AddFoodActivity.this, "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show();
-                   } else {
-                       progressDialog.dismiss();
-                       Toast.makeText(AddFoodActivity.this, "Không thành công", Toast.LENGTH_SHORT).show();
-                       Log.e(TAG,"Lỗi thêm sản phẩm");
-                   }
-               }
-           });
-       }
+                            }
+                        }
+                    });
+        } else {
+            DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("Products").push();
+            tmp.setProductId(reference.getKey()+"");
+            reference.setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        uploadDialog.dismiss();
+                        finish();
+                        Toast.makeText(AddFoodActivity.this, "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(AddFoodActivity.this, "Không thành công", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG,"Lỗi thêm sản phẩm");
+                    }
+                }
+            });
+        }
     }
 
     public void uploadImage(int position) {
@@ -419,37 +419,37 @@ public class AddFoodActivity extends AppCompatActivity {
 
     }
     ActivityResultLauncher pickImageLauncher=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result -> {
-            if (result.getResultCode()==RESULT_OK) {
-                Intent intent=result.getData();
-                if (intent!=null) {
-                    switch (position) {
-                        case 1:
-                            uri1=intent.getData();
-                            img1=uri1.toString();
-                            binding.layout1.setVisibility(View.GONE);
-                            binding.imgProduct1.setImageURI(uri1);
-                            break;
-                        case 2:
-                            uri2=intent.getData();
-                            img2=uri2.toString();
-                            binding.layout2.setVisibility(View.GONE);
-                            binding.imgProduct2.setImageURI(uri2);
-                            break;
-                        case 3:
-                            uri3=intent.getData();
-                            img3=uri3.toString();
-                            binding.layout3.setVisibility(View.GONE);
-                            binding.imgProduct3.setImageURI(uri3);
-                            break;
-                        case 4:
-                            uri4=intent.getData();
-                            img4=uri4.toString();
-                            binding.layout4.setVisibility(View.GONE);
-                            binding.imgProduct4.setImageURI(uri4);
-                            break;
-                    }
+        if (result.getResultCode()==RESULT_OK) {
+            Intent intent=result.getData();
+            if (intent!=null) {
+                switch (position) {
+                    case 1:
+                        uri1=intent.getData();
+                        img1=uri1.toString();
+                        binding.layout1.setVisibility(View.GONE);
+                        binding.imgProduct1.setImageURI(uri1);
+                        break;
+                    case 2:
+                        uri2=intent.getData();
+                        img2=uri2.toString();
+                        binding.layout2.setVisibility(View.GONE);
+                        binding.imgProduct2.setImageURI(uri2);
+                        break;
+                    case 3:
+                        uri3=intent.getData();
+                        img3=uri3.toString();
+                        binding.layout3.setVisibility(View.GONE);
+                        binding.imgProduct3.setImageURI(uri3);
+                        break;
+                    case 4:
+                        uri4=intent.getData();
+                        img4=uri4.toString();
+                        binding.layout4.setVisibility(View.GONE);
+                        binding.imgProduct4.setImageURI(uri4);
+                        break;
                 }
             }
+        }
     });
 
     @Override
@@ -492,7 +492,7 @@ public class AddFoodActivity extends AppCompatActivity {
                         dialogInterface.dismiss();
                     }
                 })
-                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -512,7 +512,7 @@ public class AddFoodActivity extends AppCompatActivity {
                         dialogInterface.dismiss();
                     }
                 })
-                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();

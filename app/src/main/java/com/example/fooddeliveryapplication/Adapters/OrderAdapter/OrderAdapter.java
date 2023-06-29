@@ -61,7 +61,7 @@ public class OrderAdapter extends RecyclerView.Adapter {
                     builder.setTitle("Thông báo");
                     builder.setMessage("Bạn có chắc muốn xác nhận đơn hàng?");
                     builder.setIcon(R.drawable.icon_alert);
-                    builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -101,14 +101,14 @@ public class OrderAdapter extends RecyclerView.Adapter {
         viewHolder.binding.txtStatus.setText(tmp.getOrderStatus());
         viewHolder.binding.txtTotal.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(tmp.getTotalPrice()))+"");
         viewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent(context, OrderDetailActivity.class);
-                    intent.putExtra("Bill",tmp);
-                    intent.putExtra("userId",userId);
-                    context.startActivity(intent);
-                }
-            });
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context, OrderDetailActivity.class);
+                intent.putExtra("Bill",tmp);
+                intent.putExtra("userId",userId);
+                context.startActivity(intent);
+            }
+        });
         FirebaseDatabase.getInstance().getReference("BillInfos").child(tmp.getBillId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

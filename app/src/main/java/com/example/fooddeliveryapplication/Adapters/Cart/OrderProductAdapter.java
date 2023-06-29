@@ -47,7 +47,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
                 Product product = snapshot.getValue(Product.class);
                 holder.productName.setText(product.getProductName());
                 holder.productPrice.setText(convertToMoney(product.getProductPrice())+"đ");
-                Glide.with(mContext).load(product.getProductImage1()).placeholder(R.mipmap.ic_launcher).into(holder.productImage);
+                Glide.with(mContext.getApplicationContext()).load(product.getProductImage1()).placeholder(R.mipmap.ic_launcher).into(holder.productImage);
                 holder.amount.setText(String.valueOf("Count: "+ cartInfo.getAmount()));
             }
 

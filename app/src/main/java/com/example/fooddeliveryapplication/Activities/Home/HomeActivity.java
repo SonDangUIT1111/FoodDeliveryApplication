@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         finish();
                     }
                 })
-                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -373,7 +373,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 AlertDialog.Builder builder=new AlertDialog.Builder(this);
                 builder.setTitle("Notice");
                 builder.setMessage("Thoát ứng dụng?");
-                builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();

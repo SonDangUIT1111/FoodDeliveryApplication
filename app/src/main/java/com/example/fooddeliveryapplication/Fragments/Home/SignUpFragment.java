@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
+import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,18 +62,21 @@ public class SignUpFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                User tmp=new User(name,task.getResult().getUser().getUid(),email,"https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg",name,"1/1/2000",phone,
+                                User tmp=new User(name,task.getResult().getUser().getUid(),email,"https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg",name,"01/01/2000",phone,
                                         new SimpleDateFormat("dd/MM/yyyy").format(new Date()),"");
+
+                                Cart cart = new Cart(FirebaseDatabase.getInstance().getReference().push().getKey(), 0, 0, task.getResult().getUser().getUid());
                                 FirebaseDatabase.getInstance().getReference("Users").child(tmp.getUserId())
                                         .setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     dialog.dismiss();
+                                                    FirebaseDatabase.getInstance().getReference("Carts").child(cart.getCartId()).setValue(cart);
                                                     Toast.makeText(getContext(),"Tạo tài khoản thành công",Toast.LENGTH_SHORT);
                                                 } else {
                                                     dialog.dismiss();
-                                                    Toast.makeText(getContext(),"Không thành thành công",Toast.LENGTH_SHORT);
+                                                    Toast.makeText(getContext(),"Không tạo tài khoản thành công",Toast.LENGTH_SHORT);
                                                 }
                                             }
                                         });
@@ -118,7 +122,7 @@ public class SignUpFragment extends Fragment {
                 dialogInterface.dismiss();
             }
         });
-        builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

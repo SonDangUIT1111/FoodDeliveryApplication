@@ -63,8 +63,8 @@ public class LoginFragment extends Fragment {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     currentUser=snapshot.getValue(User.class);
-                                    Log.d(TAG, "đăng nhập thành công", task.getException());
-                                    Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "Đăng nhập thành công", task.getException());
+                                    Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                     Intent intent=new Intent(getContext(), HomeActivity.class);
                                     startActivity(intent);
                                     requireActivity().finish();
@@ -77,7 +77,7 @@ public class LoginFragment extends Fragment {
 
 
                         } else {
-                            Log.w(TAG, "đăng nhập thất bại", task.getException());
+                            Log.w(TAG, "Đăng nhập thất bại", task.getException());
                             Toast.makeText(getContext(), "Sai mật khẩu hoặc email", Toast.LENGTH_SHORT).show();
                         }
                     }
