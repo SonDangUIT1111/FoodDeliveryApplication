@@ -20,6 +20,7 @@
             android:id="@+id/imgBack"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:scaleType="center"
             app:srcCompat="@drawable/round_arrow_back_ios_24" />
@@ -71,7 +72,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
@@ -94,7 +95,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="....."
-                        android:maxHeight="130dp" />
+                        android:maxHeight="130dp"
+                        android:textSize="14sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.cardview.widget.CardView>
@@ -121,6 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/gray"
+            android:paddingBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

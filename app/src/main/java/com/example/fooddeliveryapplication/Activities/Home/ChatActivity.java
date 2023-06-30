@@ -15,6 +15,5 @@ public class ChatActivity extends AppCompatActivity {
         binding=ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         userId=getIntent().getStringExtra("userId");
-
     }
 }
