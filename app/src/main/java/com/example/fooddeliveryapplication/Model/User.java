@@ -1,8 +1,9 @@
 package com.example.fooddeliveryapplication.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
     String accountName;
     String userId;
     String email;

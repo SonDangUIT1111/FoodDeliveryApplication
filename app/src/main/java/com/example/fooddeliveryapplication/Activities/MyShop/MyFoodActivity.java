@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,8 +68,10 @@ public class MyFoodActivity extends AppCompatActivity {
                 ds.clear();
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Product tmp=item.getValue(Product.class);
-                    if (tmp.getPublisherId().equals(userId)) {
-                        ds.add(tmp);
+                    if (tmp.getPublisherId()!=null) {
+                        if (tmp.getPublisherId().equals(userId)) {
+                            ds.add(tmp);
+                        }
                     }
                 }
                 dialog.dismiss();

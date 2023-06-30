@@ -2,12 +2,6 @@ package com.example.fooddeliveryapplication.Fragments.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.example.fooddeliveryapplication.Activities.Home.ForgotActivity;
 import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
-import com.example.fooddeliveryapplication.Activities.Home.LoginActivity;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,6 +65,7 @@ public class LoginFragment extends Fragment {
                                     Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                                     Intent intent=new Intent(getContext(), HomeActivity.class);
                                     startActivity(intent);
+                                    requireActivity().finish();
                                 }
 
                                 @Override

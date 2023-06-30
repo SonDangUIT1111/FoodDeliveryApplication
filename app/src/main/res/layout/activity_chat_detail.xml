@@ -18,7 +18,7 @@
 
         <ImageView
             android:id="@+id/imgBack"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="center"
@@ -26,19 +26,24 @@
 
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
+            android:id="@+id/imgPublisher"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="2"
             android:paddingTop="10dp"
+            android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/txtNameUserReceive"
-            android:layout_width="wrap_content"
+            android:id="@+id/txtNamePublisher"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="8"
+            android:layout_weight="7"
             android:fontFamily="@font/baloo"
             android:text="NameUser"
             android:textColor="#000000"
@@ -65,29 +70,30 @@
             app:layout_constraintVertical_bias="0.5">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="9"
-                android:elevation="20dp"
-                app:cardCornerRadius="30dp">
+                android:layout_weight="8"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
+                    android:maxWidth="250dp"
                     app:boxBackgroundColor="@android:color/transparent"
                     app:boxStrokeColor="@android:color/transparent"
-                    android:maxWidth="250dp"
-                    app:hintEnabled="false"
-                    app:boxStrokeWidth="0dp">
+                    app:boxStrokeWidth="0dp"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtMessage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="hint"
+                        android:hint="....."
                         android:maxHeight="130dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -95,13 +101,13 @@
 
             <ImageButton
                 android:id="@+id/btnSend"
-                android:layout_width="48dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:background="@android:color/transparent"
                 android:contentDescription="image button"
                 android:padding="5dp"
@@ -114,6 +120,7 @@
             android:id="@+id/recycleViewMessage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/gray"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

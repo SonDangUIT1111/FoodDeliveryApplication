@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,14 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.Manifest;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -30,7 +31,6 @@ import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartA
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
-import com.example.fooddeliveryapplication.Fragments.Home.HistoryFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
 import com.example.fooddeliveryapplication.Fragments.NotificationFragment;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
@@ -49,10 +49,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import kotlin.Unit;
@@ -66,8 +64,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ActivityHomeBinding binding;
     private LinearLayout layoutMain;
 
+
+
     private static final int NOTIFICATION_PERMISSION_CODE = 10023;
-    private static final int STORAGE_PERMISSION_CODE = 101;
+    private static final int WRITE_STORAGE_PERMISSION_CODE = 101;
+    private static final int READ_STORAGE_PERMISSION_CODE = 102;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,22 +78,71 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // request permission here
-        checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
-        checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",STORAGE_PERMISSION_CODE);
+        checkRuntimePermission();
+
+//        // request permission here
+//        checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
+//        checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",WRITE_STORAGE_PERMISSION_CODE);
+//        checkPermission("android.permission.READ_EXTERNAL_STORAGE",READ_STORAGE_PERMISSION_CODE);
         //----------
+
+        //----------------------
+
+        //----------------------
         initUI();
-        //----------------------
-
-        //----------------------
-
-
         loadInformationForNavigationBar();
+
+
 
     }
 
+    private void checkRuntimePermission() {
+        ArrayList<String> permissionsNotAccepted=new ArrayList<>();
+        if (isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
+            permissionsNotAccepted.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        if (isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            permissionsNotAccepted.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+        if (isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            permissionsNotAccepted.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissionsNotAccepted.isEmpty()) {
+            mutiplePermissionResultLauncher.launch(permissionsNotAccepted.toArray(new String[0]));
+        }
+    }
 
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(HomeActivity.this).setTitle("Notice")
+                .setMessage("Trở về màn hình đăng nhập")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create().show();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(layoutMain.getId(),new HomeFragment(userId))
+                .commit();
+    }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
@@ -103,14 +153,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         layoutMain=binding.layoutMain;
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(layoutMain.getId(),new HomeFragment(userId))
+                .replace(layoutMain.getId(),new HomeFragment(userId))
                 .commit();
         setEventNavigationBottom();
         setCartNavigation();
         binding.navigationLeft.setNavigationItemSelectedListener(this);
-
     }
-    
+
+    boolean isPermissionGranted(String permission) {
+        return checkSelfPermission(permission)==PackageManager.PERMISSION_GRANTED;
+    }
+
     private void setCartNavigation()
     {
         binding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -118,11 +171,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId())
                 {
-                    case R.id.message_menu:
-                        Intent intent=new Intent(HomeActivity.this,ChatActivity.class);
-                        intent.putExtra("userId",userId);
-                        startActivity(intent);
-                        break;
                     case R.id.cart_menu:
                         FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -168,9 +216,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
     private void setEventNavigationBottom() {
         binding.bottomNavigation.show(2,true);
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1,R.drawable.ic_favourite));
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2,R.drawable.ic_home));
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3,R.drawable.notification_icon));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_favourite));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_home));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.notification_icon));
         binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
@@ -316,7 +364,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         }
-        if (requestCode == STORAGE_PERMISSION_CODE) {
+        if (requestCode == WRITE_STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+            else {
+
+            }
+        }
+        if (requestCode == READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             }
@@ -444,4 +500,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
+
+    ActivityResultLauncher mutiplePermissionResultLauncher=registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+
+    });
 }

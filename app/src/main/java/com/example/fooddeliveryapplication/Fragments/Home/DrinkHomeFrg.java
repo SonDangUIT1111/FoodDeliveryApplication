@@ -20,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 import java.util.ArrayList;
 
 
@@ -70,7 +69,7 @@ public class DrinkHomeFrg extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Product tmp=item.getValue(Product.class);
-                    if (tmp.getProductType().equals("drink")) {
+                    if (tmp.getProductType().equalsIgnoreCase("drink")) {
                         dsDrink.add(tmp);
                     }
                     adapter.notifyDataSetChanged();

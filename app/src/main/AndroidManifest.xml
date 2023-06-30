@@ -21,7 +21,7 @@
         android:theme="@style/Theme.FoodDeliveryApplication"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.Home.IntroActivity"
+            android:name=".Activities.Home.HomeActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
@@ -76,7 +76,7 @@
             android:name=".Activities.Home.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".Activities.Home.ChatDetailActivity"
+            android:name=".Activities.Home.IntroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -85,7 +85,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.Home.HomeActivity"
+            android:name=".Activities.Home.ChatDetailActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.OrderSellerManagement.DetailOfOrderDeliveryManagementActivity"

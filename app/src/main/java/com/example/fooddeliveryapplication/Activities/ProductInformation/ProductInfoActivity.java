@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.fooddeliveryapplication.Activities.Home.ChatActivity;
+import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
@@ -91,8 +92,8 @@ public class ProductInfoActivity extends AppCompatActivity {
         // find view by id
         btnChat=findViewById(R.id.btnChat);
         btnBack = (ImageButton) findViewById(R.id.btnBack);
-//        btnAddFavourite = (ImageButton) findViewById(R.id.btnAddFavourite);
-//        btnCancelFavourite = (ImageButton) findViewById(R.id.btnCancelFavourite);
+        btnAddFavourite = (ImageButton) findViewById(R.id.btnAddFavourite);
+        btnCancelFavourite = (ImageButton) findViewById(R.id.btnCancelFavourite);
         pagerProductImage = (ViewPager2) findViewById(R.id.pagerProductImage);
         txtNameProduct = (TextView) findViewById(R.id.txtNameProduct);
         txtDescription = (TextView) findViewById(R.id.txtDesciption);
@@ -210,7 +211,8 @@ public class ProductInfoActivity extends AppCompatActivity {
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(ProductInfoActivity.this, ChatActivity.class);
+                Intent intent=new Intent(ProductInfoActivity.this, ChatDetailActivity.class);
+                intent.setAction("productInfoActivity");
                 intent.putExtra("publisherId", publisherId);
                 startActivity(intent);
             }

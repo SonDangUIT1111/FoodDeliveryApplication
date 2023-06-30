@@ -14,6 +14,7 @@ import com.example.fooddeliveryapplication.Adapters.Home.IntroAdapter;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+//        FirebaseDatabase.getInstance().getReference("Message").removeValue();
         ArrayList<Integer> ds=new ArrayList<>();
         ds.add(R. drawable.choice);
         ds.add(R. drawable.delivery);

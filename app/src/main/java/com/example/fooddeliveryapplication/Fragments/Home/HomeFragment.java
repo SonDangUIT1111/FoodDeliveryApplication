@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import com.example.fooddeliveryapplication.Activities.Home.FindActivity;
 import com.example.fooddeliveryapplication.Adapters.Home.FoodDrinkAdapter;
 import com.example.fooddeliveryapplication.databinding.FragmentHomeBinding;
-
 import com.google.android.material.tabs.TabLayoutMediator;
 
 
@@ -23,13 +22,11 @@ public class HomeFragment extends Fragment {
     public HomeFragment(String id) {
         userId = id;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding=FragmentHomeBinding.inflate(inflater,container,false);
         initUI();
-
         return binding.getRoot();
     }
 
@@ -57,6 +54,7 @@ public class HomeFragment extends Fragment {
                     break;
             }
         })).attach();
+
     }
 
     @Override
