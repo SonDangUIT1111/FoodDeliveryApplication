@@ -114,6 +114,8 @@ public class ProductInfoActivity extends AppCompatActivity {
         if (publisherId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             own = true;
             btnAddToCart.setVisibility(View.INVISIBLE);
+            btnCancelFavourite.setVisibility(View.INVISIBLE);
+            btnAddFavourite.setVisibility(View.INVISIBLE);
         }
         else {
             own = false;
