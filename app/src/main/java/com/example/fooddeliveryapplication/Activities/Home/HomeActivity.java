@@ -63,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private String userId;
     ActivityHomeBinding binding;
     private LinearLayout layoutMain;
+    private Fragment selectionFragment;
 
     private static final int NOTIFICATION_PERMISSION_CODE = 10023;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -196,29 +197,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
-                Fragment fragment;
-
                 switch (model.getId())
                 {
                     case 1:
-                        fragment=new FavoriteFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new FavoriteFragment(userId);
                         break;
                     case 2:
-                        fragment=new HomeFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new HomeFragment(userId);
                         break;
                     case 3:
-                        fragment = new NotificationFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new NotificationFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
@@ -229,13 +224,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 switch (model.getId())
                 {
                     case 1:
-                        Fragment fragment;
-                        fragment=new FavoriteFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new FavoriteFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
@@ -245,13 +241,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 switch (model.getId())
                 {
                     case 2:
-                        Fragment fragment;
-                        fragment=new HomeFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new HomeFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
@@ -261,13 +258,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 switch (model.getId())
                 {
                     case 3:
-                        Fragment fragment;
-                        fragment = new NotificationFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new NotificationFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
