@@ -165,21 +165,6 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                                             Cart cart = ds.getValue(Cart.class);
                                                             if (cart.getUserId().equals(userId)) {
                                                                 FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).child(cartInfo.getCartInfoId()).removeValue();
-                                                                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                    @Override
-                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                        Product product = snapshot.getValue(Product.class);
-                                                                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalAmount").setValue(cart.getTotalAmount() - cartInfo.getAmount());
-                                                                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalPrice").setValue(cart.getTotalPrice() - cartInfo.getAmount() * product.getProductPrice());
-                                                                    }
-
-                                                                    @Override
-                                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                                    }
-                                                                });
-
-                                                                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).child(cartInfo.getCartInfoId()).removeValue();
                                                             }
                                                         }
                                                     }
@@ -195,7 +180,6 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                 });
                                 pushNotificationCartCompleteForSeller(billId,senderId);
                             }
-                            Toast.makeText(ProceedOrderActivity.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -204,10 +188,51 @@ public class ProceedOrderActivity extends AppCompatActivity {
                         }
                     });
 
-                    cartInfoList.clear();
-                    Intent intent = new Intent(ProceedOrderActivity.this, HomeActivity.class);
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    FirebaseDatabase.getInstance().getReference().child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                            FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                    int totalAmount = 0;
+                                    long totalPrice = 0;
+                                    for (DataSnapshot ds : snapshot1.getChildren()) {
+                                        Product product = ds.getValue(Product.class);
+                                        for (CartInfo cartInfo : cartInfoList) {
+                                            if (cartInfo.getProductId().equals(product.getProductId())) {
+                                                totalAmount += cartInfo.getAmount();
+                                                totalPrice += cartInfo.getAmount() * product.getProductPrice();
+                                            }
+                                        }
+                                    }
+
+                                    for (DataSnapshot ds : snapshot2.getChildren()) {
+                                        Cart cart = ds.getValue(Cart.class);
+                                        if (cart.getUserId().equals(userId)) {
+                                            FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalAmount").setValue(cart.getTotalAmount() - totalAmount);
+                                            FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalPrice").setValue(cart.getTotalPrice() - totalPrice);
+                                        }
+                                    }
+                                    Toast.makeText(ProceedOrderActivity.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+
+                                    cartInfoList.clear();
+                                    Intent intent = new Intent(ProceedOrderActivity.this, HomeActivity.class);
+                                    setResult(RESULT_OK, intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
 
             }
@@ -282,7 +307,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
         totalPrice.setText(totalPriceDisplay);
 
         // Address
-        FirebaseDatabase.getInstance().getReference().child("Address").child(userId).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Address").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
