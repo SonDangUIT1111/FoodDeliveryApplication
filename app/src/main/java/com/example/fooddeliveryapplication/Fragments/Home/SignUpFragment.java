@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
@@ -69,15 +72,15 @@ public class SignUpFragment extends Fragment {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     dialog.dismiss();
-                                                    Toast.makeText(getContext(),"Tạo tài khoản thành công",Toast.LENGTH_SHORT);
+                                                    new SuccessfulToast().showToast(getContext(),"Create account successfully");
                                                 } else {
                                                     dialog.dismiss();
-                                                    Toast.makeText(getContext(),"Không thành thành công",Toast.LENGTH_SHORT);
+                                                    new FailToast().showToast(getContext(),"Create account unsuccessfully");
                                                 }
                                             }
                                         });
                             } else {
-                                createDialog("Email đã tồn tại").show();
+                                new FailToast().showToast(getContext(),"Email has been used, please try another email");
                                 dialog.dismiss();
                             }
                         }
@@ -95,13 +98,13 @@ public class SignUpFragment extends Fragment {
         String email= edtEmail.getText().toString();
         String pass= edtPass.getText().toString();
         if (phone.isEmpty()|| name.isEmpty()|| email.isEmpty()|| pass.isEmpty()) {
-            createDialog("Điền đầy đủ thông tin").show();
+            new FailToast().showToast(getContext(),"Please fill all the information");
             return false;
         }  else if (!email.matches(String.valueOf(Patterns.EMAIL_ADDRESS))) {
-            createDialog("Email không đúng định dạng").show();
+            new FailToast().showToast(getContext(),"Email format is invalid");
             return false;
         } else if (!phone.matches("(03|05|07|08|09|01[2689])[0-9]{8}\\b")) {
-            createDialog("Số điện thoại không hợp lệ").show();
+            new FailToast().showToast(getContext(),"Phone format is invalid");
             return false;
         }
         return true;
@@ -125,5 +128,7 @@ public class SignUpFragment extends Fragment {
             }
         });
         return builder.create();
+
+
     }
 }

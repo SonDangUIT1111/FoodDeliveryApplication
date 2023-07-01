@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.example.fooddeliveryapplication.Activities.Home.ForgotActivity;
 import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
 import com.example.fooddeliveryapplication.Activities.Home.LoginActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,7 +54,7 @@ public class LoginFragment extends Fragment {
         anhxa();
         btnLogin.setOnClickListener(view -> {
             if (edtPasswordLogin.getText().toString().isEmpty()||edtUserNameLogin.getText().toString().isEmpty()) {
-                Toast.makeText(getContext(), "Ô Trống", Toast.LENGTH_SHORT).show();
+                new FailToast().showToast(getContext(),"Please fill all the information");
             } else {
 
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(edtUserNameLogin.getText().toString(),edtPasswordLogin.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -64,7 +67,6 @@ public class LoginFragment extends Fragment {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     currentUser=snapshot.getValue(User.class);
                                     Log.d(TAG, "đăng nhập thành công", task.getException());
-                                    Toast.makeText(getContext(), "Thành công", Toast.LENGTH_SHORT).show();
                                     Intent intent=new Intent(getContext(), HomeActivity.class);
                                     startActivity(intent);
                                 }
@@ -77,7 +79,7 @@ public class LoginFragment extends Fragment {
 
                         } else {
                             Log.w(TAG, "đăng nhập thất bại", task.getException());
-                            Toast.makeText(getContext(), "Sai mật khẩu hoặc email", Toast.LENGTH_SHORT).show();
+                            new FailToast().showToast(getContext(),"Wrong email or password");
                         }
                     }
                 });

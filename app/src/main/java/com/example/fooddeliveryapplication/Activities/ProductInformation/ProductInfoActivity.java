@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseFavouriteInfoProductHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
@@ -254,7 +255,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                 @Override
                 public void DataIsInserted() {
-                    Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your favourite list");
                 }
 
                 @Override
@@ -282,7 +283,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                     @Override
                     public void DataIsInserted() {
-                        Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                        new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your cart");
                     }
 
                     @Override
@@ -312,7 +313,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                     @Override
                     public void DataIsUpdated() {
-                        Toast.makeText(ProductInfoActivity.this, "Sản phẩm đã được thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
+                        new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your cart");
                     }
 
                     @Override
@@ -379,7 +380,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                         @Override
                         public void DataIsInserted() {
-                            Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                            new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your favourite list");
                             pushNotificationFavourite();
                         }
 
@@ -407,7 +408,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                             @Override
                             public void DataIsInserted() {
-                                Toast.makeText(ProductInfoActivity.this, "Đã thêm vào danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                                new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your favourite list");
                                 pushNotificationFavourite();
                             }
 
@@ -449,7 +450,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                     @Override
                     public void DataIsDeleted() {
-                        Toast.makeText(ProductInfoActivity.this, "Đã xóa khỏi danh mục yêu thích", Toast.LENGTH_SHORT).show();
+                        new SuccessfulToast().showToast(ProductInfoActivity.this,"Removed from your favourite list");
                     }
                 });
             }

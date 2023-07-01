@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Bill;
@@ -57,23 +58,17 @@ public class OrderAdapter extends RecyclerView.Adapter {
             viewHolder.binding.btnSee.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder builder=new AlertDialog.Builder(context);
-                    builder.setTitle("Thông báo");
-                    builder.setMessage("Bạn có chắc muốn xác nhận đơn hàng?");
-                    builder.setIcon(R.drawable.icon_alert);
-                    builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                        }
-                    });
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    CustomAlertDialog customAlertDialog = new CustomAlertDialog(context,"Do you want to confirm this order?");
+                    customAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                        public void onClick(View view) {
                             FirebaseDatabase.getInstance().getReference("Bills").child(tmp.getBillId()).child("orderStatus").setValue("Completed");
+                            customAlertDialog.alertDialog.dismiss();
                         }
                     });
-                    builder.create().show();
+                    customAlertDialog.showAlertDialog();
+
                 }
             });
 
