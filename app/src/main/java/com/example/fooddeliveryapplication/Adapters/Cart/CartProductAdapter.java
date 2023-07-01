@@ -48,7 +48,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     private List<CartInfo> mCartInfos;
     private String cartId;
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
-    private AlertDialog.Builder builder;
     private int checkedItemCount = 0;
     private long checkedItemPrice = 0;
     private IAdapterItemListener adapterItemListener;
@@ -87,88 +86,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         });
     }
 
-    private void initDialogBuilder(CartInfo cartInfo) {
-        builder = new AlertDialog.Builder(mContext);
-        builder.setMessage("Delete this product?");
-
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                deleteCartInfo(cartInfo);
-            }
-        });
-
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-    }
-
-    public void setCheckAll(boolean isCheckAll) {
-        this.isCheckAll = isCheckAll;
-    }
-
-    private void deleteCartInfo(CartInfo cartInfo) {
-        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int remainAmount = snapshot.getValue(int.class);
-                remainAmount += cartInfo.getAmount();
-                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").setValue(remainAmount);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Cart cart = snapshot.getValue(Cart.class);
-                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Product product = snapshot.getValue(Product.class);
-                        int totalAmount = cart.getTotalAmount() - cartInfo.getAmount();
-                        long totalPrice = cart.getTotalPrice() - (long)(product.getProductPrice() * cartInfo.getAmount());
-
-                        HashMap<String, Object> map = new HashMap<>();
-                        map.put("totalAmount", totalAmount);
-                        map.put("totalPrice", totalPrice);
-                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).updateChildren(map);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(mContext, "Delete product successfully!", Toast.LENGTH_SHORT).show();
-                    if (adapterItemListener != null) {
-                        adapterItemListener.onDeleteProduct();
-                    }
-                }
-            }
-        });
-    }
-
     @NonNull
     @Override
     public CartProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -181,8 +98,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         CartInfo cartInfo = mCartInfos.get(position);
 
         viewBinderHelper.bind(holder.swipeRevealLayout, cartInfo.getCartInfoId());
-
-        initDialogBuilder(cartInfo);
 
         holder.checkBox.setChecked(isCheckAll);
 
@@ -321,8 +236,66 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog alert = builder.create();
-                alert.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage("Delete this product?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+
+                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(mContext, "Delete product successfully!", Toast.LENGTH_SHORT).show();
+                                    if (adapterItemListener != null) {
+                                        adapterItemListener.onDeleteProduct();
+                                    }
+                                }
+                            }
+                        });
+
+                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Cart cart = snapshot.getValue(Cart.class);
+                                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        Product product = snapshot.getValue(Product.class);
+                                        int totalAmount = cart.getTotalAmount() - cartInfo.getAmount();
+                                        long totalPrice = cart.getTotalPrice() - (long)(product.getProductPrice() * cartInfo.getAmount());
+
+                                        HashMap<String, Object> map = new HashMap<>();
+                                        map.put("totalAmount", totalAmount);
+                                        map.put("totalPrice", totalPrice);
+                                        FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).updateChildren(map);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                builder.create().show();
             }
         });
 
@@ -497,7 +470,5 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
             }
         });
-
     }
-
 }

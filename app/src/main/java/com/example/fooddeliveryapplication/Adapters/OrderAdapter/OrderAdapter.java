@@ -58,7 +58,6 @@ public class OrderAdapter extends RecyclerView.Adapter {
             viewHolder.binding.btnSee.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     CustomAlertDialog customAlertDialog = new CustomAlertDialog(context,"Do you want to confirm this order?");
                     customAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
                         @Override

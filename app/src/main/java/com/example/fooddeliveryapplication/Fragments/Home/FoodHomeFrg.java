@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.fooddeliveryapplication.Adapters.Home.FoodDrinkFrgAdapter;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.FragmentDrinkHomeFrgBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,13 +56,12 @@ public class FoodHomeFrg extends Fragment {
 
     private void initData() {
         dsFood=new ArrayList<>();
-
         productsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Product tmp=item.getValue(Product.class);
-                    if (tmp.getProductType().equals("food")) {
+                    if (tmp.getProductType().equalsIgnoreCase("food") && !tmp.getPublisherId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         dsFood.add(tmp);
                     }
                     adapter.notifyDataSetChanged();

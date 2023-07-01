@@ -29,6 +29,7 @@ import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     String userId;
     String publisherId;
     int sold;
+    boolean own;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +112,15 @@ public class ProductInfoActivity extends AppCompatActivity {
         txtDescription.setText(productDescription);
         txtSell.setText(String.valueOf(sold));
         ratingBar.setRating(ratingStar.floatValue());
+        if (publisherId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            own = true;
+            btnAddToCart.setVisibility(View.INVISIBLE);
+            btnCancelFavourite.setVisibility(View.INVISIBLE);
+            btnAddFavourite.setVisibility(View.INVISIBLE);
+        }
+        else {
+            own = false;
+        }
 
 
         // set Adapter for image slider
@@ -330,18 +341,18 @@ public class ProductInfoActivity extends AppCompatActivity {
         final boolean[] isExistsFavourite = new boolean[1];
         final boolean[] isExistsFavouriteDetail = new boolean[1];
         new FirebaseFavouriteInfoProductHelper().readFavourite(productId, userId, new FirebaseFavouriteInfoProductHelper.DataStatus() {
-
-
             @Override
             public void DataIsLoaded(boolean isFavouriteExists, boolean isFavouriteDetailExists) {
-                if (isFavouriteDetailExists == true)
-                {
-                    btnAddFavourite.setVisibility(View.GONE);
-                    btnCancelFavourite.setVisibility(View.VISIBLE);
-                }
-                else {
-                    btnAddFavourite.setVisibility(View.VISIBLE);
-                    btnCancelFavourite.setVisibility(View.GONE);
+                if (!own) {
+                    if (isFavouriteDetailExists)
+                    {
+                        btnAddFavourite.setVisibility(View.GONE);
+                        btnCancelFavourite.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        btnAddFavourite.setVisibility(View.VISIBLE);
+                        btnCancelFavourite.setVisibility(View.GONE);
+                    }
                 }
                 isExistsFavourite[0] = isFavouriteExists;
                 isExistsFavouriteDetail[0] = isFavouriteDetailExists;

@@ -18,6 +18,7 @@ import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
+import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -80,7 +81,7 @@ public class SignUpFragment extends Fragment {
                                             }
                                         });
                             } else {
-                                new FailToast().showToast(getContext(),"Email has been used, please try another email");
+                                createDialog("Email đã tồn tại").show();
                                 dialog.dismiss();
                             }
                         }
@@ -98,13 +99,13 @@ public class SignUpFragment extends Fragment {
         String email= edtEmail.getText().toString();
         String pass= edtPass.getText().toString();
         if (phone.isEmpty()|| name.isEmpty()|| email.isEmpty()|| pass.isEmpty()) {
-            new FailToast().showToast(getContext(),"Please fill all the information");
+            createDialog("Điền đầy đủ thông tin").show();
             return false;
         }  else if (!email.matches(String.valueOf(Patterns.EMAIL_ADDRESS))) {
-            new FailToast().showToast(getContext(),"Email format is invalid");
+            createDialog("Email không đúng định dạng").show();
             return false;
         } else if (!phone.matches("(03|05|07|08|09|01[2689])[0-9]{8}\\b")) {
-            new FailToast().showToast(getContext(),"Phone format is invalid");
+            createDialog("Số điện thoại không hợp lệ").show();
             return false;
         }
         return true;
@@ -128,7 +129,5 @@ public class SignUpFragment extends Fragment {
             }
         });
         return builder.create();
-
-
     }
 }

@@ -5,6 +5,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,7 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        checkFirstTime();
         ArrayList<Integer> ds=new ArrayList<>();
         ds.add(R. drawable.choice);
         ds.add(R. drawable.delivery);
@@ -74,5 +76,25 @@ public class IntroActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
+
+    private void checkFirstTime() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
+
+        if (isFirstStart) {
+            // Sau khi hiển thị, lưu trạng thái đã hiển thị
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isFirstStart", false);
+            editor.apply();
+        } else {
+            // Đã hiển thị trước đó, chuyển đến Activity chính
+            Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+
 }

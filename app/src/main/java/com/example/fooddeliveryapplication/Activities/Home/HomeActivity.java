@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.Manifest;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -60,11 +61,9 @@ import kotlin.jvm.functions.Function1;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String userId;
-    private FirebaseUser firebaseUser;
-    FirebaseDatabase database= FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference();
     ActivityHomeBinding binding;
     private LinearLayout layoutMain;
+    private Fragment selectionFragment;
 
     private static final int NOTIFICATION_PERMISSION_CODE = 10023;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -81,18 +80,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
         checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",STORAGE_PERMISSION_CODE);
         //----------
+
+        //----------------------
+
+        //----------------------
         initUI();
-        //----------------------
-
-        //----------------------
-
-
         loadInformationForNavigationBar();
+
+
 
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(HomeActivity.this).setTitle("Notice")
+                .setMessage("Trở về màn hình đăng nhập")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create().show();
+    }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
@@ -103,12 +122,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         layoutMain=binding.layoutMain;
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(layoutMain.getId(),new HomeFragment(userId))
+                .replace(layoutMain.getId(),new HomeFragment(userId))
                 .commit();
         setEventNavigationBottom();
         setCartNavigation();
         binding.navigationLeft.setNavigationItemSelectedListener(this);
-
     }
     
     private void setCartNavigation()
@@ -169,29 +187,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
-                Fragment fragment;
-
                 switch (model.getId())
                 {
                     case 1:
-                        fragment=new FavoriteFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new FavoriteFragment(userId);
                         break;
                     case 2:
-                        fragment=new HomeFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new HomeFragment(userId);
                         break;
                     case 3:
-                        fragment = new NotificationFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new NotificationFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
@@ -202,13 +214,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 switch (model.getId())
                 {
                     case 1:
-                        Fragment fragment;
-                        fragment=new FavoriteFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new FavoriteFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
@@ -218,13 +231,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 switch (model.getId())
                 {
                     case 2:
-                        Fragment fragment;
-                        fragment=new HomeFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new HomeFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
@@ -234,13 +248,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 switch (model.getId())
                 {
                     case 3:
-                        Fragment fragment;
-                        fragment = new NotificationFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
+                        selectionFragment = new NotificationFragment(userId);
                         break;
                 }
+
+                if (selectionFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+                }
+
                 return null;
             }
         });
@@ -344,16 +359,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 AlertDialog.Builder builder=new AlertDialog.Builder(this);
                 builder.setTitle("Notice");
                 builder.setMessage("Thoát ứng dụng?");
-                builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
                 });
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.exit(0);
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                        Toast.makeText(HomeActivity.this, "Đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
                 builder.create().show();
@@ -435,8 +453,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
-
-
     }
 }

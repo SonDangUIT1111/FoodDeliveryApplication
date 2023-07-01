@@ -69,6 +69,7 @@ public class LoginFragment extends Fragment {
                                     Log.d(TAG, "đăng nhập thành công", task.getException());
                                     Intent intent=new Intent(getContext(), HomeActivity.class);
                                     startActivity(intent);
+                                    requireActivity().finish();
                                 }
 
                                 @Override

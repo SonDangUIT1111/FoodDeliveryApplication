@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +13,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +36,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     private RadioButton checkedRadioButton;
     private IAddressAdapterListener addressAdapterListener;
     private String userId;
+    static private final int UPDATE_ADDRESS_REQUEST_CODE = 100;
 
     public AddressAdapter(Context mContext, List<Address> mAddresses, String id) {
         this.mContext = mContext;
@@ -95,7 +99,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 Intent intent = new Intent(mContext, UpdateAddAddressActivity.class);
                 intent.putExtra("mode", "update");
                 intent.putExtra("userId",userId);
-                mContext.startActivity(intent);
+                ((Activity)mContext).startActivityForResult(intent, UPDATE_ADDRESS_REQUEST_CODE);
             }
         });
 
@@ -124,6 +128,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                                     if (task.isSuccessful()) {
                                         Toast.makeText(mContext, "Delete address successfully!", Toast.LENGTH_SHORT).show();
                                         dialogInterface.dismiss();
+                                        if (addressAdapterListener != null) {
+                                            addressAdapterListener.onDeleteAddress();
+                                        }
                                     }
                                 }
                             });

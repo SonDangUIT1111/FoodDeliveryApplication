@@ -155,7 +155,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
                 builder.setIcon(R.drawable.icon_alert);
                 builder.setTitle("Chú ý");
                 builder.setMessage("Nhớ ghi comment nha bạn ơi!");
-                builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -187,7 +187,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
             }
 
         }
-     }
+    }
 
     private void setEventForStar(ViewHolder viewHolder,IntegerWrapper starRating) {
         viewHolder.binding.star1.setOnClickListener(view -> onStarClicked(view,viewHolder,starRating));
