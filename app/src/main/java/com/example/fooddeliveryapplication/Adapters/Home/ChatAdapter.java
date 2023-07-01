@@ -54,22 +54,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 .load(currentUser.getAvatarURL())
                 .error(R.drawable.image_default)
                 .into(viewHolder.binding.imgUser);
-        FirebaseDatabase.getInstance().getReference("Message").
-                child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child(currentUser.getUserId()).orderByChild("timestamp").limitToLast(1).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Message message=snapshot.getChildren().iterator().next().getValue(Message.class);
-                        viewHolder.binding.txtLastMessage.setText(message.getContent());
-                        notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-        viewHolder.binding.cardView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.binding.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(context, ChatDetailActivity.class);
@@ -78,6 +63,21 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 context.startActivity(intent);
             }
         });
+//        FirebaseDatabase.getInstance().getReference("Message").
+//                child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                .child(currentUser.getUserId()).orderByChild("timestamp").limitToLast(1).addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        Message message=snapshot.getChildren().iterator().next().getValue(Message.class);
+//                        viewHolder.binding.txtLastMessage.setText(message.getContent());
+//                        notifyDataSetChanged();
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
     }
 
 
