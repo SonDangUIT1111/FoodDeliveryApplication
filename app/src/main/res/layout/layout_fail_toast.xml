@@ -14,8 +14,8 @@
         android:paddingTop="5dp"
         android:paddingRight="5dp">
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:lottie_autoPlay="true"
             android:elevation="5dp"
             app:lottie_rawRes="@raw/fail"/>
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:layout_marginEnd="15dp">
             <TextView
                 android:layout_width="wrap_content"
@@ -31,14 +31,14 @@
                 android:text="Failed"
                 android:layout_marginTop="5dp"
                 android:textStyle="bold"
-                android:textSize="20dp"
+                android:textSize="12dp"
                 android:textColor="@color/app_color2"/>
             <TextView
                 android:id="@+id/txtContentMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Successful add into favourite list"
-                android:textSize="16dp"
+                android:text="Successful add into favourite list and lorem ipsum blablah"
+                android:textSize="14dp"
                 android:layout_marginTop="0dp"
                 android:maxLines="1"
                 android:lines="1"
@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/backgroundToast"
+        android:id="@+id/backgroundFailToast"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"

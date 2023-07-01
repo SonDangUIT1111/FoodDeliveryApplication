@@ -26,11 +26,11 @@ public class FailToast {
         toast.setGravity(Gravity.BOTTOM,0,0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.show();
-        CardView layout_successful_toast = view.findViewById(R.id.layout_fail_toast);
-        LinearLayout backgroundToast = view.findViewById(R.id.backgroundToast);
-        layout_successful_toast.setTranslationX(-2000);
+        CardView layout_fail_toast = view.findViewById(R.id.layout_fail_toast);
+        LinearLayout backgroundToast = view.findViewById(R.id.backgroundFailToast);
+        layout_fail_toast.setTranslationX(-2000);
         backgroundToast.setTranslationX(-2000);
-        layout_successful_toast.animate().translationX(0).setDuration(1000).setStartDelay(0);
+        layout_fail_toast.animate().translationX(0).setDuration(1000).setStartDelay(0);
         backgroundToast.animate().translationX(0).setDuration(800).setStartDelay(2500);
     }
 }
