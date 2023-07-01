@@ -180,6 +180,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        binding=null;
         messageReference.child(userId).child(publisherId).removeEventListener(messageListener);
     }
 
