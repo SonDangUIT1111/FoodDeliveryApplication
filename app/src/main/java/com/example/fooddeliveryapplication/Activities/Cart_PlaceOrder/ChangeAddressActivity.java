@@ -156,14 +156,9 @@ public class ChangeAddressActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (GlobalConfig.choseAddressId == null) {
-                    Toast.makeText(ChangeAddressActivity.this, "Bạn phải chọn địa chỉ trước!", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Intent intent = new Intent();
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }

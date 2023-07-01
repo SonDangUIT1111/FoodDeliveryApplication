@@ -113,16 +113,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }).create().show();
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(layoutMain.getId(),new HomeFragment(userId))
-                .commit();
-    }
-
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
