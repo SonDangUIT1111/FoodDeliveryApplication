@@ -140,32 +140,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                        Cart cart = ds.getValue(Cart.class);
-                                        if (cart.getUserId().equals(userId)) {
-                                            FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    if (snapshot.getChildrenCount() == 0) {
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    Cart cart = ds.getValue(Cart.class);
+                                    if (cart.getUserId().equals(userId)) {
+                                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.getChildrenCount() == 0) {
 
-                                                        startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
-                                                        return;
-                                                    }
-                                                    else {
-                                                        Intent intent = new Intent(HomeActivity.this,CartActivity.class);
-                                                        intent.putExtra("userId",userId);
-                                                        startActivity(intent);
-                                                        return;
-                                                    }
+                                                    startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
+                                                    return;
                                                 }
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                else {
+                                                    Intent intent = new Intent(HomeActivity.this,CartActivity.class);
+                                                    intent.putExtra("userId",userId);
+                                                    startActivity(intent);
+                                                    return;
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                                }
-                                            });
-                                        }
+                                            }
+                                        });
                                     }
-
+                                }
                             }
 
                             @Override
@@ -180,88 +179,51 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
     private void setEventNavigationBottom() {
-        binding.bottomNavigation.show(2,true);
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1,R.drawable.ic_favourite));
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2,R.drawable.ic_home));
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3,R.drawable.notification_icon));
-        binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch (model.getId())
-                {
-                    case 1:
-                        selectionFragment = new FavoriteFragment(userId);
-                        break;
-                    case 2:
-                        selectionFragment = new HomeFragment(userId);
-                        break;
-                    case 3:
-                        selectionFragment = new NotificationFragment(userId);
-                        break;
-                }
+        binding.bottomNavigation.show(2, true);
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_favourite));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_home));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.notification_icon));
 
-                if (selectionFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
-                }
-
-                return null;
+        binding.bottomNavigation.setOnClickMenuListener(model -> {
+            switch (model.getId()) {
+                case 1:
+                    selectionFragment = new FavoriteFragment(userId);
+                    break;
+                case 2:
+                    selectionFragment = new HomeFragment(userId);
+                    break;
+                case 3:
+                    selectionFragment = new NotificationFragment(userId);
+                    break;
             }
+
+            if (selectionFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+            }
+
+            return null;
         });
 
-        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch (model.getId())
-                {
-                    case 1:
-                        selectionFragment = new FavoriteFragment(userId);
-                        break;
-                }
-
-                if (selectionFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
-                }
-
-                return null;
+        binding.bottomNavigation.setOnShowListener(model -> {
+            switch (model.getId()) {
+                case 1:
+                    selectionFragment = new FavoriteFragment(userId);
+                    break;
+                case 2:
+                    selectionFragment = new HomeFragment(userId);
+                    break;
+                case 3:
+                    selectionFragment = new NotificationFragment(userId);
+                    break;
             }
-        });
-        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch (model.getId())
-                {
-                    case 2:
-                        selectionFragment = new HomeFragment(userId);
-                        break;
-                }
 
-                if (selectionFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
-                }
-
-                return null;
+            if (selectionFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
             }
+
+            return null;
         });
-        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch (model.getId())
-                {
-                    case 3:
-                        selectionFragment = new NotificationFragment(userId);
-                        break;
-                }
-
-                if (selectionFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
-                }
-
-                return null;
-            }
-        });
-
     }
-
 
     private void createActionBar() {
         setSupportActionBar(binding.toolbar);
@@ -293,17 +255,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // Function to check and request permission.
-    public void checkPermission(String permission, int requestCode)
-    {
+    public void checkPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
-
             // Requesting the permission
-            ActivityCompat.requestPermissions(this, new String[] { permission }, requestCode);
-        }
-        else {
-
+            ActivityCompat.requestPermissions(this, new String[]{permission}, requestCode);
+        } else {
+            // Permission already granted
         }
     }
+
 
     // This function is called when the user accepts or decline the permission.
     // Request Code is used to check which permission called this function.
@@ -390,7 +350,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 int count = 0;
                 for (int i = 0;i<notificationList.size();i++)
                 {
-                    if (notificationList.get(i).isRead() == false)
+                    if (!notificationList.get(i).isRead())
                     {
                         count++;
                     }
