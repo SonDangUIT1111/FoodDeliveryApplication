@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
+import com.example.fooddeliveryapplication.Model.ItemChatRoom;
 import com.example.fooddeliveryapplication.Model.Message;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
@@ -27,13 +28,13 @@ import java.util.ArrayList;
 public class ChatAdapter extends RecyclerView.Adapter {
     private ViewBinderHelper viewBinderHelper=new ViewBinderHelper();
     private Context context;
-    private ArrayList<User> users;
+    private ArrayList<ItemChatRoom> bunchOfItemChatRooms;
 
     private ValueEventListener messsageListener;
 
-    public ChatAdapter(Context context, ArrayList<User> users) {
+    public ChatAdapter(Context context, ArrayList<ItemChatRoom> itemChatRooms) {
         this.context = context;
-        this.users = users;
+        this.bunchOfItemChatRooms = itemChatRooms;
         viewBinderHelper.setOpenOnlyOne(true);
     }
 
@@ -47,11 +48,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        User currentUser=users.get(position);
+        ItemChatRoom itemChatRoom=bunchOfItemChatRooms.get(position);
         ViewHolder viewHolder=(ViewHolder) holder;
-        viewHolder.binding.txtNameUser.setText(currentUser.getNameOfUser());
+        viewHolder.binding.txtNameUser.setText(itemChatRoom.getReceiver().getNameOfUser());
         Glide.with(context)
-                .load(currentUser.getAvatarURL())
+                .load(itemChatRoom.getReceiver().getAvatarURL())
                 .error(R.drawable.image_default)
                 .into(viewHolder.binding.imgUser);
         viewHolder.binding.layout.setOnClickListener(new View.OnClickListener() {
@@ -59,25 +60,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 Intent intent=new Intent(context, ChatDetailActivity.class);
                 intent.setAction("chatActivity");
-                intent.putExtra("publisher",currentUser);
+                intent.putExtra("publisher",itemChatRoom.getReceiver());
                 context.startActivity(intent);
             }
         });
-//        FirebaseDatabase.getInstance().getReference("Message").
-//                child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                .child(currentUser.getUserId()).orderByChild("timestamp").limitToLast(1).addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        Message message=snapshot.getChildren().iterator().next().getValue(Message.class);
-//                        viewHolder.binding.txtLastMessage.setText(message.getContent());
-//                        notifyDataSetChanged();
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
+        viewHolder.binding.txtLastMessage.setText(itemChatRoom.getLastMessage().getContent());
     }
 
 
@@ -85,8 +72,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (!users.isEmpty())
-            return users.size();
+        if (!bunchOfItemChatRooms.isEmpty())
+            return bunchOfItemChatRooms.size();
         else
             return 0;
     }

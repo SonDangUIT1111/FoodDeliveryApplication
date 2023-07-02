@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 
 import com.example.fooddeliveryapplication.Adapters.Home.ChatAdapter;
+import com.example.fooddeliveryapplication.Model.ItemChatRoom;
+import com.example.fooddeliveryapplication.Model.Message;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.databinding.ActivityChatBinding;
 import com.google.firebase.database.ChildEventListener;
@@ -27,12 +29,12 @@ import java.util.concurrent.CountDownLatch;
 public class ChatActivity extends AppCompatActivity {
     ActivityChatBinding binding;
     String userId;
-    MutableLiveData <ArrayList<User>> bunchOfReceiver=new MutableLiveData<>();
+    DatabaseReference userReference;
     MutableLiveData<ArrayList<String>> bunchOfReceiverId=new MutableLiveData<>();
-    ArrayList<User> tempBunchOfReceiver=new ArrayList<>();
+    ArrayList<ItemChatRoom> bunchOfItemChatRoom=new ArrayList<>();
+    MutableLiveData <ArrayList<ItemChatRoom>> bunchOfItemChatRoomLive=new MutableLiveData<>();
     DatabaseReference chatReference;
     ValueEventListener chatListener;
-    ValueEventListener receiverListener;
     ChatAdapter chatAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,53 +44,40 @@ public class ChatActivity extends AppCompatActivity {
         userId=getIntent().getStringExtra("userId");
         initUI();
         createReference();
-        createObserverOfReceiverId();
-        createObserverOfReceiver();
+        createObserver();
         createChatListener();
         loadReceiverId();
-
     }
 
-    private void initUI() {
-        chatAdapter=new ChatAdapter(ChatActivity.this,tempBunchOfReceiver);
-        binding.recycleViewMessage.setLayoutManager(new LinearLayoutManager(ChatActivity.this, RecyclerView.VERTICAL,false));
-        binding.recycleViewMessage.setAdapter(chatAdapter);
+
+    void create() {
+        for (int i=0;i<bunchOfItemChatRoom.size();i++) {
+            createItemChatListener(bunchOfItemChatRoom.get(i),i);
+        }
     }
 
-    private void createObserverOfReceiver() {
-        bunchOfReceiver.observe(this, new Observer<ArrayList<User>>() {
+    private void createItemChatListener(ItemChatRoom itemChatRoom, int position) {
+        chatReference.child(itemChatRoom.getReceiver().getUserId()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChanged(ArrayList<User> users) {
-                chatAdapter.notifyDataSetChanged();
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                itemChatRoom.setLastMessage(snapshot.getValue(Message.class));
+                bunchOfItemChatRoom.set(position,itemChatRoom);
+                chatAdapter.notifyItemChanged(position);
             }
-        });
-    }
 
-    private void createObserverOfReceiverId() {
-        bunchOfReceiverId.observe(this, new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(ArrayList<String> strings) {
-                loadReceiver(bunchOfReceiverId.getValue());
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
-        });
-    }
 
-    private void loadReceiver(ArrayList<String> receiverIds) {
-        tempBunchOfReceiver.clear();
-        loadReceiverById(0,receiverIds);
-    }
-
-    private void loadReceiverById(int index, ArrayList<String> receiverIds) {
-        FirebaseDatabase.getInstance().getReference("Users").child(receiverIds.get(index)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User tmp=snapshot.getValue(User.class);
-                tempBunchOfReceiver.add(tmp);
-                if (!(index ==receiverIds.size()-1)) {
-                    loadReceiverById(index+1,receiverIds);
-                } else {
-                    bunchOfReceiver.postValue(tempBunchOfReceiver);
-                }
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override
@@ -99,15 +88,80 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
+    private void createObserver() {
+        createObserverOfReceiverId();
+        createObserverOfItemChatRoom();
+    }
+
+    private void createObserverOfItemChatRoom() {
+        bunchOfItemChatRoomLive.observe(this, new Observer<ArrayList<ItemChatRoom>>() {
+            @Override
+            public void onChanged(ArrayList<ItemChatRoom> itemChatRooms) {
+                chatAdapter.notifyDataSetChanged();
+                create();
+            }
+        });
+    }
+
+    private void initUI() {
+        chatAdapter=new ChatAdapter(ChatActivity.this,bunchOfItemChatRoom);
+        binding.recycleViewMessage.setLayoutManager(new LinearLayoutManager(ChatActivity.this, RecyclerView.VERTICAL,false));
+        binding.recycleViewMessage.setAdapter(chatAdapter);
+    }
+
+    private void createObserverOfReceiverId() {
+        bunchOfReceiverId.observe(this, new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> strings) {
+                loadReceiver(strings);
+            }
+        });
+    }
+
+    private void loadReceiver(ArrayList<String> receiverIds) {
+        bunchOfItemChatRoom.clear();
+        for (int i=0;i<receiverIds.size();i++) {
+                    userReference.child(receiverIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            includeGetItemChatFromReceiver(snapshot.getValue(User.class));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+
+    }
+
+    private void includeGetItemChatFromReceiver(User receiver) {
+        FirebaseDatabase.getInstance().getReference("Message").child(userId).child(receiver.getUserId())
+                .orderByChild("timestamp").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Message lastMessage=snapshot.getChildren().iterator().next().getValue(Message.class);
+                        ItemChatRoom itemChatRoom=new ItemChatRoom(receiver,lastMessage);
+                        bunchOfItemChatRoom.add(itemChatRoom);
+                        if (bunchOfItemChatRoom.size()==bunchOfReceiverId.getValue().size()) {
+                            bunchOfItemChatRoomLive.postValue(bunchOfItemChatRoom);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
     private void createChatListener() {
         chatListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<String> receiverIds=new ArrayList<>();
-                for (DataSnapshot item:snapshot.getChildren()) {
-                    String receiverId=item.getKey();
-                    receiverIds.add(receiverId);
-                }
+                includeHanldeWhenChatChanged(receiverIds,snapshot);
                 bunchOfReceiverId.postValue(receiverIds);
             }
 
@@ -118,8 +172,16 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
+    private void includeHanldeWhenChatChanged(ArrayList<String> receiverIds ,DataSnapshot snapshot) {
+        for (DataSnapshot item:snapshot.getChildren()) {
+            String receiverId=item.getKey();
+            receiverIds.add(receiverId);
+        }
+    }
+
     private void createReference() {
         chatReference= FirebaseDatabase.getInstance().getReference("Message").child(userId);
+        userReference=FirebaseDatabase.getInstance().getReference("Users");
     }
 
     private void loadReceiverId() {
@@ -131,4 +193,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onDestroy();
         binding=null;
     }
+
+
+
 }
