@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.Home.ChatAdapter;
 import com.example.fooddeliveryapplication.Model.ItemChatRoom;
@@ -50,43 +51,48 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    void create() {
-        for (int i=0;i<bunchOfItemChatRoom.size();i++) {
-            createItemChatListener(bunchOfItemChatRoom.get(i),i);
-        }
-    }
-
-    private void createItemChatListener(ItemChatRoom itemChatRoom, int position) {
-        chatReference.child(itemChatRoom.getReceiver().getUserId()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                itemChatRoom.setLastMessage(snapshot.getValue(Message.class));
-                bunchOfItemChatRoom.set(position,itemChatRoom);
-                chatAdapter.notifyItemChanged(position);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
+//    void create() {
+//        if (!bunchOfItemChatRoom.isEmpty()){
+//            for (int i=0;i<bunchOfItemChatRoom.size();i++) {
+//                createItemChatListener(bunchOfItemChatRoom.get(i),i);
+//            }
+//        } else {
+//            Toast.makeText(this,"Bi looi create",Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    private void createItemChatListener(ItemChatRoom itemChatRoom, int position) {
+//        chatReference.child(itemChatRoom.getReceiver().getUserId()).addChildEventListener(new ChildEventListener() {
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                itemChatRoom.setLastMessage(snapshot.getValue(Message.class));
+//                bunchOfItemChatRoom.set(position, itemChatRoom);
+//                chatAdapter.notifyItemChanged(position);
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                // Lắng nghe sự kiện thay đổi của tin nhắn
+//                itemChatRoom.setLastMessage(snapshot.getValue(Message.class));
+//                bunchOfItemChatRoom.set(position, itemChatRoom);
+//                chatAdapter.notifyItemChanged(position);
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
 
     private void createObserver() {
         createObserverOfReceiverId();
@@ -98,7 +104,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onChanged(ArrayList<ItemChatRoom> itemChatRooms) {
                 chatAdapter.notifyDataSetChanged();
-                create();
             }
         });
     }
@@ -124,7 +129,7 @@ public class ChatActivity extends AppCompatActivity {
                     userReference.child(receiverIds.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            includeGetItemChatFromReceiver(snapshot.getValue(User.class));
+                            includeGetItemChatFromReceiver(snapshot.getValue(User.class),receiverIds);
                         }
 
                         @Override
@@ -136,16 +141,20 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void includeGetItemChatFromReceiver(User receiver) {
-        FirebaseDatabase.getInstance().getReference("Message").child(userId).child(receiver.getUserId())
+    private void includeGetItemChatFromReceiver(User receiver,ArrayList<String> receiverIds) {
+        chatReference.child(receiver.getUserId())
                 .orderByChild("timestamp").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Message lastMessage=snapshot.getChildren().iterator().next().getValue(Message.class);
-                        ItemChatRoom itemChatRoom=new ItemChatRoom(receiver,lastMessage);
-                        bunchOfItemChatRoom.add(itemChatRoom);
-                        if (bunchOfItemChatRoom.size()==bunchOfReceiverId.getValue().size()) {
-                            bunchOfItemChatRoomLive.postValue(bunchOfItemChatRoom);
+                        if (snapshot.exists()) {
+                            Message lastMessage=snapshot.getChildren().iterator().next().getValue(Message.class);
+                            ItemChatRoom itemChatRoom=new ItemChatRoom(receiver,lastMessage);
+                            bunchOfItemChatRoom.add(itemChatRoom);
+                            if (bunchOfItemChatRoom.size()==receiverIds.size()) {
+                                bunchOfItemChatRoomLive.postValue(bunchOfItemChatRoom);
+                            }
+                        } else {
+                            Toast.makeText(ChatActivity.this, "include",Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -192,8 +201,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         binding=null;
+        chatReference.removeEventListener(chatListener);
     }
-
-
 
 }

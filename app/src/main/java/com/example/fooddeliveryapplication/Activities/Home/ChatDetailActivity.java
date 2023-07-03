@@ -75,7 +75,17 @@ public class ChatDetailActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Message newMessage = snapshot.getValue(Message.class);
+                String messageKey = snapshot.getKey();
 
+                for (int i = 0; i < messages.size(); i++) {
+                    Message currentMessage = messages.get(i);
+                    if (currentMessage.getIdMessage().equals(messageKey)) {
+                        messages.set(i, newMessage);
+                        chatDetailAdapter.notifyItemChanged(i);
+                        break;
+                    }
+                }
             }
 
             @Override

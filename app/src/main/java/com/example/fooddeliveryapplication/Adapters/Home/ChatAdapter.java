@@ -50,7 +50,20 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ItemChatRoom itemChatRoom=bunchOfItemChatRooms.get(position);
         ViewHolder viewHolder=(ViewHolder) holder;
+        viewBinderHelper.bind(viewHolder.binding.SwipeRevealLayout, itemChatRoom.getReceiver().getUserId());
         viewHolder.binding.txtNameUser.setText(itemChatRoom.getReceiver().getNameOfUser());
+        viewHolder.binding.txtLastMessage.setTextColor(context.getColor(R.color.blue_chat));
+        if (itemChatRoom.getLastMessage().getSenderId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            viewHolder.binding.imgNewMessage.setVisibility(View.INVISIBLE);
+            viewHolder.binding.txtLastMessage.setTextColor(context.getColor(R.color.gray));
+        } else {
+            if (itemChatRoom.getLastMessage().isSeen()) {
+                viewHolder.binding.imgNewMessage.setVisibility(View.INVISIBLE);
+                viewHolder.binding.txtLastMessage.setTextColor(context.getColor(R.color.gray));
+            } else {
+                viewHolder.binding.imgNewMessage.setVisibility(View.VISIBLE);
+            }
+        }
         Glide.with(context)
                 .load(itemChatRoom.getReceiver().getAvatarURL())
                 .error(R.drawable.image_default)

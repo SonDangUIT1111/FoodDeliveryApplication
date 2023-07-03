@@ -2,6 +2,7 @@ package com.example.fooddeliveryapplication.Adapters.Home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,9 @@ import com.example.fooddeliveryapplication.Model.Message;
 import com.example.fooddeliveryapplication.databinding.ItemReceiveMessageBinding;
 import com.example.fooddeliveryapplication.databinding.ItemSendMessageBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChatDetailAdapter extends RecyclerView.Adapter{
     Context context;
@@ -20,6 +23,7 @@ public class ChatDetailAdapter extends RecyclerView.Adapter{
     public final int ITEM_RECEIVE=1002;
     public final int NULL_ITEM=1003;
     String publisherId;
+    SimpleDateFormat formatHour = new SimpleDateFormat("HH:mm a");
     String userId;
 
     public ChatDetailAdapter(Context context, ArrayList<Message> ds, String userId, String publisherId) {
@@ -42,12 +46,21 @@ public class ChatDetailAdapter extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message=ds.get(position);
+
         if (getItemViewType(position)==ITEM_SEND) {
             SendViewHolder viewHolder=(SendViewHolder) holder;
             viewHolder.binding.txtMessage.setText(message.getContent());
+            if (message.isSeen()==true) {
+                viewHolder.binding.txtTime.setText(formatHour.format(new Date(message.getTimeStamp()))+" Seen");
+                viewHolder.binding.imgCheck.setVisibility(View.GONE);
+            } else {
+                viewHolder.binding.txtTime.setText(formatHour.format(new Date(message.getTimeStamp()))+" Sent");
+                viewHolder.binding.imgDoubleCheck.setVisibility(View.GONE);
+            }
         } else {
             ReceiveViewHolder viewHolder=(ReceiveViewHolder) holder;
             viewHolder.binding.txtMessage.setText(message.getContent());
+            viewHolder.binding.txtTime.setText(formatHour.format(new Date(message.getTimeStamp())));
         }
     }
 
