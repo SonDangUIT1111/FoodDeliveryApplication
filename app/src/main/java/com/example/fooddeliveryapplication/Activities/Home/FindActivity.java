@@ -8,8 +8,6 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.fooddeliveryapplication.Adapters.Home.FindAdapter;
@@ -25,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class FindActivity extends AppCompatActivity {
-    ActivityFindBinding binding;
+    private ActivityFindBinding binding;
     private final DatabaseReference productsReference= FirebaseDatabase.getInstance().getReference("Products");
     private ArrayList<Product> dsAll = new ArrayList<>();
     private FindAdapter adapter;
@@ -42,6 +40,12 @@ public class FindActivity extends AppCompatActivity {
         adapter = new FindAdapter(dsAll, userId,this);
         binding.recycleFoodFinded.setAdapter(adapter);
         initUI();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     private void initUI() {
@@ -94,11 +98,5 @@ public class FindActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding=null;
     }
 }

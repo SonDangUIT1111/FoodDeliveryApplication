@@ -5,23 +5,18 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.AddressAdapter;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Model.Address;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityChangeAddressBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,9 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeAddressActivity extends AppCompatActivity {
-    String userId;
-    private ImageView add1;
-    private RecyclerView recyclerViewAddresses;
+    private String userId;
+    private ActivityChangeAddressBinding binding;
     private AddressAdapter addressAdapter;
     private List<Address> addressList;
     private ActivityResultLauncher<Intent> updateAddAddressLauncher;
@@ -42,17 +36,16 @@ public class ChangeAddressActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_address);
+        binding = ActivityChangeAddressBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         userId = getIntent().getStringExtra("userId");
 
         initToolbar();
         initUpdateAddAddressActivity();
 
-        add1 = findViewById(R.id.add1);
-        recyclerViewAddresses = findViewById(R.id.recycler_view_address);
-        recyclerViewAddresses.setHasFixedSize(true);
-        recyclerViewAddresses.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewAddress.setHasFixedSize(true);
+        binding.recyclerViewAddress.setLayoutManager(new LinearLayoutManager(this));
         addressList = new ArrayList<>();
         addressAdapter = new AddressAdapter(this, addressList, userId);
         addressAdapter.setAddressAdapterListener(new IAddressAdapterListener() {
@@ -69,11 +62,11 @@ public class ChangeAddressActivity extends AppCompatActivity {
                 loadInfo();
             }
         });
-        recyclerViewAddresses.setAdapter(addressAdapter);
+        binding.recyclerViewAddress.setAdapter(addressAdapter);
 
         loadInfo();
 
-        add1.setOnClickListener(new View.OnClickListener() {
+        binding.add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseDatabase.getInstance().getReference().child("Address").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -100,6 +93,12 @@ public class ChangeAddressActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     @Override
@@ -149,11 +148,10 @@ public class ChangeAddressActivity extends AppCompatActivity {
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Change address");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();

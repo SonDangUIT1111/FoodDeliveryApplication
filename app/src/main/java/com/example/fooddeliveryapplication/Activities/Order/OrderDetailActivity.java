@@ -27,19 +27,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class OrderDetailActivity extends AppCompatActivity {
-    ActivityOrderDetailBinding binding;
-    FirebaseDatabase db=FirebaseDatabase.getInstance();
+    private ActivityOrderDetailBinding binding;
 
-    ArrayList<BillInfo> dsBillInfo=new ArrayList<>();
-    Bill currentBill;
+    private ArrayList<BillInfo> dsBillInfo=new ArrayList<>();
+    private Bill currentBill;
     private LoadingDialog loadingDialog;
-    String userId;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityOrderDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         //Lấy Intent
@@ -49,6 +49,12 @@ public class OrderDetailActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     @Override
@@ -71,7 +77,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        db.getReference("BillInfos").child(currentBill.getBillId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("BillInfos").child(currentBill.getBillId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot item:snapshot.getChildren()) {

@@ -2,79 +2,63 @@ package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Model.Address;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityUpdateAddAddressBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-
 public class UpdateAddAddressActivity extends AppCompatActivity {
-    String userId;
-    private EditText receiverName;
-    private EditText receiverPhoneNumber;
-    private EditText detailAddress;
-    private SwitchCompat setDefault;
-    private Button updateAndComplete;
+    private ActivityUpdateAddAddressBinding binding;
+    private String userId;
     private String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_add_address);
+        binding = ActivityUpdateAddAddressBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         userId = getIntent().getStringExtra("userId");
         mode = getIntent().getStringExtra("mode");
 
         initToolbar();
 
-        receiverName = findViewById(R.id.full_name);
-        receiverPhoneNumber = findViewById(R.id.phone_number);
-        detailAddress = findViewById(R.id.detail_address);
-        setDefault = findViewById(R.id.set_default);
-        updateAndComplete = findViewById(R.id.update_complete);
-
         if (mode.equals("add - default")) {
-            updateAndComplete.setText("Complete");
-            setDefault.setChecked(true);
-            setDefault.setEnabled(false);
+            binding.updateComplete.setText("Complete");
+            binding.setDefault.setChecked(true);
+            binding.setDefault.setEnabled(false);
         }
         else if (mode.equals("add - non-default")) {
-            updateAndComplete.setText("Complete");
+            binding.updateComplete.setText("Complete");
         }
         else if (mode.equals("update")) {
-            updateAndComplete.setText("Update");
+            binding.updateComplete.setText("Update");
 
             FirebaseDatabase.getInstance().getReference().child("Address").child(userId).child(GlobalConfig.updateAddressId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Address address = snapshot.getValue(Address.class);
-                    receiverName.setText(address.getReceiverName());
-                    receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
-                    detailAddress.setText(address.getDetailAddress());
+                    binding.fullName.setText(address.getReceiverName());
+                    binding.phoneNumber.setText(address.getReceiverPhoneNumber());
+                    binding.detailAddress.setText(address.getDetailAddress());
                     if (address.getState().equals("default")) {
-                        setDefault.setEnabled(false);
-                        setDefault.setChecked(true);
+                        binding.setDefault.setEnabled(false);
+                        binding.setDefault.setChecked(true);
                     }
                     else {
-                        setDefault.setChecked(false);
+                        binding.setDefault.setChecked(false);
                     }
                 }
 
@@ -85,18 +69,18 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
             });
         }
 
-        updateAndComplete.setOnClickListener(new View.OnClickListener() {
+        binding.updateComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validateAddressInfo()) {
-                    if (updateAndComplete.getText().equals("Complete")) {
+                    if (binding.updateComplete.getText().equals("Complete")) {
                         // Add default address
-                        if (setDefault.isChecked()) {
+                        if (binding.setDefault.isChecked()) {
                             String addressId = FirebaseDatabase.getInstance().getReference().push().getKey();
                             GlobalConfig.choseAddressId = addressId;
 
-                            Address temp = new Address(addressId, detailAddress.getText().toString().trim(), "default",
-                                    receiverName.getText().toString().trim(), receiverPhoneNumber.getText().toString().trim());
+                            Address temp = new Address(addressId, binding.detailAddress.getText().toString().trim(), "default",
+                                    binding.fullName.getText().toString().trim(), binding.phoneNumber.getText().toString().trim());
 
                             FirebaseDatabase.getInstance().getReference().child("Address").child(userId).child(addressId).setValue(temp).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -134,8 +118,8 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                             String addressId = FirebaseDatabase.getInstance().getReference().push().getKey();
                             GlobalConfig.choseAddressId = addressId;
 
-                            Address temp = new Address(addressId, detailAddress.getText().toString().trim(), "",
-                                    receiverName.getText().toString().trim(), receiverPhoneNumber.getText().toString().trim());
+                            Address temp = new Address(addressId, binding.detailAddress.getText().toString().trim(), "",
+                                    binding.fullName.getText().toString().trim(), binding.phoneNumber.getText().toString().trim());
                             FirebaseDatabase.getInstance().getReference().child("Address").child(userId).child(addressId).setValue(temp).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -153,9 +137,9 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                     }
                     else {
                         // Update to default address
-                        if (setDefault.isChecked()) {
-                            Address temp = new Address(GlobalConfig.updateAddressId, detailAddress.getText().toString().trim(), "default",
-                                    receiverName.getText().toString().trim(), receiverPhoneNumber.getText().toString().trim());
+                        if (binding.setDefault.isChecked()) {
+                            Address temp = new Address(GlobalConfig.updateAddressId, binding.detailAddress.getText().toString().trim(), "default",
+                                    binding.fullName.getText().toString().trim(), binding.phoneNumber.getText().toString().trim());
                             FirebaseDatabase.getInstance().getReference().child("Address").child(userId).child(GlobalConfig.updateAddressId).setValue(temp).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -187,8 +171,8 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                             });
                         }
                         else {
-                            Address temp = new Address(GlobalConfig.updateAddressId, detailAddress.getText().toString().trim(), "",
-                                    receiverName.getText().toString().trim(), receiverPhoneNumber.getText().toString().trim());
+                            Address temp = new Address(GlobalConfig.updateAddressId, binding.detailAddress.getText().toString().trim(), "",
+                                    binding.fullName.getText().toString().trim(), binding.phoneNumber.getText().toString().trim());
                             FirebaseDatabase.getInstance().getReference().child("Address").child(userId).child(GlobalConfig.updateAddressId).setValue(temp).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -208,11 +192,16 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
+
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         if (mode.equals("update")) {
             getSupportActionBar().setTitle("Update address");
         }
@@ -220,7 +209,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Add address");
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -231,17 +220,17 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
     }
 
     private boolean validateAddressInfo() {
-        if (receiverName.getText().toString().equals("")) {
+        if (binding.fullName.getText().toString().equals("")) {
             Toast.makeText(this, "Receiver name must not be empty!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (receiverPhoneNumber.getText().toString().equals("")) {
+        if (binding.phoneNumber.getText().toString().equals("")) {
             Toast.makeText(this, "Receiver phone number must not be empty!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if (detailAddress.getText().toString().equals("")) {
+        if (binding.detailAddress.getText().toString().equals("")) {
             Toast.makeText(this, "Detail address must not be empty", Toast.LENGTH_SHORT).show();
             return false;
         }

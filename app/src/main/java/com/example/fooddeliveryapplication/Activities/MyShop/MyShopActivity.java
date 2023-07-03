@@ -11,15 +11,15 @@ import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.Deli
 import com.example.fooddeliveryapplication.databinding.ActivityMyShopBinding;
 
 public class MyShopActivity extends AppCompatActivity {
+    private ActivityMyShopBinding binding;
+    private String userId;
 
-    ActivityMyShopBinding binding;
-
-    String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityMyShopBinding.inflate(getLayoutInflater());
+        binding = ActivityMyShopBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
 
@@ -49,6 +49,11 @@ public class MyShopActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

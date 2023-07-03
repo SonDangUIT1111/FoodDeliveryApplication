@@ -4,35 +4,26 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
 import com.example.fooddeliveryapplication.Adapters.Cart.OrderProductAdapter;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
-import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Model.Address;
-import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.Product;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityProceedOrderBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,45 +37,33 @@ import java.util.List;
 import java.util.Set;
 
 public class ProceedOrderActivity extends AppCompatActivity {
-    private TextView receiverName;
-    private TextView detailAddress;
-    private TextView receiverPhoneNumber;
-    private ImageView change;
-    private RecyclerView recyclerViewOrderProducts;
+    private ActivityProceedOrderBinding binding;
     private OrderProductAdapter orderProductAdapter;
     private ArrayList<CartInfo> cartInfoList;
-    private Button complete;
-    private TextView totalPrice;
-    String totalPriceDisplay;
-    String userId;
+    private String totalPriceDisplay;
+    private String userId;
     private ActivityResultLauncher<Intent> changeAddressLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_proceed_order);
+        binding = ActivityProceedOrderBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         initToolbar();
         initChangeAddressActivity();
 
-        receiverName = findViewById(R.id.receiver_name);
-        detailAddress = findViewById(R.id.detail_address);
-        receiverPhoneNumber = findViewById(R.id.receiver_phone_number);
-        change = findViewById(R.id.change);
-        recyclerViewOrderProducts = findViewById(R.id.recycler_view_order_product);
-        recyclerViewOrderProducts.setHasFixedSize(true);
-        recyclerViewOrderProducts.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewOrderProduct.setHasFixedSize(true);
+        binding.recyclerViewOrderProduct.setLayoutManager(new LinearLayoutManager(this));
         cartInfoList = (ArrayList<CartInfo>) getIntent().getSerializableExtra("buyProducts");
         orderProductAdapter = new OrderProductAdapter(this, cartInfoList);
-        recyclerViewOrderProducts.setAdapter(orderProductAdapter);
+        binding.recyclerViewOrderProduct.setAdapter(orderProductAdapter);
         totalPriceDisplay = getIntent().getStringExtra("totalPrice");
         userId = getIntent().getStringExtra("userId");
-        complete = findViewById(R.id.complete);
-        totalPrice = findViewById(R.id.total_price);
 
         loadInfo();
 
-        complete.setOnClickListener(new View.OnClickListener() {
+        binding.complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (ValidateDate()) {
@@ -238,7 +217,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
             }
         });
 
-        change.setOnClickListener(new View.OnClickListener() {
+        binding.change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProceedOrderActivity.this, ChangeAddressActivity.class);
@@ -246,6 +225,12 @@ public class ProceedOrderActivity extends AppCompatActivity {
                 changeAddressLauncher.launch(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     private boolean ValidateDate() {
@@ -272,9 +257,9 @@ public class ProceedOrderActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Address address = snapshot.getValue(Address.class);
-                    receiverName.setText(address.getReceiverName());
-                    detailAddress.setText(address.getDetailAddress());
-                    receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
+                    binding.receiverName.setText(address.getReceiverName());
+                    binding.detailAddress.setText(address.getDetailAddress());
+                    binding.receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
                 }
 
                 @Override
@@ -288,11 +273,10 @@ public class ProceedOrderActivity extends AppCompatActivity {
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Proceed order");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -304,7 +288,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
     private void loadInfo() {
         // totalPrice
-        totalPrice.setText(totalPriceDisplay);
+        binding.totalPrice.setText(totalPriceDisplay);
 
         // Address
         FirebaseDatabase.getInstance().getReference().child("Address").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -315,9 +299,9 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
                     if (address.getState().equals("default")) {
                         GlobalConfig.choseAddressId = address.getAddressId();
-                        receiverName.setText(address.getReceiverName());
-                        detailAddress.setText(address.getDetailAddress());
-                        receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
+                        binding.receiverName.setText(address.getReceiverName());
+                        binding.detailAddress.setText(address.getDetailAddress());
+                        binding.receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
                     }
                 }
             }
@@ -327,16 +311,6 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private long convertMoneyToValue(String money) {
-        String output = "";
-        for (int i = 0; i < money.length(); i++) {
-            if (money.charAt(i) != ',' && money.charAt(i) != 'đ') {
-                output += money.charAt(i);
-            }
-        }
-        return Long.parseLong(output);
     }
 
 

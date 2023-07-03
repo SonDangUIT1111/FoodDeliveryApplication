@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
@@ -15,8 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotActivity extends AppCompatActivity {
-    ActivityForgotBinding binding;
-    FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
+    private ActivityForgotBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,13 +23,14 @@ public class ForgotActivity extends AppCompatActivity {
 
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
+
         binding.btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (binding.edtEmail.getText().toString().isEmpty()) {
                     Toast.makeText(ForgotActivity.this, "Hãy nhập email mà bạn muốn reset mật khẩu", Toast.LENGTH_SHORT).show();
                 } else {
-                    mFirebaseAuth.sendPasswordResetEmail(binding.edtEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(binding.edtEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -45,11 +44,18 @@ public class ForgotActivity extends AppCompatActivity {
                 }
             }
         });
+
         binding.signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

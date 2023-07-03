@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -19,15 +18,13 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityEditProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -42,26 +39,21 @@ import com.google.firebase.storage.UploadTask;
 import java.util.HashMap;
 
 public class EditProfileActivity extends AppCompatActivity {
-    private ImageView profileImage;
-    private EditText userName;
-    private EditText email;
-    private EditText phoneNumber;
-    private EditText birthDate;
-    private ImageView changePhoto;
-    private ImageView datePicker;
-    private Button update;
+    private ActivityEditProfileBinding binding;
     private DatePickerDialog datePickerDialog;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     private Intent imagePickerIntent;
     private AlertDialog.Builder builder;
     private String imageUrl;
 
-    String userId;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
 
@@ -73,32 +65,23 @@ public class EditProfileActivity extends AppCompatActivity {
         initImagePickerActivity();
         initDialogBuilder();
 
-        profileImage = findViewById(R.id.profile_image);
-        userName = findViewById(R.id.user_name);
-        email = findViewById(R.id.email);
-        phoneNumber = findViewById(R.id.phone_number);
-        birthDate = findViewById(R.id.birth_date);
-        changePhoto = findViewById(R.id.change_photo);
-        datePicker = findViewById(R.id.date_picker);
-        update = findViewById(R.id.update);
-
         getInfo();
 
-        profileImage.setOnClickListener(new View.OnClickListener() {
+        binding.profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openImagePicker();
             }
         });
 
-        changePhoto.setOnClickListener(new View.OnClickListener() {
+        binding.changePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openImagePicker();
             }
         });
 
-        userName.addTextChangedListener(new TextWatcher() {
+        binding.userName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -116,10 +99,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
 
-                        update.setEnabled(!(user.getUserName().equals(userName.getText().toString()) &&
-                                user.getEmail().equals(email.getText().toString()) &&
-                                user.getPhoneNumber().equals(phoneNumber.getText().toString()) &&
-                                user.getBirthDate().equals(birthDate.getText().toString())));
+                        binding.update.setEnabled(!(user.getUserName().equals(binding.userName.getText().toString()) &&
+                                user.getEmail().equals(binding.email.getText().toString()) &&
+                                user.getPhoneNumber().equals(binding.phoneNumber.getText().toString()) &&
+                                user.getBirthDate().equals(binding.birthDate.getText().toString())));
                     }
 
                     @Override
@@ -130,7 +113,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        email.addTextChangedListener(new TextWatcher() {
+        binding.email.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -148,10 +131,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
 
-                        update.setEnabled(!(user.getUserName().equals(userName.getText().toString()) &&
-                                user.getEmail().equals(email.getText().toString()) &&
-                                user.getPhoneNumber().equals(phoneNumber.getText().toString()) &&
-                                user.getBirthDate().equals(birthDate.getText().toString())));
+                        binding.update.setEnabled(!(user.getUserName().equals(binding.userName.getText().toString()) &&
+                                user.getEmail().equals(binding.email.getText().toString()) &&
+                                user.getPhoneNumber().equals(binding.phoneNumber.getText().toString()) &&
+                                user.getBirthDate().equals(binding.birthDate.getText().toString())));
                     }
 
                     @Override
@@ -162,7 +145,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        phoneNumber.addTextChangedListener(new TextWatcher() {
+        binding.phoneNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -180,10 +163,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
 
-                        update.setEnabled(!(user.getUserName().equals(userName.getText().toString()) &&
-                                user.getEmail().equals(email.getText().toString()) &&
-                                user.getPhoneNumber().equals(phoneNumber.getText().toString()) &&
-                                user.getBirthDate().equals(birthDate.getText().toString())));
+                        binding.update.setEnabled(!(user.getUserName().equals(binding.userName.getText().toString()) &&
+                                user.getEmail().equals(binding.email.getText().toString()) &&
+                                user.getPhoneNumber().equals(binding.phoneNumber.getText().toString()) &&
+                                user.getBirthDate().equals(binding.birthDate.getText().toString())));
                     }
 
                     @Override
@@ -194,7 +177,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        birthDate.addTextChangedListener(new TextWatcher() {
+        binding.birthDate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -212,10 +195,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User user = snapshot.getValue(User.class);
 
-                        update.setEnabled(!(user.getUserName().equals(userName.getText().toString()) &&
-                                user.getEmail().equals(email.getText().toString()) &&
-                                user.getPhoneNumber().equals(phoneNumber.getText().toString()) &&
-                                user.getBirthDate().equals(birthDate.getText().toString())));
+                        binding.update.setEnabled(!(user.getUserName().equals(binding.userName.getText().toString()) &&
+                                user.getEmail().equals(binding.email.getText().toString()) &&
+                                user.getPhoneNumber().equals(binding.phoneNumber.getText().toString()) &&
+                                user.getBirthDate().equals(binding.birthDate.getText().toString())));
                     }
 
                     @Override
@@ -226,19 +209,25 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        datePicker.setOnClickListener(new View.OnClickListener() {
+        binding.datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 datePickerDialog.show();
             }
         });
 
-        update.setOnClickListener(new View.OnClickListener() {
+        binding.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 updateInfo();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     private void initDialogBuilder() {
@@ -264,9 +253,9 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void updateInfo() {
-        String emailTxt = email.getText().toString().trim();
-        String phoneNumberTxt = phoneNumber.getText().toString().trim();
-        String userNameTxt = userName.getText().toString().trim();
+        String emailTxt = binding.email.getText().toString().trim();
+        String phoneNumberTxt = binding.phoneNumber.getText().toString().trim();
+        String userNameTxt = binding.userName.getText().toString().trim();
 
         if (emailTxt.equals("")) {
             Toast.makeText(this, "Email must not be empty!", Toast.LENGTH_SHORT).show();
@@ -290,10 +279,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("avatarURL", imageUrl);
-        map.put("birthDate", birthDate.getText().toString());
-        map.put("email", email.getText().toString());
-        map.put("phoneNumber", phoneNumber.getText().toString());
-        map.put("userName", userName.getText().toString());
+        map.put("birthDate", binding.birthDate.getText().toString());
+        map.put("email", binding.email.getText().toString());
+        map.put("phoneNumber", binding.phoneNumber.getText().toString());
+        map.put("userName", binding.userName.getText().toString());
 
         FirebaseDatabase.getInstance().getReference().child("Users").child(userId).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -335,11 +324,11 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                Glide.with(getApplicationContext()).load(user.getAvatarURL()).placeholder(R.drawable.profile_image).into(profileImage);
-                userName.setText(user.getUserName());
-                email.setText(user.getEmail());
-                phoneNumber.setText(user.getPhoneNumber());
-                birthDate.setText(user.getBirthDate());
+                Glide.with(getApplicationContext()).load(user.getAvatarURL()).placeholder(R.drawable.profile_image).into(binding.profileImage);
+                binding.userName.setText(user.getUserName());
+                binding.email.setText(user.getEmail());
+                binding.phoneNumber.setText(user.getPhoneNumber());
+                binding.birthDate.setText(user.getBirthDate());
                 imageUrl = user.getAvatarURL();
             }
 
@@ -365,11 +354,11 @@ public class EditProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             imageUrl = uri.toString();
-                            Glide.with(EditProfileActivity.this).load(imageUrl).placeholder(R.drawable.profile_image).into(profileImage);
+                            Glide.with(EditProfileActivity.this).load(imageUrl).placeholder(R.drawable.profile_image).into(binding.profileImage);
 
                             pd.dismiss();
 
-                            update.setEnabled(true);
+                            binding.update.setEnabled(true);
                         }
                     });
                 }
@@ -382,7 +371,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int date) {
                 month++;
-                birthDate.setText(getDMY(date, month, year));
+                binding.birthDate.setText(getDMY(date, month, year));
             }
         };
 
@@ -409,14 +398,13 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Edit Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (update.isEnabled()) {
+                if (binding.update.isEnabled()) {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }

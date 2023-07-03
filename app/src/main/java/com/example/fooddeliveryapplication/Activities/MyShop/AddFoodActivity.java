@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapplication.Activities.MyShop;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,8 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Dialog.UploadDialog;
@@ -43,33 +40,30 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.net.URI;
-
 public class AddFoodActivity extends AppCompatActivity {
-    ActivityAddFoodBinding binding;
-    String TAG="Add Food";
-    int position;
-    int PERMISION_REQUEST_CODE=10001;
-    ProgressDialog progressDialog;
-    UploadDialog uploadDialog;
-    Uri uri1,uri2,uri3,uri4;
-    String img1="",img2="",img3="",img4="";
+    private ActivityAddFoodBinding binding;
+    private String TAG="Add Food";
+    private int position;
+    private int PERMISSION_REQUEST_CODE=10001;
+    private UploadDialog uploadDialog;
+    private Uri uri1,uri2,uri3,uri4;
+    private String img1="",img2="",img3="",img4="";
     //Biến old để lưu lại giá trị hình cũ cần phải xóa trước khi cập nhật lại
-    String imgOld1="",imgOld2="",imgOld3="",imgOld4="";
-    Product productUpdate=null;
-    boolean checkUpdate=false;
-    String userId;
+    private String imgOld1="",imgOld2="",imgOld3="",imgOld4="";
+    private Product productUpdate=null;
+    private boolean checkUpdate=false;
+    private String userId;
     private static final int FRIST_IMAGE = 1;
     private static final int SECOND_IMAGE = 2;
     private static final int THIRD_IMAGE = 3;
     private static final int FOURTH_IMAGE = 4;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityAddFoodBinding.inflate(getLayoutInflater());
+        binding = ActivityAddFoodBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
         //Nhận intent từ edit--------------
@@ -177,6 +171,12 @@ public class AddFoodActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     private void deleteOldImage(int position) {
@@ -346,7 +346,7 @@ public class AddFoodActivity extends AppCompatActivity {
                         finish();
                         Toast.makeText(AddFoodActivity.this, "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show();
                     } else {
-                        progressDialog.dismiss();
+                        uploadDialog.dismiss();
                         Toast.makeText(AddFoodActivity.this, "Không thành công", Toast.LENGTH_SHORT).show();
                         Log.e(TAG,"Lỗi thêm sản phẩm");
                     }
@@ -452,11 +452,6 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     });
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding=null;
-    }
     private void checkRuntimePermission() {
         if (isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
             pickImg();
@@ -470,7 +465,7 @@ public class AddFoodActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode==PERMISION_REQUEST_CODE) {
+        if (requestCode==PERMISSION_REQUEST_CODE) {
             if (grantResults.length>0&&grantResults[0]== PackageManager.PERMISSION_GRANTED) {
                 pickImg();
             } else if (!ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -530,7 +525,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private void requestRuntimePermission() {
         ActivityCompat.requestPermissions(AddFoodActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
-        },PERMISION_REQUEST_CODE);
+        },PERMISSION_REQUEST_CODE);
     }
 
     private boolean isPermissionGranted(String permission) {

@@ -61,7 +61,7 @@ import kotlin.jvm.functions.Function1;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String userId;
-    ActivityHomeBinding binding;
+    private ActivityHomeBinding binding;
     private LinearLayout layoutMain;
     private Fragment selectionFragment;
 
@@ -86,9 +86,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //----------------------
         initUI();
         loadInformationForNavigationBar();
+    }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
 
@@ -241,17 +244,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId()==android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             binding.drawLayoutHome.openDrawer(GravityCompat.START);
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding=null;
     }
 
     // Function to check and request permission.

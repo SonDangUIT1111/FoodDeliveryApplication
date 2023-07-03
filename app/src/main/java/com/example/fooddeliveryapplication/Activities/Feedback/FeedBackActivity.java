@@ -17,15 +17,16 @@ import com.example.fooddeliveryapplication.databinding.ActivityFeedBackBinding;
 import java.util.ArrayList;
 
 public class FeedBackActivity extends AppCompatActivity {
-    ActivityFeedBackBinding binding;
-    ArrayList<BillInfo> dsBillInfo;
-    Bill currentBill;
-    String userId;
+    private ActivityFeedBackBinding binding;
+    private ArrayList<BillInfo> dsBillInfo;
+    private Bill currentBill;
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityFeedBackBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         Intent intent=getIntent();
         dsBillInfo= (ArrayList<BillInfo>) intent.getSerializableExtra("List of billInfo");
         currentBill= (Bill) intent.getSerializableExtra("Current Bill");
@@ -33,7 +34,11 @@ public class FeedBackActivity extends AppCompatActivity {
         initUI();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));

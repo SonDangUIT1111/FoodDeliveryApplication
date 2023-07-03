@@ -29,6 +29,8 @@ import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityDetailOfOrderDeliveryManagementBinding;
+import com.example.fooddeliveryapplication.databinding.ActivityProductInfoBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
@@ -36,40 +38,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductInfoActivity extends AppCompatActivity {
+    private ActivityProductInfoBinding binding;
+    private String productId;
+    private String productName;
+    private int productPrice;
+    private String productDescription;
+    private Double ratingStar;
+    private String productImage1;
+    private String productImage2;
+    private String productImage3;
+    private String productImage4;
+    private String userName;
+    private String userId;
+    private String publisherId;
+    private int sold;
+    private boolean own;
 
-    ViewPager2 pagerProductImage;
-    ImageButton btnBack;
-    ImageButton btnAddFavourite;
-    ImageButton btnCancelFavourite;
-    TextView txtNameProduct;
-    Button btnAddToCart;
-    TextView txtPriceProduct;
-    TextView txtDescription;
-    TextView txtSell;
-    TextView txtFavourite;
-    TextView txtRate;
-    RatingBar ratingBar;
-    RecyclerView recComment;
-    ProgressBar progressBarProductInfo;
-
-    String productId;
-    String productName;
-    int productPrice;
-    String productDescription;
-    Double ratingStar;
-    String productImage1;
-    String productImage2;
-    String productImage3;
-    String productImage4;
-    String userName;
-    String userId;
-    String publisherId;
-    int sold;
-    boolean own;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_info);
+        binding = ActivityProductInfoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
 
@@ -88,40 +78,21 @@ public class ProductInfoActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         sold = intent.getIntExtra("sold",0);
 
-
-        // find view by id
-        btnBack = (ImageButton) findViewById(R.id.btnBack);
-        btnAddFavourite = (ImageButton) findViewById(R.id.btnAddFavourite);
-        btnCancelFavourite = (ImageButton) findViewById(R.id.btnCancelFavourite);
-        pagerProductImage = (ViewPager2) findViewById(R.id.pagerProductImage);
-        txtNameProduct = (TextView) findViewById(R.id.txtNameProduct);
-        txtDescription = (TextView) findViewById(R.id.txtDesciption);
-        txtPriceProduct = (TextView) findViewById(R.id.txtPriceProduct);
-        txtSell = (TextView) findViewById(R.id.txtSell);
-        txtRate = (TextView) findViewById(R.id.txtRate);
-        txtFavourite = (TextView) findViewById(R.id.txtFavourite);
-        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-        recComment = (RecyclerView) findViewById(R.id.recComment);
-        btnAddToCart = findViewById(R.id.btnAddToCart);
-        progressBarProductInfo = (ProgressBar) findViewById(R.id.progressBarProductInfo);
-
         // set up default value
-
-        txtNameProduct.setText(productName);
-        txtPriceProduct.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(productPrice)));
-        txtDescription.setText(productDescription);
-        txtSell.setText(String.valueOf(sold));
-        ratingBar.setRating(ratingStar.floatValue());
+        binding.txtNameProduct.setText(productName);
+        binding.txtPriceProduct.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(productPrice)));
+        binding.txtDesciption.setText(productDescription);
+        binding.txtSell.setText(String.valueOf(sold));
+        binding.ratingBar.setRating(ratingStar.floatValue());
         if (publisherId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             own = true;
-            btnAddToCart.setVisibility(View.INVISIBLE);
-            btnCancelFavourite.setVisibility(View.INVISIBLE);
-            btnAddFavourite.setVisibility(View.INVISIBLE);
+            binding.btnAddToCart.setVisibility(View.INVISIBLE);
+            binding.btnCancelFavourite.setVisibility(View.INVISIBLE);
+            binding.btnAddFavourite.setVisibility(View.INVISIBLE);
         }
         else {
             own = false;
         }
-
 
         // set Adapter for image slider
         ArrayList<String> dsImage =new ArrayList<>();
@@ -138,16 +109,16 @@ public class ProductInfoActivity extends AppCompatActivity {
             dsImage.add(productImage4);
         }
         ProductInfoImageAdapter imageAdapter2=new ProductInfoImageAdapter(this,dsImage);
-        pagerProductImage.setAdapter(imageAdapter2);
+        binding.pagerProductImage.setAdapter(imageAdapter2);
         WormDotsIndicator dotsIndicator=findViewById(R.id.tabDots);
-        dotsIndicator.attachTo(pagerProductImage);
+        dotsIndicator.attachTo(binding.pagerProductImage);
 
 
         // load sell, favourite
         new FirebaseProductInfoHelper(productId).countFavourite(new FirebaseProductInfoHelper.DataStatusCountFavourite() {
             @Override
             public void DataIsLoaded(int countFavourite) {
-                txtFavourite.setText(String.valueOf(countFavourite));
+                binding.txtFavourite.setText(String.valueOf(countFavourite));
             }
 
             @Override
@@ -200,17 +171,14 @@ public class ProductInfoActivity extends AppCompatActivity {
 
 
         //add to cart process
-        btnAddToCart.setOnClickListener(new View.OnClickListener() {
+        binding.btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateCart(isCartExists[0],isProductExists[0],currentCart[0],currentCartInfo[0],1);
             }
         });
 
-
-
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -219,7 +187,11 @@ public class ProductInfoActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
 
     // DEFINE FUNCTION
 
@@ -229,10 +201,10 @@ public class ProductInfoActivity extends AppCompatActivity {
             @Override
             public void DataIsLoaded(List<Comment> commentList,int count, List<String> keys) {
                 CommentRecyclerViewAdapter adapter = new CommentRecyclerViewAdapter(ProductInfoActivity.this,commentList,keys);
-                recComment.setHasFixedSize(true);
-                recComment.setLayoutManager(new LinearLayoutManager(ProductInfoActivity.this));
-                recComment.setAdapter(adapter);
-                txtRate.setText("("+count+")");
+                binding.recComment.setHasFixedSize(true);
+                binding.recComment.setLayoutManager(new LinearLayoutManager(ProductInfoActivity.this));
+                binding.recComment.setAdapter(adapter);
+                binding.txtRate.setText("("+count+")");
             }
 
             @Override
@@ -346,18 +318,18 @@ public class ProductInfoActivity extends AppCompatActivity {
                 if (!own) {
                     if (isFavouriteDetailExists)
                     {
-                        btnAddFavourite.setVisibility(View.GONE);
-                        btnCancelFavourite.setVisibility(View.VISIBLE);
+                        binding.btnAddFavourite.setVisibility(View.GONE);
+                        binding.btnCancelFavourite.setVisibility(View.VISIBLE);
                     }
                     else {
-                        btnAddFavourite.setVisibility(View.VISIBLE);
-                        btnCancelFavourite.setVisibility(View.GONE);
+                        binding.btnAddFavourite.setVisibility(View.VISIBLE);
+                        binding.btnCancelFavourite.setVisibility(View.GONE);
                     }
                 }
                 isExistsFavourite[0] = isFavouriteExists;
                 isExistsFavouriteDetail[0] = isFavouriteDetailExists;
                 // end of load data
-                progressBarProductInfo.setVisibility(View.GONE);
+                binding.progressBarProductInfo.setVisibility(View.GONE);
             }
 
             @Override
@@ -375,7 +347,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
             }
         });
-        btnAddFavourite.setOnClickListener(new View.OnClickListener() {
+        binding.btnAddFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // truong hop new user
@@ -438,7 +410,7 @@ public class ProductInfoActivity extends AppCompatActivity {
             }
         });
 
-        btnCancelFavourite.setOnClickListener(new View.OnClickListener() {
+        binding.btnCancelFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new FirebaseFavouriteInfoProductHelper().removeFavourite(userId,productId, new FirebaseFavouriteInfoProductHelper.DataStatus() {

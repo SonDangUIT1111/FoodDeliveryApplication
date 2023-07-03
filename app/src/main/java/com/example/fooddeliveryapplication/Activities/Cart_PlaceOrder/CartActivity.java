@@ -4,24 +4,18 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Adapters.Cart.CartProductAdapter;
 import com.example.fooddeliveryapplication.Interfaces.IAdapterItemListener;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityCartBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,13 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
-    String userId;
+    private String userId;
+    private ActivityCartBinding binding;
 
-    private RecyclerView recyclerViewCartProducts;
     private CartProductAdapter cartProductAdapter;
     private List<CartInfo> cartInfoList;
-    private TextView totalPrice;
-    private Button proceedOrder;
 
     private boolean isCheckAll = false;
     private ArrayList<CartInfo> buyProducts = new ArrayList<>();
@@ -46,36 +38,38 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+        binding = ActivityCartBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Intent intent = getIntent();
-        userId = intent.getStringExtra("userId");
+        userId = getIntent().getStringExtra("userId");
 
         initToolbar();
         initProceedOrderLauncher();
 
-        recyclerViewCartProducts = findViewById(R.id.recycler_view_cart_product);
-        recyclerViewCartProducts.setHasFixedSize(true);
-        recyclerViewCartProducts.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewCartProduct.setHasFixedSize(true);
+        binding.recyclerViewCartProduct.setLayoutManager(new LinearLayoutManager(this));
+
         cartInfoList = new ArrayList<>();
-        totalPrice = findViewById(R.id.total_price);
-        proceedOrder = findViewById(R.id.proceed_order);
 
         getCartProducts();
 
-
-
-        proceedOrder.setOnClickListener(new View.OnClickListener() {
+        binding.proceedOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CartActivity.this, ProceedOrderActivity.class);
                 intent.putExtra("buyProducts", buyProducts);
-                String totalPriceDisplay = totalPrice.getText().toString();
+                String totalPriceDisplay = binding.totalPrice.getText().toString();
                 intent.putExtra("totalPrice", totalPriceDisplay);
                 intent.putExtra("userId",userId);
                 proceedOrderLauncher.launch(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     private void initProceedOrderLauncher() {
@@ -147,14 +141,14 @@ public class CartActivity extends AppCompatActivity {
                         cartProductAdapter.setAdapterItemListener(new IAdapterItemListener() {
                             @Override
                             public void onCheckedItemCountChanged(int count, long price, ArrayList<CartInfo> selectedItems) {
-                                totalPrice.setText("" + convertToMoney(price) + "đ");
+                                binding.totalPrice.setText("" + convertToMoney(price) + "đ");
                                 buyProducts = selectedItems;
 
                                 if (count > 0) {
-                                    proceedOrder.setEnabled(true);
+                                    binding.proceedOrder.setEnabled(true);
                                 }
                                 else {
-                                    proceedOrder.setEnabled(false);
+                                    binding.proceedOrder.setEnabled(false);
                                 }
                             }
 
@@ -173,7 +167,7 @@ public class CartActivity extends AppCompatActivity {
                                 reloadCartProducts();
                             }
                         });
-                        recyclerViewCartProducts.setAdapter(cartProductAdapter);
+                        binding.recyclerViewCartProduct.setAdapter(cartProductAdapter);
 
                         FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -204,11 +198,10 @@ public class CartActivity extends AppCompatActivity {
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("My cart");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
