@@ -27,13 +27,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class FindAdapter extends RecyclerView.Adapter implements Filterable {
-
-    NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-    ArrayList<Product>ds;
-    ArrayList<Product>dsAll;
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+    private ArrayList<Product> ds;
+    private ArrayList<Product> dsAll;
     private String userId;
     private String userName;
-    Context mContext;
+    private Context mContext;
 
     public FindAdapter(ArrayList<Product> ds, String id,Context context) {
         this.mContext = context;
@@ -61,68 +60,65 @@ public class FindAdapter extends RecyclerView.Adapter implements Filterable {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Product item=ds.get(position);
-            if (item==null) {
-                return;
-            } else {
-                ViewHolder viewHolder=(ViewHolder) holder;
+        Product item = ds.get(position);
+        if (item != null) {
+            ViewHolder viewHolder=(ViewHolder) holder;
 
-                if (position==1) {
-                    RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
-                    int margin = 120;
-                    layoutParams.setMargins(0, margin, 0, 0);
-                    holder.itemView.setLayoutParams(layoutParams);
-                }
-                else if (position== 0) {
-                    RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
-                    int margin = 50;
-                    layoutParams.setMargins(0, margin, 0, 0);
-                    holder.itemView.setLayoutParams(layoutParams);
-                }
-
-                Glide.with(viewHolder.binding.getRoot())
-                        .load(item.getProductImage1())
-                        .placeholder(R.drawable.image_default)
-                        .into(viewHolder.binding.imgFood);
-
-                viewHolder.binding.txtFoodName.setText(item.getProductName());
-                viewHolder.binding.txtRating.setText(item.getRatingStar()+"/5.0");
-                if (item.getRatingStar()>=5) {
-                    viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_filled);
-                } else if (item.getRatingStar()>=3 && item.getRatingStar()<5) {
-                    viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_half);
-                } else {
-                    viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_empty);
-                }
-                viewHolder.binding.txtFoodPrice.setText(nf.format(item.getProductPrice()));
-                viewHolder.binding.parentOfItemInFindActivity.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext, ProductInfoActivity.class);
-                        intent.putExtra("productId",item.getProductId());
-                        intent.putExtra("productName",item.getProductName());
-                        intent.putExtra("productPrice",item.getProductPrice());
-                        intent.putExtra("productImage1",item.getProductImage1());
-                        intent.putExtra("productImage2",item.getProductImage2());
-                        intent.putExtra("productImage3",item.getProductImage3());
-                        intent.putExtra("productImage4",item.getProductImage4());
-                        intent.putExtra("ratingStar",item.getRatingStar());
-                        intent.putExtra("productDescription",item.getDescription());
-                        intent.putExtra("publisherId",item.getPublisherId());
-                        intent.putExtra("sold",item.getSold());
-                        intent.putExtra("userId",userId);
-                        intent.putExtra("userName",userName);
-                        mContext.startActivity(intent);
-                    }
-                });
+            if (position==1) {
+                RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
+                int margin = 120;
+                layoutParams.setMargins(0, margin, 0, 0);
+                holder.itemView.setLayoutParams(layoutParams);
             }
+            else if (position== 0) {
+                RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
+                int margin = 50;
+                layoutParams.setMargins(0, margin, 0, 0);
+                holder.itemView.setLayoutParams(layoutParams);
+            }
+
+            Glide.with(viewHolder.binding.getRoot())
+                    .load(item.getProductImage1())
+                    .placeholder(R.drawable.image_default)
+                    .into(viewHolder.binding.imgFood);
+
+            viewHolder.binding.txtFoodName.setText(item.getProductName());
+            viewHolder.binding.txtRating.setText(item.getRatingStar()+"/5.0");
+            if (item.getRatingStar()>=5) {
+                viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_filled);
+            } else if (item.getRatingStar()>=3 && item.getRatingStar()<5) {
+                viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_half);
+            } else {
+                viewHolder.binding.imgRate.setImageResource(R.drawable.rating_star_empty);
+            }
+            viewHolder.binding.txtFoodPrice.setText(nf.format(item.getProductPrice()));
+            viewHolder.binding.parentOfItemInFindActivity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ProductInfoActivity.class);
+                    intent.putExtra("productId",item.getProductId());
+                    intent.putExtra("productName",item.getProductName());
+                    intent.putExtra("productPrice",item.getProductPrice());
+                    intent.putExtra("productImage1",item.getProductImage1());
+                    intent.putExtra("productImage2",item.getProductImage2());
+                    intent.putExtra("productImage3",item.getProductImage3());
+                    intent.putExtra("productImage4",item.getProductImage4());
+                    intent.putExtra("ratingStar",item.getRatingStar());
+                    intent.putExtra("productDescription",item.getDescription());
+                    intent.putExtra("publisherId",item.getPublisherId());
+                    intent.putExtra("sold",item.getSold());
+                    intent.putExtra("userId",userId);
+                    intent.putExtra("userName",userName);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return ds.size();
+        return ds == null ? 0 : ds.size();
     }
-
 
     @Override
     public Filter getFilter() {
@@ -149,20 +145,18 @@ public class FindAdapter extends RecyclerView.Adapter implements Filterable {
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                    ds= (ArrayList<Product>) filterResults.values;
-                    notifyDataSetChanged();
+                ds = (ArrayList<Product>) filterResults.values;
+                notifyDataSetChanged();
             }
         };
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ItemHomeFindLayoutBinding binding;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemHomeFindLayoutBinding binding;
 
-        public ViewHolder(@NonNull ItemHomeFindLayoutBinding tmp) {
-            super(tmp.getRoot());
-            binding=tmp;
-
-
+        public ViewHolder(@NonNull ItemHomeFindLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

@@ -20,11 +20,11 @@ public class EmptyCartActivity extends AppCompatActivity {
         initToolbar();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));

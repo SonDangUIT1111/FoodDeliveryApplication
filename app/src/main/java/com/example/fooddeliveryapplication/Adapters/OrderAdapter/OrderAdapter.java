@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapplication.Adapters.OrderAdapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,13 +27,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class OrderAdapter extends RecyclerView.Adapter {
+    private Context context;
+    private ArrayList<Bill> dsOrder;
+    private int type;
+    private String userId;
 
-
-    Context context;
-    ArrayList<Bill> dsOrder;
-    int type;
-
-    String userId;
     public OrderAdapter(Context context, ArrayList<Bill> dsOrder, int type, String id) {
         this.context = context;
         this.dsOrder = dsOrder;
@@ -137,19 +133,15 @@ public class OrderAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (dsOrder.isEmpty()) {
-            return 0;
-        }
-        return dsOrder.size();
+        return dsOrder == null ? 0 : dsOrder.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ItemOrderLayoutBinding binding;
-        public ViewHolder(@NonNull ItemOrderLayoutBinding tmp) {
-            super(tmp.getRoot());
-            binding=tmp;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemOrderLayoutBinding binding;
+
+        public ViewHolder(@NonNull ItemOrderLayoutBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
-
-
 }

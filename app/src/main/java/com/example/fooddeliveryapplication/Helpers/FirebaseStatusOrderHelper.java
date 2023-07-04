@@ -69,7 +69,9 @@ public class FirebaseStatusOrderHelper {
                     }
                 }
 
-                dataStatus.DataIsLoaded(bills,images);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(bills,images);
+                }
             }
 
             @Override
@@ -105,7 +107,9 @@ public class FirebaseStatusOrderHelper {
                     }
                 }
 
-                dataStatus.DataIsLoaded(bills,images);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(bills,images);
+                }
             }
 
             @Override
@@ -137,7 +141,9 @@ public class FirebaseStatusOrderHelper {
                     }
                 }
 
-                dataStatus.DataIsLoaded(bills, images);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(bills, images);
+                }
             }
 
             @Override
@@ -152,7 +158,9 @@ public class FirebaseStatusOrderHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsUpdated();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsUpdated();
+                        }
                     }
                 });
     }
@@ -161,7 +169,9 @@ public class FirebaseStatusOrderHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsUpdated();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsUpdated();
+                        }
                     }
                 });
 

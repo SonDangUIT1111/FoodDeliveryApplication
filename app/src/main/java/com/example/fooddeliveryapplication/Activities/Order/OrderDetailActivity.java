@@ -51,11 +51,11 @@ public class OrderDetailActivity extends AppCompatActivity {
         loadingDialog.show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     @Override
     protected void onStart() {

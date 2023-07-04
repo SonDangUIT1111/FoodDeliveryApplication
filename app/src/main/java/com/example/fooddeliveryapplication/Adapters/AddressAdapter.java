@@ -8,21 +8,17 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Model.Address;
-import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.UpdateAddAddressActivity;
+import com.example.fooddeliveryapplication.databinding.ItemAddressBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,8 +43,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     @NonNull
     @Override
     public AddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_address, parent, false);
-        return new AddressAdapter.ViewHolder(view);
+        return new AddressAdapter.ViewHolder(ItemAddressBinding.inflate(LayoutInflater.from(mContext), parent, false));
     }
 
     @Override
@@ -56,43 +51,43 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         Address address = mAddresses.get(position);
 
         if (address.getAddressId().equals(GlobalConfig.choseAddressId) && address.getState().equals("default")) {
-            holder.choose.setChecked(true);
-            holder.defaultText.setVisibility(View.VISIBLE);
-            checkedRadioButton = holder.choose;
+            holder.binding.choose.setChecked(true);
+            holder.binding.defaultText.setVisibility(View.VISIBLE);
+            checkedRadioButton = holder.binding.choose;
         }
         else if (address.getAddressId().equals(GlobalConfig.choseAddressId)) {
-            holder.choose.setChecked(true);
-            holder.defaultText.setVisibility(View.INVISIBLE);
-            checkedRadioButton = holder.choose;
+            holder.binding.choose.setChecked(true);
+            holder.binding.defaultText.setVisibility(View.INVISIBLE);
+            checkedRadioButton = holder.binding.choose;
         }
         else if (address.getState().equals("default")) {
-            holder.defaultText.setVisibility(View.VISIBLE);
-            holder.choose.setChecked(false);
+            holder.binding.defaultText.setVisibility(View.VISIBLE);
+            holder.binding.choose.setChecked(false);
         }
         else {
-            holder.choose.setChecked(false);
-            holder.defaultText.setVisibility(View.INVISIBLE);
+            holder.binding.choose.setChecked(false);
+            holder.binding.defaultText.setVisibility(View.INVISIBLE);
         }
-        holder.receiverName.setText(address.getReceiverName());
-        holder.receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
-        holder.detailAddress.setText(address.getDetailAddress());
+        holder.binding.receiverName.setText(address.getReceiverName());
+        holder.binding.receiverPhoneNumber.setText(address.getReceiverPhoneNumber());
+        holder.binding.detailAddress.setText(address.getDetailAddress());
 
-        holder.choose.setOnClickListener(new View.OnClickListener() {
+        holder.binding.choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.choose.isChecked()) {
+                if (holder.binding.choose.isChecked()) {
                     checkedRadioButton.setChecked(false);
 
                     if (addressAdapterListener != null) {
                         addressAdapterListener.onCheckedChanged(address);
                     }
 
-                    checkedRadioButton = holder.choose;
+                    checkedRadioButton = holder.binding.choose;
                 }
             }
         });
 
-        holder.update.setOnClickListener(new View.OnClickListener() {
+        holder.binding.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GlobalConfig.updateAddressId = address.getAddressId();
@@ -146,30 +141,19 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mAddresses.size();
+        return mAddresses == null ? 0 : mAddresses.size();
     }
 
     public void setAddressAdapterListener(IAddressAdapterListener addressAdapterListener) {
         this.addressAdapterListener = addressAdapterListener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public RadioButton choose;
-        public TextView receiverName;
-        public TextView receiverPhoneNumber;
-        public TextView detailAddress;
-        public TextView defaultText;
-        public ImageView update;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemAddressBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            choose = itemView.findViewById(R.id.choose);
-            receiverName = itemView.findViewById(R.id.receiver_name);
-            receiverPhoneNumber = itemView.findViewById(R.id.receiver_phone_number);
-            detailAddress = itemView.findViewById(R.id.detail_address);
-            defaultText = itemView.findViewById(R.id.default_text);
-            update = itemView.findViewById(R.id.update);
+        public ViewHolder(@NonNull ItemAddressBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

@@ -7,19 +7,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
@@ -31,9 +26,9 @@ import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ItemCartProductBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -52,17 +47,18 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     private long checkedItemPrice = 0;
     private IAdapterItemListener adapterItemListener;
     private boolean isCheckAll;
-    String userId;
-    String userName;
+    private String userId;
+    private String userName;
     private ArrayList<CartInfo> selectedItems = new ArrayList<>();
 
-    public CartProductAdapter(Context mContext, List<CartInfo> mCartInfos, String cartId, boolean isCheckAll,String id) {
+    public CartProductAdapter(Context mContext, List<CartInfo> mCartInfos, String cartId, boolean isCheckAll, String id) {
         this.mContext = mContext;
         this.mCartInfos = mCartInfos;
         this.cartId = cartId;
         this.isCheckAll = isCheckAll;
         this.userId = id;
         viewBinderHelper.setOpenOnlyOne(true);
+
         new FirebaseUserInfoHelper(mContext).readUserInfo(userId, new FirebaseUserInfoHelper.DataStatus() {
             @Override
             public void DataIsLoaded(User user) {
@@ -89,26 +85,25 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     @NonNull
     @Override
     public CartProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_cart_product, parent, false);
-        return new CartProductAdapter.ViewHolder(view);
+        return new ViewHolder(ItemCartProductBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartProductAdapter.ViewHolder holder, int position) {
         CartInfo cartInfo = mCartInfos.get(position);
 
-        viewBinderHelper.bind(holder.swipeRevealLayout, cartInfo.getCartInfoId());
+        viewBinderHelper.bind(holder.binding.swipeRevealLayout, cartInfo.getCartInfoId());
 
-        holder.checkBox.setChecked(isCheckAll);
+        holder.binding.checkBox.setChecked(isCheckAll);
 
         FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product product = snapshot.getValue(Product.class);
-                holder.productName.setText(product.getProductName());
-                holder.productPrice.setText(convertToMoney(product.getProductPrice())+"đ");
-                Glide.with(mContext).load(product.getProductImage1()).placeholder(R.mipmap.ic_launcher).into(holder.productImage);
-                holder.productAmount.setText(String.valueOf(cartInfo.getAmount()));
+                holder.binding.productName.setText(product.getProductName());
+                holder.binding.productPrice.setText(convertToMoney(product.getProductPrice())+"đ");
+                Glide.with(mContext).load(product.getProductImage1()).placeholder(R.mipmap.ic_launcher).into(holder.binding.productImage);
+                holder.binding.productAmount.setText(String.valueOf(cartInfo.getAmount()));
             }
 
             @Override
@@ -117,16 +112,16 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             }
         });
 
-        isLiked(holder.like, cartInfo.getProductId());
+        isLiked(holder.binding.like, cartInfo.getProductId());
 
-        holder.add.setOnClickListener(new View.OnClickListener() {
+        holder.binding.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Change display value
-                int amount = Integer.parseInt(holder.productAmount.getText().toString());
+                int amount = Integer.parseInt(holder.binding.productAmount.getText().toString());
                 amount++;
-                holder.productAmount.setText(String.valueOf(amount));
-                holder.checkBox.setChecked(false);
+                holder.binding.productAmount.setText(String.valueOf(amount));
+                holder.binding.checkBox.setChecked(false);
                 isCheckAll = false;
 
                 if (adapterItemListener != null) {
@@ -169,14 +164,14 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             }
         });
 
-        holder.subtract.setOnClickListener(new View.OnClickListener() {
+        holder.binding.subtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!holder.productAmount.getText().toString().equals("1")) {
+                if (!holder.binding.productAmount.getText().toString().equals("1")) {
                     // Change display value
-                    int amount = Integer.parseInt(holder.productAmount.getText().toString());
+                    int amount = Integer.parseInt(holder.binding.productAmount.getText().toString());
                     amount--;
-                    holder.productAmount.setText(String.valueOf(amount));
+                    holder.binding.productAmount.setText(String.valueOf(amount));
                     isCheckAll = false;
 
                     if (adapterItemListener != null) {
@@ -220,20 +215,20 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             }
         });
 
-        holder.like.setOnClickListener(new View.OnClickListener() {
+        holder.binding.like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.like.getTag().equals("like")) {
+                if (holder.binding.like.getTag().equals("like")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).setValue(true);
                     pushNotificationFavourite(cartInfo);
                 }
-                else if (holder.like.getTag().equals("liked")) {
+                else if (holder.binding.like.getTag().equals("liked")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).removeValue();
                 }
             }
         });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
+        holder.binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -299,7 +294,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             }
         });
 
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.binding.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -376,7 +371,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
     @Override
     public int getItemCount() {
-        return mCartInfos.size();
+        return mCartInfos == null ? 0 : mCartInfos.size();
     }
 
     public void saveStates(Bundle outState) {
@@ -391,37 +386,12 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         viewBinderHelper.restoreStates(instate);
     }
 
-    public List<CartInfo> getSelectedItems() {
-        return selectedItems;
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemCartProductBinding binding;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public SwipeRevealLayout swipeRevealLayout;
-        public ImageView productImage;
-        public TextView productName;
-        public TextView productPrice;
-        public Button subtract;
-        public Button add;
-        public Button productAmount;
-        public ImageButton like;
-        public ImageButton delete;
-        public View buttonsContainer;
-        public CheckBox checkBox;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            swipeRevealLayout = itemView.findViewById(R.id.swipe_reveal_layout);
-            productImage = itemView.findViewById(R.id.product_image);
-            productName = itemView.findViewById(R.id.product_name);
-            productPrice = itemView.findViewById(R.id.product_price);
-            subtract = itemView.findViewById(R.id.subtract);
-            add = itemView.findViewById(R.id.add);
-            productAmount = itemView.findViewById(R.id.product_amount);
-            like = itemView.findViewById(R.id.like);
-            delete = itemView.findViewById(R.id.delete);
-            buttonsContainer = itemView.findViewById(R.id.buttons_container);
-            checkBox = itemView.findViewById(R.id.check_box);
+        public ViewHolder(ItemCartProductBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
     public void pushNotificationFavourite(CartInfo cartInfo)

@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,11 +16,10 @@ import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Notification;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ItemOrderStatusListBinding;
+
 import android.content.Context;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.NumberFormat;
@@ -30,9 +27,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusOrderRecyclerViewAdapter.ViewHolder> {
-    Context mContext;
-    List<Bill> billList;
-    List<String> listImage;
+    private Context mContext;
+    private List<Bill> billList;
+    private List<String> listImage;
 
     public StatusOrderRecyclerViewAdapter(Context mContext, List<Bill> billList,List<String> imgUrl) {
         this.mContext = mContext;
@@ -43,36 +40,33 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.order_status_list_item,parent,false);
-        return new StatusOrderRecyclerViewAdapter.ViewHolder(view);
+        return new StatusOrderRecyclerViewAdapter.ViewHolder(ItemOrderStatusListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        int pos = position;
         Bill bill = billList.get(position);
-        holder.txtOrderId.setText(bill.getBillId());
-        holder.txtStatus.setText(bill.getOrderStatus());
-        holder.txtDateOfOrder.setText(bill.getOrderDate());
-        holder.txtOrderTotal.setText(convertToVND(bill.getTotalPrice()) + "đ");
+        holder.binding.txtOrderId.setText(bill.getBillId());
+        holder.binding.txtStatus.setText(bill.getOrderStatus());
+        holder.binding.txtDateOfOrder.setText(bill.getOrderDate());
+        holder.binding.txtOrderTotal.setText(convertToVND(bill.getTotalPrice()) + "đ");
 
-        holder.imgProductImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        holder.binding.imgProductImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         Glide.with(mContext)
                 .asBitmap()
                 .load(listImage.get(position))
-                .into(holder.imgProductImage);
+                .into(holder.binding.imgProductImage);
 
-        if (bill.getOrderStatus().equals("Confirm"))
-        {
-            holder.btnChangeStatus.setText("Shipping");
-            holder.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        holder.binding.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bill.getOrderStatus().equals("Confirm")) {
+                    holder.binding.btnChangeStatus.setText("Shipping");
                     new FirebaseStatusOrderHelper().setConfirmToShipping(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
                         @Override
                         public void DataIsLoaded(List<Bill> bills, List<String> img) {
-                            
+
                         }
 
                         @Override
@@ -83,7 +77,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái đang giao hàng", Toast.LENGTH_SHORT).show();
-                            pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(),listImage.get(pos));
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(),listImage.get(position));
                         }
 
                         @Override
@@ -92,18 +86,14 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         }
                     });
                 }
-            });
-        }
-        else if (bill.getOrderStatus().equals("Shipping"))
-        {
-            holder.btnChangeStatus.setText("Completed");
-            holder.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                else if (bill.getOrderStatus().equals("Shipping")) {
+                    holder.binding.btnChangeStatus.setText("Completed");
+                    holder.binding.txtStatus.setTextColor(Color.parseColor("#48DC7D"));
+                    holder.binding.btnChangeStatus.setVisibility(View.GONE);
                     new FirebaseStatusOrderHelper().setShippingToCompleted(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
                         @Override
                         public void DataIsLoaded(List<Bill> bills, List<String> img) {
-                            
+
                         }
 
                         @Override
@@ -114,7 +104,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái hoàn thành", Toast.LENGTH_SHORT).show();
-                            pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(),listImage.get(pos));
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(),listImage.get(position));
                         }
 
                         @Override
@@ -123,15 +113,11 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         }
                     });
                 }
-            });
-        }
-        else {
-            holder.txtStatus.setTextColor(Color.parseColor("#48DC7D"));
-            holder.btnChangeStatus.setVisibility(View.GONE);
-        }
+            }
+        });
         
         // view detail
-        holder.parentOfItemCard.setOnClickListener(new View.OnClickListener() {
+        holder.binding.parentOfItemCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, DetailOfOrderDeliveryManagementActivity.class);
@@ -148,28 +134,15 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
     @Override
     public int getItemCount() {
-        return billList.size();
+        return billList == null ? 0 : billList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        private final ItemOrderStatusListBinding binding;
 
-        public ImageView imgProductImage;
-        public TextView txtOrderId;
-        public TextView txtStatus;
-        public TextView txtDateOfOrder;
-        public TextView txtOrderTotal;
-        public Button btnChangeStatus;
-        public CardView parentOfItemCard;
-        public String key;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgProductImage = itemView.findViewById(R.id.imgProductImage);
-            txtOrderId = itemView.findViewById(R.id.txtOrderId);
-            txtStatus = itemView.findViewById(R.id.txtStatus);
-            txtDateOfOrder = itemView.findViewById(R.id.txtDateOfOrder);
-            txtOrderTotal = itemView.findViewById(R.id.txtOrderTotal);
-            btnChangeStatus = itemView.findViewById(R.id.btnChangeStatus);
-            parentOfItemCard = itemView.findViewById(R.id.parentOfItemCard);
+        public ViewHolder(ItemOrderStatusListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

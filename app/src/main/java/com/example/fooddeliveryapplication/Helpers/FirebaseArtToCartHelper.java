@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
-import com.example.fooddeliveryapplication.Model.Comment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,17 +11,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FirebaseArtToCartHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceCart;
-    String userId;
-    String productId;
+    private String userId;
+    private String productId;
 
     public interface DataStatus{
-        void DataIsLoaded(Cart cart,CartInfo cartInfo,boolean isExistsCart,boolean isExistsProduct);
+        void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -72,7 +68,9 @@ public class FirebaseArtToCartHelper {
                     }
                 }
 
-                dataStatus.DataIsLoaded(cart,cartInfo,isExistsCart,isExistsProduct);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(cart,cartInfo,isExistsCart,isExistsProduct);
+                }
             }
 
             @Override
@@ -90,7 +88,9 @@ public class FirebaseArtToCartHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsInserted();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsInserted();
+                        }
                     }
                 });
         String keyInfo = mReferenceCart.child("CartInfos").child(cart.getCartId()).push().getKey();
@@ -99,7 +99,9 @@ public class FirebaseArtToCartHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsInserted();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsInserted();
+                        }
                     }
                 });
     }
@@ -108,7 +110,9 @@ public class FirebaseArtToCartHelper {
         mReferenceCart.child("Carts").child(cart.getCartId()).setValue(cart).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                dataStatus.DataIsUpdated();
+                if (dataStatus != null) {
+                    dataStatus.DataIsUpdated();
+                }
             }
         });
         if (isExistsProduct)
@@ -117,7 +121,9 @@ public class FirebaseArtToCartHelper {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            dataStatus.DataIsUpdated();
+                            if (dataStatus != null) {
+                                dataStatus.DataIsUpdated();
+                            }
                         }
                     });
         }
@@ -128,7 +134,9 @@ public class FirebaseArtToCartHelper {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            dataStatus.DataIsInserted();
+                            if (dataStatus != null) {
+                                dataStatus.DataIsInserted();
+                            }
                         }
                     });
         }

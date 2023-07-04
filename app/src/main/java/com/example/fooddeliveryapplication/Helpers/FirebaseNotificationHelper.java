@@ -86,7 +86,10 @@ public class FirebaseNotificationHelper {
                                 });
                     }
                 }
-                dataStatus.DataIsLoaded(notificationList,notificationListToNotify);
+
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(notificationList, notificationListToNotify);
+                }
             }
 
             @Override
@@ -103,7 +106,9 @@ public class FirebaseNotificationHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsInserted();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsInserted();
+                        }
                     }
                 });
     }
@@ -113,7 +118,9 @@ public class FirebaseNotificationHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsUpdated();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsUpdated();
+                        }
                     }
                 });
     }

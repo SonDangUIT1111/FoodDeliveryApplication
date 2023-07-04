@@ -13,9 +13,8 @@ import com.example.fooddeliveryapplication.databinding.ItemProductInfoBinding;
 import java.util.ArrayList;
 
 public class ProductInfoImageAdapter extends RecyclerView.Adapter {
-
-    Context mContext;
-    ArrayList<String> dsImage;
+    private Context mContext;
+    private ArrayList<String> dsImage;
 
     public ProductInfoImageAdapter(Context mContext, ArrayList<String> dsImage) {
         this.mContext = mContext;
@@ -36,7 +35,7 @@ public class ProductInfoImageAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(ItemProductInfoBinding.inflate(LayoutInflater.from(mContext),parent,false));
+        return new ViewHolder(ItemProductInfoBinding.inflate(LayoutInflater.from(mContext), parent, false));
     }
 
     @Override
@@ -49,17 +48,15 @@ public class ProductInfoImageAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (!dsImage.isEmpty()) {
-            return dsImage.size();
-        }
-        return 0;
+        return dsImage == null ? 0 : dsImage.size();
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
-        ItemProductInfoBinding binding;
-        public ViewHolder(@NonNull ItemProductInfoBinding tmp) {
-            super(tmp.getRoot());
-            binding=tmp;
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemProductInfoBinding binding;
+
+        public ViewHolder(@NonNull ItemProductInfoBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

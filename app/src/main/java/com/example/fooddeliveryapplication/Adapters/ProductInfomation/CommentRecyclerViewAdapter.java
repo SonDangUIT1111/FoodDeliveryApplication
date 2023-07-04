@@ -2,13 +2,10 @@ package com.example.fooddeliveryapplication.Adapters.ProductInfomation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Model.Comment;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ItemCommentListBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,19 +21,16 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
     private List<Comment> commentList;
     private List<String> mKeys;
 
-
     public CommentRecyclerViewAdapter(Context mContext, List<Comment> commentList, List<String> mKeys) {
         this.mContext = mContext;
         this.commentList = commentList;
         this.mKeys = mKeys;
-
     }
 
     @NonNull
     @Override
     public CommentRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.comment_list_item,parent,false);
-        return new CommentRecyclerViewAdapter.ViewHolder(view);
+        return new CommentRecyclerViewAdapter.ViewHolder(ItemCommentListBinding.inflate(LayoutInflater.from(mContext), parent, false));
     }
 
     @Override
@@ -49,7 +43,7 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("userName").getValue(String.class);
-                holder.txtRecCommentUsername.setText(name);
+                holder.binding.txtRecCommentUsername.setText(name);
             }
 
             @Override
@@ -57,26 +51,22 @@ public class CommentRecyclerViewAdapter extends RecyclerView.Adapter<CommentRecy
 
             }
         });
-        holder.txtRecCommentUsername.setText(userName[0]);
-        holder.txtRecCommentComment.setText(comment.getCommentDetail());
-        holder.recCommentRatingBar.setRating(comment.getRating());
+        holder.binding.txtRecCommentUsername.setText(userName[0]);
+        holder.binding.txtRecCommentComment.setText(comment.getCommentDetail());
+        holder.binding.recCommentRatingBar.setRating(comment.getRating());
     }
 
     @Override
     public int getItemCount() {
-        return commentList.size();
+        return commentList == null ? 0 : commentList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtRecCommentUsername;
-        public TextView txtRecCommentComment;
-        public RatingBar recCommentRatingBar;
-        public String key;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtRecCommentUsername = itemView.findViewById(R.id.txtRecCommentUsername);
-            txtRecCommentComment = itemView.findViewById(R.id.txtRecCommentComment);
-            recCommentRatingBar = itemView.findViewById(R.id.recCommentRatingBar);
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        private final ItemCommentListBinding binding;
+
+        public ViewHolder(@NonNull ItemCommentListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

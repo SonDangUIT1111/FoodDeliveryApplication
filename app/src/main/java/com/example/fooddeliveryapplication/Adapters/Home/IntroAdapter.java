@@ -2,22 +2,18 @@ package com.example.fooddeliveryapplication.Adapters.Home;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ItemIntroBinding;
 
 import java.util.ArrayList;
 
 public class IntroAdapter  extends  RecyclerView.Adapter{
-
-    ArrayList<Integer> ds;
-
-    Activity context;
+    private ArrayList<Integer> ds;
+    private Activity context;
 
     public IntroAdapter(ArrayList<Integer> ds, Activity context) {
         this.ds = ds;
@@ -27,26 +23,26 @@ public class IntroAdapter  extends  RecyclerView.Adapter{
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.item_intro,parent,false);
-        return new ViewHolder(view);
+        return new IntroAdapter.ViewHolder(ItemIntroBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder=(ViewHolder) holder;
-        viewHolder.img.setImageResource(ds.get(position));
+        viewHolder.binding.img.setImageResource(ds.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return ds.size();
+        return ds == null ? 0 : ds.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            img=itemView.findViewById(R.id.img);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemIntroBinding binding;
+
+        public ViewHolder(@NonNull ItemIntroBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

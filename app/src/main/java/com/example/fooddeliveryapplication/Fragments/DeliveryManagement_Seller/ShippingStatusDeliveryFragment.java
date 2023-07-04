@@ -4,29 +4,23 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller.StatusOrderRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.FragmentShippingStatusDeliveryBinding;
 
 import java.util.List;
 
 
 public class ShippingStatusDeliveryFragment extends Fragment {
-    TextView txtNoneItem;
+    private FragmentShippingStatusDeliveryBinding binding;
+    private String userId;
 
-    View view;
-    String userId;
-    RecyclerView recShippingDelivery;
-    ProgressBar progressBarShippingDelivery;
     public ShippingStatusDeliveryFragment(String Id) {
         userId = Id;
     }
@@ -35,26 +29,21 @@ public class ShippingStatusDeliveryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_shipping_status_delivery, container, false);
-
-
-        // find view by id
-        txtNoneItem = (TextView) view.findViewById(R.id.txtNoneItem);
-        recShippingDelivery = (RecyclerView) view.findViewById(R.id.recShippingDelivery);
-        progressBarShippingDelivery = (ProgressBar) view.findViewById(R.id.progressBarShippingDelivery);
+        binding = FragmentShippingStatusDeliveryBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         //set adapter and pull data for recycler view
         new FirebaseStatusOrderHelper(userId).readShippingBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Bill> bills, List<String> img) {
                 StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills,img);
-                recShippingDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
-                recShippingDelivery.setHasFixedSize(true);
-                recShippingDelivery.setAdapter(adapter);
-                progressBarShippingDelivery.setVisibility(View.GONE);
+                binding.recShippingDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.recShippingDelivery.setHasFixedSize(true);
+                binding.recShippingDelivery.setAdapter(adapter);
+                binding.progressBarShippingDelivery.setVisibility(View.GONE);
                 if (bills.size() == 0)
                 {
-                    txtNoneItem.setVisibility(View.VISIBLE);
+                    binding.txtNoneItem.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -75,4 +64,10 @@ public class ShippingStatusDeliveryFragment extends Fragment {
         });
         return view;
     }
+
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
 }

@@ -2,10 +2,8 @@ package com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
@@ -16,6 +14,7 @@ import com.example.fooddeliveryapplication.Helpers.FirebaseOrderDetailHelper;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ItemOrderDetailListBinding;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -24,31 +23,29 @@ import java.util.Locale;
 public class ListOfItemInOrderAdapter extends RecyclerView.Adapter<ListOfItemInOrderAdapter.ViewHolder> {
     private Context mContext;
     private List<BillInfo> billInfos;
-    private List<String> mKeys;
 
     public ListOfItemInOrderAdapter(Context mContext, List<BillInfo> billInfos) {
         this.mContext = mContext;
         this.billInfos = billInfos;
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.order_detail_list_item,parent,false);
-        return new ListOfItemInOrderAdapter.ViewHolder(view);
+        return new ListOfItemInOrderAdapter.ViewHolder(ItemOrderDetailListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ListOfItemInOrderAdapter.ViewHolder holder, int position) {
         BillInfo billInfo = billInfos.get(position);
+
         new FirebaseOrderDetailHelper().readProductInfo(billInfo.getProductId(), new FirebaseOrderDetailHelper.DataStatus2() {
             @Override
             public void DataIsLoaded(Product product) {
-                holder.txtProductNameInDetail.setText(product.getProductName());
-                holder.txtPriceOfItemInDetail.setText(convertToVND(product.getProductPrice())+" đ");
-                holder.txtCountInDetail.setText("Count: "+String.valueOf(billInfo.getAmount()));
-                holder.imgProductImageInDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                holder.binding.txtProductNameInDetail.setText(product.getProductName());
+                holder.binding.txtPriceOfItemInDetail.setText(convertToVND(product.getProductPrice())+" đ");
+                holder.binding.txtCountInDetail.setText("Count: "+String.valueOf(billInfo.getAmount()));
+                holder.binding.imgProductImageInDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                 try
                 {
@@ -56,7 +53,7 @@ public class ListOfItemInOrderAdapter extends RecyclerView.Adapter<ListOfItemInO
                             .asBitmap()
                             .load(product.getProductImage1())
                             .placeholder(R.drawable.background_loading_layout)
-                            .into(holder.imgProductImageInDetail);
+                            .into(holder.binding.imgProductImageInDetail);
                 }catch (Exception ex)
                 {
 
@@ -82,24 +79,18 @@ public class ListOfItemInOrderAdapter extends RecyclerView.Adapter<ListOfItemInO
 
     @Override
     public int getItemCount() {
-        return billInfos.size();
+        return billInfos == null ? 0 : billInfos.size();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView txtProductNameInDetail;
-        TextView txtCountInDetail;
-        TextView txtPriceOfItemInDetail;
-        ImageView imgProductImageInDetail;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtProductNameInDetail = itemView.findViewById(R.id.txtProductNameInDetail);
-            txtCountInDetail = itemView.findViewById(R.id.txtCountInDetail);
-            txtPriceOfItemInDetail = itemView.findViewById(R.id.txtPriceOfItemInDetail);
-            imgProductImageInDetail = itemView.findViewById(R.id.imgProductImageInDetail);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemOrderDetailListBinding binding;
+
+        public ViewHolder(ItemOrderDetailListBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
-    public String convertToVND(int value)
-    {
+    public String convertToVND(int value) {
         NumberFormat nfi = NumberFormat.getInstance(new Locale("vn","VN"));
         String price = nfi.format(value);
         return price;

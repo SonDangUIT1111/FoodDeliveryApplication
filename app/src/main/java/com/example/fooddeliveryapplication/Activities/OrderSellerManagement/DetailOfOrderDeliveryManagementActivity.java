@@ -86,11 +86,11 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     public String convertToVND(int value)
     {

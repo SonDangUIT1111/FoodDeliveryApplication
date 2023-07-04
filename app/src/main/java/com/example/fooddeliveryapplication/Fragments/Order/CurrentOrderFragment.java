@@ -15,30 +15,35 @@ import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Adapters.OrderAdapter.OrderAdapter;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.databinding.FragmentCurrentOrderBinding;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 
 public class CurrentOrderFragment extends Fragment {
-    FragmentCurrentOrderBinding binding;
-    ArrayList<Bill> dsBill;
-    FirebaseDatabase db=FirebaseDatabase.getInstance();
-    String userId;
+    private FragmentCurrentOrderBinding binding;
+    private ArrayList<Bill> dsBill;
+    private String userId;
 
     public CurrentOrderFragment(ArrayList<Bill> ds,String id) {
-        dsBill=ds;
+        dsBill = ds;
         userId = id;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding=FragmentCurrentOrderBinding.inflate(inflater,container,false);
-        OrderAdapter adapter=new OrderAdapter(getContext(),dsBill, OrderActivity.CURRENT_ORDER,userId);
+        binding = FragmentCurrentOrderBinding.inflate(inflater,container,false);
+
+        OrderAdapter adapter=new OrderAdapter(getContext(), dsBill, OrderActivity.CURRENT_ORDER, userId);
         binding.ryc.setAdapter(adapter);
         binding.ryc.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
+
         return binding.getRoot();
     }
 
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
 }

@@ -25,11 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class MyShopAdapter extends RecyclerView.Adapter {
-
     private ArrayList<Product> ds;
     private ViewBinderHelper viewBinderHelper=new ViewBinderHelper();
     private Context context;
-    String userId;
+    private String userId;
 
     public MyShopAdapter(ArrayList<Product> ds, Context context,String id) {
         viewBinderHelper.setOpenOnlyOne(true);
@@ -90,15 +89,15 @@ public class MyShopAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return ds.size();
+        return ds == null ? 0 : ds.size();
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
-        LayoutFoodItemBinding binding;
-        public ViewHolder(@NonNull LayoutFoodItemBinding tmp) {
-            super(tmp.getRoot());
-            binding=tmp;
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        private final LayoutFoodItemBinding binding;
+
+        public ViewHolder(@NonNull LayoutFoodItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
-
 }

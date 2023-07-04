@@ -224,11 +224,11 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     private void initDialogBuilder() {
         builder = new AlertDialog.Builder(EditProfileActivity.this);

@@ -1,10 +1,7 @@
 package com.example.fooddeliveryapplication.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,36 +14,28 @@ import android.view.ViewGroup;
 import com.example.fooddeliveryapplication.Adapters.CurrentAdapter;
 import com.example.fooddeliveryapplication.Model.InfoCurrentProduct;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.FragmentCurrentProductBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class CurrentProductFragment extends Fragment {
-
-
-    private Context mContext;
+    private FragmentCurrentProductBinding binding;
     private RecyclerView rcvCurrentProduct;
     private CurrentAdapter currentAdapter;
     private ArrayList<InfoCurrentProduct> mListInfoCurrentProducts;
-    FragmentManager fragmentManager;
-    View view;
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mContext = getActivity().getApplicationContext();
-    }
+    private FragmentManager fragmentManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        binding = FragmentCurrentProductBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        view = inflater.inflate(R.layout.fragment_current_product, container, false);
         rcvCurrentProduct = view.findViewById(R.id.rcv_Current_product);
-        currentAdapter = new CurrentAdapter();
+        currentAdapter = new CurrentAdapter(getContext(), mListInfoCurrentProducts);
         fragmentManager = getActivity().getSupportFragmentManager();
 
         currentAdapter.setData(getListInfoCurrentProduct());
@@ -56,6 +45,12 @@ public class CurrentProductFragment extends Fragment {
 
         return view;
     }
+
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
 
     private List<InfoCurrentProduct> getListInfoCurrentProduct() {
         List<InfoCurrentProduct> list = new ArrayList<>();

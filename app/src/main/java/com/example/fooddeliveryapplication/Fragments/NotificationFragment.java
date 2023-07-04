@@ -15,17 +15,16 @@ import com.example.fooddeliveryapplication.Adapters.NotificationListAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.FragmentCurrentProductBinding;
+import com.example.fooddeliveryapplication.databinding.FragmentNotificationBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class NotificationFragment extends Fragment {
+    private FragmentNotificationBinding binding;
+    private String userId;
 
-    RecyclerView recNotification;
-    View view;
-    String userId;
-    ProgressBar progressBarNotification;
     public NotificationFragment(String Id) {
         userId = Id;
     }
@@ -34,15 +33,19 @@ public class NotificationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_notification,container,false);
-
-        // find view by id
-        recNotification = (RecyclerView) view.findViewById(R.id.recNotification);
-        progressBarNotification = (ProgressBar) view.findViewById(R.id.progressBarNotification);
+        binding = FragmentNotificationBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         readNotification();
+
         return view;
     }
+
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
 
     public void readNotification()
     {
@@ -50,10 +53,10 @@ public class NotificationFragment extends Fragment {
             @Override
             public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
                 NotificationListAdapter adapter = new NotificationListAdapter(getContext(),notificationList,userId);
-                recNotification.setHasFixedSize(true);
-                recNotification.setLayoutManager(new LinearLayoutManager(getContext()));
-                recNotification.setAdapter(adapter);
-                progressBarNotification.setVisibility(View.GONE);
+                binding.recNotification.setHasFixedSize(true);
+                binding.recNotification.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.recNotification.setAdapter(adapter);
+                binding.progressBarNotification.setVisibility(View.GONE);
             }
 
             @Override

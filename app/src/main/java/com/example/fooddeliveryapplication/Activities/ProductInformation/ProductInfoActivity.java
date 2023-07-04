@@ -4,17 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
@@ -29,7 +21,6 @@ import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
-import com.example.fooddeliveryapplication.databinding.ActivityDetailOfOrderDeliveryManagementBinding;
 import com.example.fooddeliveryapplication.databinding.ActivityProductInfoBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
@@ -187,11 +178,11 @@ public class ProductInfoActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     // DEFINE FUNCTION
 
@@ -219,7 +210,8 @@ public class ProductInfoActivity extends AppCompatActivity {
 
     }
     public void updateCart(boolean isCartExists, boolean isProductExists,Cart currentCart,CartInfo currentCartInfo,int amount)
-    {   // truong hop user moi tao chua co gio hang
+    {
+        // truong hop user moi tao chua co gio hang
         if (isCartExists == false)
         {
             Cart cart = new Cart();

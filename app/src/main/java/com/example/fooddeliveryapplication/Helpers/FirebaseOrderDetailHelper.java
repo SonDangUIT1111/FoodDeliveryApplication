@@ -50,7 +50,9 @@ public class FirebaseOrderDetailHelper {
                 {
                     billInfos.add(keyNode.getValue(BillInfo.class));
                 }
-                dataStatus.DataIsLoaded(addressDetail,billInfos);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(addressDetail,billInfos);
+                }
             }
 
             @Override
@@ -66,7 +68,9 @@ public class FirebaseOrderDetailHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product product = snapshot.child("Products").child(productId).getValue(Product.class);
-                dataStatus.DataIsLoaded(product);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(product);
+                }
             }
 
             @Override

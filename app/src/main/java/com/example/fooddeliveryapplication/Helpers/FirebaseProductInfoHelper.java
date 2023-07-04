@@ -62,7 +62,9 @@ public class FirebaseProductInfoHelper {
                     keys.add(keyNode.getKey());
                 }
                 int rate = comments.size();
-                dataStatus.DataIsLoaded(comments,rate,keys);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(comments,rate,keys);
+                }
             }
 
             @Override
@@ -85,7 +87,9 @@ public class FirebaseProductInfoHelper {
                         count++;
                     }
                 }
-                dataStatusCountFavourite.DataIsLoaded(count);
+                if (dataStatusCountFavourite != null) {
+                    dataStatusCountFavourite.DataIsLoaded(count);
+                }
             }
 
             @Override
@@ -101,7 +105,9 @@ public class FirebaseProductInfoHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product item = snapshot.getValue(Product.class);
-                dataStatusInformationOfProduct.DataIsLoaded(item);
+                if (dataStatusInformationOfProduct != null) {
+                    dataStatusInformationOfProduct.DataIsLoaded(item);
+                }
             }
 
             @Override

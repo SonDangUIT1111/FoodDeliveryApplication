@@ -34,7 +34,9 @@ public class FirebaseUserInfoHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                dataStatus.DataIsLoaded(user);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(user);
+                }
             }
 
             @Override

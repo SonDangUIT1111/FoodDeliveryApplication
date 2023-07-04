@@ -227,11 +227,11 @@ public class ProceedOrderActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     private boolean ValidateDate() {
         if (GlobalConfig.choseAddressId == null) {

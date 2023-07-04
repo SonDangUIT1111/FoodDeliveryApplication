@@ -23,17 +23,18 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class FoodDrinkFrgAdapter extends RecyclerView.Adapter {
-    NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-    ArrayList<Product> ds;
-    String userId;
-    String userName;
-    Context mContext;
+    private final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+    private final ArrayList<Product> ds;
+    private final String userId;
+    private String userName;
+    private final Context mContext;
 
     public FoodDrinkFrgAdapter(ArrayList<Product> ds, String id, Context context)
     {
         mContext = context;
         this.ds = ds;
         userId = id;
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -86,14 +87,15 @@ public class FoodDrinkFrgAdapter extends RecyclerView.Adapter {
     }
     @Override
     public int getItemCount() {
-        return ds.size();
+        return ds == null ? 0 : ds.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ItemHomeBinding binding;
-        public ViewHolder(@NonNull ItemHomeBinding tmp) {
-            super(tmp.getRoot());
-            this.binding=tmp;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemHomeBinding binding;
+
+        public ViewHolder(@NonNull ItemHomeBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

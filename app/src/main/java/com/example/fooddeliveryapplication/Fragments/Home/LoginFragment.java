@@ -12,19 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Activities.Home.ForgotActivity;
 import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
-import com.example.fooddeliveryapplication.Activities.Home.LoginActivity;
-import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
-import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.FragmentLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -36,28 +31,26 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginFragment extends Fragment {
-    ActivityResultLauncher launcher;
-    String TAG="firebase - LOGIN";
-    EditText edtUserNameLogin,edtPasswordLogin;
-    Button btnLogin;
-    public static final int CODE_SUCCESS=100001;
-    private static User currentUser=new User();
-    View view;
+    private FragmentLoginBinding binding;
+    private ActivityResultLauncher launcher;
+    private static final String TAG="firebase - LOGIN";
+    public static final int CODE_SUCCESS = 100001;
+    private static User currentUser = new User();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_login, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         getLauncher();
-        anhxa();
-        btnLogin.setOnClickListener(view -> {
-            if (edtPasswordLogin.getText().toString().isEmpty()||edtUserNameLogin.getText().toString().isEmpty()) {
+
+        binding.btnReset.setOnClickListener(view1 -> {
+            if (binding.edtPasswordLogin.getText().toString().isEmpty() || binding.edtEmail.getText().toString().isEmpty()) {
                 new FailToast().showToast(getContext(),"Please fill all the information");
             } else {
-
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(edtUserNameLogin.getText().toString(),edtPasswordLogin.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.edtEmail.getText().toString(),binding.edtPasswordLogin.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -100,29 +93,19 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    private void anhxa() {
-        edtPasswordLogin= view.findViewById(R.id.edtPasswordLogin);
-        edtUserNameLogin= view.findViewById(R.id.edtEmail);
-        btnLogin= view.findViewById(R.id.btnReset);
-    }
-
-
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
 
     public void getLauncher() {
         launcher =registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode()==CODE_SUCCESS) {
                 Intent tmp=result.getData();
-                currentUser= (User) tmp.getSerializableExtra("User");
-                edtUserNameLogin.setText(currentUser.getEmail().toString());
+                currentUser = (User) tmp.getSerializableExtra("User");
+                binding.edtEmail.setText(currentUser.getEmail().toString());
             }
         });
-    }
-
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    public void login(String email,String pass) {
-
     }
 }

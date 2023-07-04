@@ -61,19 +61,18 @@ public class IntroActivity extends AppCompatActivity {
         binding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(IntroActivity.this, LoginActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(IntroActivity.this, LoginActivity.class));
                 finish();
             }
         });
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     private void checkFirstTime() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);

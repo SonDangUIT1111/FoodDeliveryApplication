@@ -38,9 +38,11 @@ public class OrderActivity extends AppCompatActivity {
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
 
         userId = getIntent().getStringExtra("userId");
-        dialog=new LoadingDialog(this);
+        dialog = new LoadingDialog(this);
         dialog.show();
+
         initData();
+
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,14 +51,14 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     private void initUI() {
-        OrderViewPaperAdapter viewPaperAdapter=new OrderViewPaperAdapter(OrderActivity.this,dsCurrentOrder,dsHistoryOrder,userId);
+        OrderViewPaperAdapter viewPaperAdapter = new OrderViewPaperAdapter(OrderActivity.this, dsCurrentOrder, dsHistoryOrder, userId);
         binding.viewPaper2.setAdapter(viewPaperAdapter);
         binding.viewPaper2.setUserInputEnabled(false);
         new TabLayoutMediator(binding.tabLayout,binding.viewPaper2, ((tab, position) -> {

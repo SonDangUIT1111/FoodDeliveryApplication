@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.Feedback.FeedBackActivity;
-import com.example.fooddeliveryapplication.Activities.Home.LoginActivity;
 import com.example.fooddeliveryapplication.Dialog.UploadDialog;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
@@ -24,6 +23,7 @@ import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
+import com.example.fooddeliveryapplication.Model.IntegerWrapper;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
@@ -40,15 +40,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedBackAdapter extends RecyclerView.Adapter {
-
-    Context context;
-    ArrayList<BillInfo> ds;
-    FirebaseDatabase db=FirebaseDatabase.getInstance();
-    Bill currentBill;
-    DatabaseReference billInfoReference=FirebaseDatabase.getInstance().getReference("BillInfos");
-    DatabaseReference billReference=FirebaseDatabase.getInstance().getReference("Bills");
-    String userId;
-
+    private final Context context;
+    private final ArrayList<BillInfo> ds;
+    private final Bill currentBill;
+    private final String userId;
 
     //Contructor
     public FeedBackAdapter(Context context, ArrayList<BillInfo> ds, Bill currentBill,String id) {
@@ -61,7 +56,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutFeedbackBillifoBinding.inflate(LayoutInflater.from(context),parent,false)) ;
+        return new ViewHolder(LayoutFeedbackBillifoBinding.inflate(LayoutInflater.from(context),parent,false));
     }
 
     @Override
@@ -76,7 +71,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
         //Cho star 5 được rating khi mới khởi tạo
         viewHolder.binding.star5.performClick();
         //Tìm thông tin products
-        db.getReference("Products").child(item.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Products").child(item.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product tmp=snapshot.getValue(Product.class);
@@ -119,7 +114,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
         });
         //Set sự kiện cho button
         viewHolder.binding.btnSend.setOnClickListener(view -> {
-            if (viewHolder.binding.edtComment.getText().toString().isEmpty()==false) {
+            if (!viewHolder.binding.edtComment.getText().toString().isEmpty()) {
                 UploadDialog dialog=new UploadDialog(context);
                 dialog.show();
                 Comment comment=new Comment();
@@ -176,10 +171,10 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
         ds.remove(item);
         notifyDataSetChanged();
         //Cập nhật lại biến check cho billInfo đó
-        billInfoReference.child(currentBill.getBillId()).child(item.getBillInfoId()).child("check").setValue(true);
+        FirebaseDatabase.getInstance().getReference("BillInfos").child(currentBill.getBillId()).child(item.getBillInfoId()).child("check").setValue(true);
         //Cập nhật lại Bill nếu tất cả BillInfo đã feedback hết
         if (ds.isEmpty()) {
-            billReference.child(currentBill.getBillId()).child("checkAllComment")
+            FirebaseDatabase.getInstance().getReference("Bills").child(currentBill.getBillId()).child("checkAllComment")
                     .setValue(true);
             FeedBackActivity activity=getFeedBackActivity(context);
             if (activity!=null) {
@@ -203,7 +198,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
         }
         return null;
     }
-    public void onStarClicked(View view,ViewHolder viewHolder,IntegerWrapper starRating) {
+    public void onStarClicked(View view,ViewHolder viewHolder, IntegerWrapper starRating) {
         int clickedStarPosition = Integer.parseInt(view.getTag().toString());
         starRating.setValue(clickedStarPosition);
         viewHolder.binding.star1.setImageResource(clickedStarPosition >= 1 ? R.drawable.star_filled : R.drawable.star_none);
@@ -217,34 +212,15 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (!ds.isEmpty()) {
-            return ds.size();
-        }
-        return 0;
+        return ds == null ? 0 : ds.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        LayoutFeedbackBillifoBinding binding;
-        public ViewHolder(@NonNull LayoutFeedbackBillifoBinding tmp) {
-            super(tmp.getRoot());
-            binding=tmp;
-        }
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final LayoutFeedbackBillifoBinding binding;
 
-
-    class IntegerWrapper {
-        private int value;
-
-        public IntegerWrapper(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        public void setValue(int value) {
-            this.value = value;
+        public ViewHolder(@NonNull LayoutFeedbackBillifoBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

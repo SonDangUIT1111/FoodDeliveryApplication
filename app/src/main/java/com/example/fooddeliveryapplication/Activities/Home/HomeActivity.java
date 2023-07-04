@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.Manifest;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -31,7 +29,6 @@ import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartA
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
-import com.example.fooddeliveryapplication.Fragments.Home.HistoryFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
 import com.example.fooddeliveryapplication.Fragments.NotificationFragment;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
@@ -44,20 +41,12 @@ import com.example.fooddeliveryapplication.databinding.ActivityHomeBinding;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-
-import java.util.Collections;
 import java.util.List;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String userId;
@@ -88,11 +77,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         loadInformationForNavigationBar();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
 
     @Override
@@ -343,7 +332,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // load number of notification not read in bottom navigation bar
         new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
+            public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
                 int count = 0;
                 for (int i = 0;i<notificationList.size();i++)
                 {

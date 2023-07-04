@@ -4,27 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.fooddeliveryapplication.Adapters.Home.FavouriteFoodAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseFavouriteUserHelper;
 import com.example.fooddeliveryapplication.Model.Product;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.FragmentFavoriteBinding;
 
 import java.util.ArrayList;
 
 
 public class FavoriteFragment extends Fragment {
-    RecyclerView recFavouriteFood;
-    View view;
-    String userId;
-    ProgressBar progressBarFavouriteList;
+    private FragmentFavoriteBinding binding;
+    private String userId;
+
     public FavoriteFragment(String id ) {
         userId = id;
     }
@@ -33,13 +30,11 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_favorite,container,false);
-
-        // find view by id
-        recFavouriteFood = (RecyclerView) view.findViewById(R.id.recFavouriteFood);
-        progressBarFavouriteList = (ProgressBar) view.findViewById(R.id.progressBarFavouriteList);
+        binding = FragmentFavoriteBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         readFavouriteList();
+
         return view;
     }
 
@@ -49,11 +44,11 @@ public class FavoriteFragment extends Fragment {
             @Override
             public void DataIsLoaded(ArrayList<Product> favouriteProducts,ArrayList<String> keys) {
                 StaggeredGridLayoutManager layoutManager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-                recFavouriteFood.setLayoutManager(layoutManager);
-                recFavouriteFood.setHasFixedSize(true);
+                binding.recFavouriteFood.setLayoutManager(layoutManager);
+                binding.recFavouriteFood.setHasFixedSize(true);
                 FavouriteFoodAdapter adapter = new FavouriteFoodAdapter(getContext(),favouriteProducts,userId);
-                recFavouriteFood.setAdapter(adapter);
-                progressBarFavouriteList.setVisibility(View.GONE);
+                binding.recFavouriteFood.setAdapter(adapter);
+                binding.progressBarFavouriteList.setVisibility(View.GONE);
             }
 
             @Override
@@ -72,4 +67,10 @@ public class FavoriteFragment extends Fragment {
             }
         });
     }
+
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
 }

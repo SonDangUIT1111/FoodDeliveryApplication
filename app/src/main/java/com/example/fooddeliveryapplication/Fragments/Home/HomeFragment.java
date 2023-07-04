@@ -16,18 +16,20 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 
 public class HomeFragment extends Fragment {
-    FragmentHomeBinding binding;
-
+    private FragmentHomeBinding binding;
     private String userId;
 
     public HomeFragment(String id) {
         userId = id;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding=FragmentHomeBinding.inflate(inflater,container,false);
+        binding = FragmentHomeBinding.inflate(inflater,container,false);
+
         initUI();
+
         return binding.getRoot();
     }
 
@@ -58,9 +60,9 @@ public class HomeFragment extends Fragment {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding=null;
-    }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
 }

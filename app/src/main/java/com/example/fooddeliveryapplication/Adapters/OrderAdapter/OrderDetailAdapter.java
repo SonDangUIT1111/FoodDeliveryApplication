@@ -22,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class OrderDetailAdapter extends RecyclerView.Adapter {
-
     Context context;
     ArrayList<BillInfo> ds;
 
@@ -65,10 +64,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (ds!=null) {
-            return ds.size();
-        }
-        return 0;
+        return ds == null ? 0 : ds.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

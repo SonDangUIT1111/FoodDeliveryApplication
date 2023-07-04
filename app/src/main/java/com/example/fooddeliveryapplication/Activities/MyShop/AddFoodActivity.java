@@ -173,11 +173,11 @@ public class AddFoodActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding = null;
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        binding = null;
+//    }
 
     private void deleteOldImage(int position) {
         StringBuilder imageURL=new StringBuilder();
