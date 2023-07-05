@@ -24,7 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdapter.ViewHolder>{
+public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Product> favouriteLists;
     private String userId;

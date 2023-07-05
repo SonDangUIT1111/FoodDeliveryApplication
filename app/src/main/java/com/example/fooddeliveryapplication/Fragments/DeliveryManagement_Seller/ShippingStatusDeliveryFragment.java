@@ -35,8 +35,8 @@ public class ShippingStatusDeliveryFragment extends Fragment {
         //set adapter and pull data for recycler view
         new FirebaseStatusOrderHelper(userId).readShippingBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Bill> bills, List<String> img) {
-                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills,img);
+            public void DataIsLoaded(List<Bill> bills) {
+                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(), bills);
                 binding.recShippingDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recShippingDelivery.setHasFixedSize(true);
                 binding.recShippingDelivery.setAdapter(adapter);
@@ -64,10 +64,4 @@ public class ShippingStatusDeliveryFragment extends Fragment {
         });
         return view;
     }
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
 }

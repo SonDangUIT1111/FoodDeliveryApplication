@@ -3,9 +3,9 @@ package com.example.fooddeliveryapplication.Model;
 import java.io.Serializable;
 
 public class CartInfo implements Serializable {
-    int amount;
-    String cartInfoId;
-    String productId;
+    private int amount;
+    private String cartInfoId;
+    private String productId;
 
     public CartInfo(int amount, String cartInfoId, String productId) {
         this.amount = amount;

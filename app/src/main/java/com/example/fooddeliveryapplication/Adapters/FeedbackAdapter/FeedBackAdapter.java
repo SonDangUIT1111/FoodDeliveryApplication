@@ -39,50 +39,53 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedBackAdapter extends RecyclerView.Adapter {
-    private final Context context;
+public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHolder> {
+    private final Context mContext;
     private final ArrayList<BillInfo> ds;
     private final Bill currentBill;
     private final String userId;
 
     //Contructor
-    public FeedBackAdapter(Context context, ArrayList<BillInfo> ds, Bill currentBill,String id) {
-        this.context = context;
+    public FeedBackAdapter(Context mContext, ArrayList<BillInfo> ds, Bill currentBill,String id) {
+        this.mContext = mContext;
         this.ds = ds;
-        this.currentBill=currentBill;
+        this.currentBill = currentBill;
         this.userId = id;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutFeedbackBillifoBinding.inflate(LayoutInflater.from(context),parent,false));
+    public FeedBackAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FeedBackAdapter.ViewHolder(LayoutFeedbackBillifoBinding.inflate(LayoutInflater.from(mContext), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder=(ViewHolder) holder;
-        viewHolder.binding.edtComment.setText("");
+    public void onBindViewHolder(@NonNull FeedBackAdapter.ViewHolder holder, int position) {
         BillInfo item=ds.get(position);
+
+        holder.binding.edtComment.setText("");
         //Biến lưu lại rate với star bao nhiêu
-        IntegerWrapper starRating= new IntegerWrapper(5);
+        IntegerWrapper starRating = new IntegerWrapper(5);
+
         //Set sự kiện cho rating star
-        setEventForStar(viewHolder,starRating);
+        setEventForStar(holder, starRating);
+
         //Cho star 5 được rating khi mới khởi tạo
-        viewHolder.binding.star5.performClick();
+        holder.binding.star5.performClick();
+
         //Tìm thông tin products
         FirebaseDatabase.getInstance().getReference("Products").child(item.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product tmp=snapshot.getValue(Product.class);
                 //set Thông tin
-                viewHolder.binding.lnBillInfo.txtPrice.setText(CurrencyFormatter.getFormatter().format(item.getAmount()*Double.valueOf(tmp.getProductPrice()))+"");
-                viewHolder.binding.lnBillInfo.txtName.setText(tmp.getProductName());
-                viewHolder.binding.lnBillInfo.txtCount.setText("Count: " +item.getAmount()+"");
-                Glide.with(context)
+                holder.binding.lnBillInfo.txtPrice.setText(CurrencyFormatter.getFormatter().format(item.getAmount()*Double.valueOf(tmp.getProductPrice()))+"");
+                holder.binding.lnBillInfo.txtName.setText(tmp.getProductName());
+                holder.binding.lnBillInfo.txtCount.setText("Count: " +item.getAmount()+"");
+                Glide.with(mContext)
                         .load(tmp.getProductImage1())
                         .placeholder(R.drawable.default_image)
-                        .into(viewHolder.binding.lnBillInfo.imgFood);
+                        .into(holder.binding.lnBillInfo.imgFood);
             }
 
             @Override
@@ -91,7 +94,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
             }
         });
         //Set một listener theo dõi editText đó có vượt quá 200 kí tự không
-        viewHolder.binding.edtComment.addTextChangedListener(new TextWatcher() {
+        holder.binding.edtComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //Không thực hiện gì trong đây cả
@@ -103,7 +106,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
                 // Văn bản đã đạt tới giới hạn 200 kí tự, không cho phép nhập thêm
                 // Văn bản chưa đạt tới giới hạn 200 kí tự, cho phép nhập tiếp
                 if (s.length() >= 200)
-                    Toast.makeText(context, "Không vượt quá 200 kí tự", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Không vượt quá 200 kí tự", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -113,40 +116,30 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
             }
         });
         //Set sự kiện cho button
-        viewHolder.binding.btnSend.setOnClickListener(view -> {
-            if (!viewHolder.binding.edtComment.getText().toString().isEmpty()) {
-                UploadDialog dialog=new UploadDialog(context);
+        holder.binding.btnSend.setOnClickListener(view -> {
+            if (!holder.binding.edtComment.getText().toString().isEmpty()) {
+                UploadDialog dialog = new UploadDialog(mContext);
                 dialog.show();
-                Comment comment=new Comment();
-                comment.setCommentDetail(((ViewHolder) holder).binding.edtComment.getText().toString());
-                comment.setCommentId("");
-                comment.setPublisherId(userId);
-                comment.setRating(starRating.getValue());
-                DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Comments").child(item.getProductId()).push();
-                comment.setCommentId(reference.getKey());
-                reference.setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                String commentId = FirebaseDatabase.getInstance().getReference().push().getKey();
+                Comment comment = new Comment(holder.binding.edtComment.getText().toString().trim(), commentId, userId, starRating.getValue());
+                FirebaseDatabase.getInstance().getReference("Comments").child(item.getProductId()).child(commentId).setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(context,"Cảm ơn bạn đã đánh giá cho sản phẩm",Toast.LENGTH_SHORT).show();
-                                    pushNotificationFeedBack(item);
-                                    dialog.dismiss();
-                                    updateListBillInfo(item);
-                                }
-                            }, 4000);
-                            //Cập nhật lại danh sách billInfo chưa comment
-
+                            Toast.makeText(mContext,"Cảm ơn bạn đã đánh giá cho sản phẩm",Toast.LENGTH_SHORT).show();
+                            pushNotificationFeedBack(item);
+                            dialog.dismiss();
+                            updateListBillInfo(item);
+                            // Cập nhật lại danh sách billInfo chưa comment
                         } else {
-                            Toast.makeText(context,"Đánh giá cho sản phẩm bị lỗi",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"Đánh giá cho sản phẩm bị lỗi",Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     }
                 });
             } else {
-                AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                AlertDialog.Builder builder=new AlertDialog.Builder(mContext);
                 builder.setIcon(R.drawable.icon_alert);
                 builder.setTitle("Chú ý");
                 builder.setMessage("Nhớ ghi comment nha bạn ơi!");
@@ -176,8 +169,8 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
         if (ds.isEmpty()) {
             FirebaseDatabase.getInstance().getReference("Bills").child(currentBill.getBillId()).child("checkAllComment")
                     .setValue(true);
-            FeedBackActivity activity=getFeedBackActivity(context);
-            if (activity!=null) {
+            FeedBackActivity activity = getFeedBackActivity(mContext);
+            if (activity != null) {
                 activity.finish();
             }
 
@@ -224,15 +217,42 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void pushNotificationFeedBack(BillInfo billInfo)
-    {
-        new FirebaseProductInfoHelper(billInfo.getProductId()).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
+    public void pushNotificationOrderStatusForReceiver(String billId,String status,String receiverId,String productImage1) {
+        String title = "Tình trạng đơn hàng";
+        String content = "Đơn hàng "+ billId+" đã chuyển sang trạng thái "+ status+", vào My Order để xem tình trạng đơn hàng nào";
+        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,"None",billId,"None");
+        new FirebaseNotificationHelper(mContext).addNotification(receiverId, notification, new FirebaseNotificationHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(Product product) {
+            public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
+
+            }
+
+            @Override
+            public void DataIsInserted() {
+
+            }
+
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+    }
+
+    public void pushNotificationFeedBack(BillInfo billInfo) {
+        FirebaseDatabase.getInstance().getReference().child("Products").child(billInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Product product = snapshot.getValue(Product.class);
                 String title = "Đánh giá sản phẩm";
-                String content = "Yay, vừa có một đánh giá mới cho sản phẩm '"+product.getProductName() +"' của bạn ở ngay rating đầu tiên đó, vô xem liền nào.";
-                Notification notification = FirebaseNotificationHelper.createNotification(title,content,product.getProductImage1(),product.getProductId(),"None","None");
-                new FirebaseNotificationHelper(context).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
+                String content = "Yay, vừa có một đánh giá mới cho sản phẩm '" +product.getProductName() + "' của bạn ở ngay rating đầu tiên đó, vô xem liền nào.";
+                Notification notification = FirebaseNotificationHelper.createNotification(title, content, product.getProductImage1(), product.getProductId(), "None", "None");
+                new FirebaseNotificationHelper(mContext).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override
                     public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
 
@@ -256,20 +276,9 @@ public class FeedBackAdapter extends RecyclerView.Adapter {
             }
 
             @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
     }
 }

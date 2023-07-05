@@ -35,14 +35,13 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
         //set data and adapter for list
         new FirebaseStatusOrderHelper(userId).readConfirmBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Bill> bills,List<String> imgUrl) {
-                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills,imgUrl);
+            public void DataIsLoaded(List<Bill> bills) {
+                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(), bills);
                 binding.recConfirmDelivery.setHasFixedSize(true);
                 binding.recConfirmDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recConfirmDelivery.setAdapter(adapter);
                 binding.progressBarConfirmDelivery.setVisibility(View.GONE);
-                if (bills.size() == 0)
-                {
+                if (bills.size() == 0) {
                     binding.txtNoneItem.setVisibility(View.VISIBLE);
                 }
             }

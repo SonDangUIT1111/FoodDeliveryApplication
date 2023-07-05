@@ -22,50 +22,48 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusOrderRecyclerViewAdapter.ViewHolder> {
-    private Context mContext;
-    private List<Bill> billList;
-    private List<String> listImage;
+    Context mContext;
+    List<Bill> billList;
 
-    public StatusOrderRecyclerViewAdapter(Context mContext, List<Bill> billList,List<String> imgUrl) {
+    public StatusOrderRecyclerViewAdapter(Context mContext, List<Bill> billList) {
         this.mContext = mContext;
         this.billList = billList;
-        this.listImage = imgUrl;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new StatusOrderRecyclerViewAdapter.ViewHolder(ItemOrderStatusListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new StatusOrderRecyclerViewAdapter.ViewHolder(ItemOrderStatusListBinding.inflate(LayoutInflater.from(mContext), parent, false));
     }
 
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        int pos = position;
         Bill bill = billList.get(position);
         holder.binding.txtOrderId.setText(bill.getBillId());
         holder.binding.txtStatus.setText(bill.getOrderStatus());
         holder.binding.txtDateOfOrder.setText(bill.getOrderDate());
-        holder.binding.txtOrderTotal.setText(convertToVND(bill.getTotalPrice()) + "đ");
+        holder.binding.txtOrderTotal.setText(convertToMoney(bill.getTotalPrice()) + "đ");
 
         holder.binding.imgProductImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         Glide.with(mContext)
                 .asBitmap()
-                .load(listImage.get(position))
+                .load(bill.getImageUrl())
                 .into(holder.binding.imgProductImage);
 
-        holder.binding.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (bill.getOrderStatus().equals("Confirm")) {
-                    holder.binding.btnChangeStatus.setText("Shipping");
+        if (bill.getOrderStatus().equals("Confirm"))
+        {
+            holder.binding.btnChangeStatus.setText("Shipping");
+            holder.binding.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     new FirebaseStatusOrderHelper().setConfirmToShipping(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
                         @Override
-                        public void DataIsLoaded(List<Bill> bills, List<String> img) {
+                        public void DataIsLoaded(List<Bill> bills) {
 
                         }
 
@@ -77,7 +75,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái đang giao hàng", Toast.LENGTH_SHORT).show();
-                            pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(),listImage.get(position));
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(), bill.getImageUrl());
                         }
 
                         @Override
@@ -86,13 +84,17 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         }
                     });
                 }
-                else if (bill.getOrderStatus().equals("Shipping")) {
-                    holder.binding.btnChangeStatus.setText("Completed");
-                    holder.binding.txtStatus.setTextColor(Color.parseColor("#48DC7D"));
-                    holder.binding.btnChangeStatus.setVisibility(View.GONE);
+            });
+        }
+        else if (bill.getOrderStatus().equals("Shipping"))
+        {
+            holder.binding.btnChangeStatus.setText("Completed");
+            holder.binding.btnChangeStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     new FirebaseStatusOrderHelper().setShippingToCompleted(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
                         @Override
-                        public void DataIsLoaded(List<Bill> bills, List<String> img) {
+                        public void DataIsLoaded(List<Bill> bills) {
 
                         }
 
@@ -104,7 +106,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         @Override
                         public void DataIsUpdated() {
                             Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái hoàn thành", Toast.LENGTH_SHORT).show();
-                            pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(),listImage.get(position));
+                            pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(), bill.getImageUrl());
                         }
 
                         @Override
@@ -113,9 +115,13 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                         }
                     });
                 }
-            }
-        });
-        
+            });
+        }
+        else {
+            holder.binding.txtStatus.setTextColor(Color.parseColor("#48DC7D"));
+            holder.binding.btnChangeStatus.setVisibility(View.GONE);
+        }
+
         // view detail
         holder.binding.parentOfItemCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,27 +140,40 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
     @Override
     public int getItemCount() {
-        return billList == null ? 0 : billList.size();
+        return billList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final ItemOrderStatusListBinding binding;
 
-        public ViewHolder(ItemOrderStatusListBinding binding) {
+        public ViewHolder(@NonNull ItemOrderStatusListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
     }
 
-    public String convertToVND(int value)
-    {
-        NumberFormat nfi = NumberFormat.getInstance(new Locale("vn","VN"));
-        String price = nfi.format(value);
-        return price;
+    private String convertToMoney(long price) {
+        String temp = String.valueOf(price);
+        String output = "";
+        int count = 3;
+        for (int i = temp.length() - 1; i >= 0; i--) {
+            count--;
+            if (count == 0) {
+                count = 3;
+                output = "," + temp.charAt(i) + output;
+            }
+            else {
+                output = temp.charAt(i) + output;
+            }
+        }
+
+        if (output.charAt(0) == ',')
+            return output.substring(1);
+
+        return output;
     }
 
-    public void pushNotificationOrderStatusForReceiver(String billId,String status,String receiverId,String productImage1)
-    {
+    public void pushNotificationOrderStatusForReceiver(String billId,String status,String receiverId,String productImage1) {
         String title = "Tình trạng đơn hàng";
         String content = "Đơn hàng "+ billId+" đã chuyển sang trạng thái "+ status+", vào My Order để xem tình trạng đơn hàng nào";
         Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,"None",billId,"None");

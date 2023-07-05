@@ -43,7 +43,7 @@ public class ListOfItemInOrderAdapter extends RecyclerView.Adapter<ListOfItemInO
             @Override
             public void DataIsLoaded(Product product) {
                 holder.binding.txtProductNameInDetail.setText(product.getProductName());
-                holder.binding.txtPriceOfItemInDetail.setText(convertToVND(product.getProductPrice())+" đ");
+                holder.binding.txtPriceOfItemInDetail.setText(convertToMoney(product.getProductPrice())+" đ");
                 holder.binding.txtCountInDetail.setText("Count: "+String.valueOf(billInfo.getAmount()));
                 holder.binding.imgProductImageInDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -90,9 +90,25 @@ public class ListOfItemInOrderAdapter extends RecyclerView.Adapter<ListOfItemInO
             this.binding = binding;
         }
     }
-    public String convertToVND(int value) {
-        NumberFormat nfi = NumberFormat.getInstance(new Locale("vn","VN"));
-        String price = nfi.format(value);
-        return price;
+
+    private String convertToMoney(long price) {
+        String temp = String.valueOf(price);
+        String output = "";
+        int count = 3;
+        for (int i = temp.length() - 1; i >= 0; i--) {
+            count--;
+            if (count == 0) {
+                count = 3;
+                output = "," + temp.charAt(i) + output;
+            }
+            else {
+                output = temp.charAt(i) + output;
+            }
+        }
+
+        if (output.charAt(0) == ',')
+            return output.substring(1);
+
+        return output;
     }
 }

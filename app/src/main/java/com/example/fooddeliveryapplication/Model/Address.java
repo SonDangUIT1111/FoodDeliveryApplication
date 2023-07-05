@@ -1,11 +1,11 @@
 package com.example.fooddeliveryapplication.Model;
 
 public class Address {
-    String addressId;
-    String detailAddress;
-    String state;
-    String receiverName;
-    String receiverPhoneNumber;
+    private String addressId;
+    private String detailAddress;
+    private String state;
+    private String receiverName;
+    private String receiverPhoneNumber;
 
     public Address() {
     }

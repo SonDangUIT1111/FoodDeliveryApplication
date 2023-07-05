@@ -36,10 +36,10 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
             String addressId = intent.getStringExtra("addressId");
             String recipientId = intent.getStringExtra("recipientId");
             String orderStatus = intent.getStringExtra("orderStatus");
-            int price = intent.getIntExtra("totalBill",-1);
+            long price = intent.getLongExtra("totalBill",-1);
             try {
                 binding.txtOrderIdDetail.setText("Order Id: "+billId);
-                binding.txtBillTotalInDetail.setText(convertToVND(price)+ "đ");
+                binding.txtBillTotalInDetail.setText(convertToMoney(price)+ "đ");
                 binding.txtStatusOrderDetail.setText(orderStatus);
                 if (orderStatus.equals("Completed"))
                 {
@@ -86,16 +86,24 @@ public class DetailOfOrderDeliveryManagementActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
+    private String convertToMoney(long price) {
+        String temp = String.valueOf(price);
+        String output = "";
+        int count = 3;
+        for (int i = temp.length() - 1; i >= 0; i--) {
+            count--;
+            if (count == 0) {
+                count = 3;
+                output = "," + temp.charAt(i) + output;
+            }
+            else {
+                output = temp.charAt(i) + output;
+            }
+        }
 
-    public String convertToVND(int value)
-    {
-        NumberFormat nfi = NumberFormat.getInstance(new Locale("vn","VN"));
-        String price = nfi.format(value);
-        return price;
+        if (output.charAt(0) == ',')
+            return output.substring(1);
+
+        return output;
     }
 }

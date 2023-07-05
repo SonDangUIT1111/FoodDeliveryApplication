@@ -112,8 +112,7 @@ public class FirebaseNotificationHelper {
                     }
                 });
     }
-    public void updateNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus)
-    {
+    public void updateNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus) {
         mReference.child("Notification").child(userId).child(notification.getNotificationId()).setValue(notification)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

@@ -17,14 +17,13 @@ import java.util.List;
 public class FirebaseStatusOrderHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceStatusOrder;
-    List<Bill> bills = new ArrayList<>();
-    List<String> images = new ArrayList<>();
-    String userId;
-    List<BillInfo> temp = new ArrayList<>();
-    List<Integer> tempInt = new ArrayList<>();
+    private List<Bill> bills = new ArrayList<>();
+    private String userId;
+    private List<BillInfo> temp = new ArrayList<>();
+    private List<Integer> tempInt = new ArrayList<>();
 
     public interface DataStatus{
-        void DataIsLoaded(List<Bill> bills,List<String> img);
+        void DataIsLoaded(List<Bill> bills);
         void DataIsInserted();
         void DataIsUpdated();
         void DataIsDeleted();
@@ -48,29 +47,16 @@ public class FirebaseStatusOrderHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 bills.clear();
-                images.clear();
-                for (DataSnapshot keyNode : snapshot.child("Bills").getChildren())
-                {
+                for (DataSnapshot keyNode : snapshot.child("Bills").getChildren()) {
                     if (keyNode.child("senderId").getValue(String.class).equals(userId)
-                    &&  keyNode.child("orderStatus").getValue(String.class).equals("Confirm"))
-                    {
+                    &&  keyNode.child("orderStatus").getValue(String.class).equals("Confirm")) {
                         Bill bill = keyNode.getValue(Bill.class);
                         bills.add(bill);
-
-                        // get first product id
-                        DataSnapshot snapChild = snapshot.child("BillInfos").child(bill.getBillId());
-                        String firstProductId = "";
-                        for (DataSnapshot keyChild : snapChild.getChildren())
-                        {
-                            firstProductId = keyChild.child("productId").getValue(String.class);
-                        }
-                        // get image for bill
-                        images.add(snapshot.child("Products").child(firstProductId).child("productImage1").getValue(String.class));
                     }
                 }
 
                 if (dataStatus != null) {
-                    dataStatus.DataIsLoaded(bills,images);
+                    dataStatus.DataIsLoaded(bills);
                 }
             }
 
@@ -86,7 +72,6 @@ public class FirebaseStatusOrderHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 bills.clear();
-                images.clear();
                 for (DataSnapshot keyNode : snapshot.child("Bills").getChildren())
                 {
                     if (keyNode.child("senderId").getValue(String.class).equals(userId)
@@ -94,21 +79,11 @@ public class FirebaseStatusOrderHelper {
                     {
                         Bill bill = keyNode.getValue(Bill.class);
                         bills.add(bill);
-
-                        // get first product id
-                        DataSnapshot snapChild = snapshot.child("BillInfos").child(bill.getBillId());
-                        String firstProductId = "";
-                        for (DataSnapshot keyChild : snapChild.getChildren())
-                        {
-                            firstProductId = keyChild.child("productId").getValue(String.class);
-                        }
-                        // get image for bill
-                        images.add(snapshot.child("Products").child(firstProductId).child("productImage1").getValue(String.class));
                     }
                 }
 
                 if (dataStatus != null) {
-                    dataStatus.DataIsLoaded(bills,images);
+                    dataStatus.DataIsLoaded(bills);
                 }
             }
 
@@ -123,26 +98,16 @@ public class FirebaseStatusOrderHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 bills.clear();
-                images.clear();
                 for (DataSnapshot keyNode : snapshot.child("Bills").getChildren()) {
                     if (keyNode.child("senderId").getValue(String.class).equals(userId)
                             && keyNode.child("orderStatus").getValue(String.class).equals("Completed")) {
                         Bill bill = keyNode.getValue(Bill.class);
                         bills.add(bill);
-
-                        // get first product id
-                        DataSnapshot snapChild = snapshot.child("BillInfos").child(bill.getBillId());
-                        String firstProductId = "";
-                        for (DataSnapshot keyChild : snapChild.getChildren()) {
-                            firstProductId = keyChild.child("productId").getValue(String.class);
-                        }
-                        // get image for bill
-                        images.add(snapshot.child("Products").child(firstProductId).child("productImage1").getValue(String.class));
                     }
                 }
 
                 if (dataStatus != null) {
-                    dataStatus.DataIsLoaded(bills, images);
+                    dataStatus.DataIsLoaded(bills);
                 }
             }
 
@@ -198,9 +163,8 @@ public class FirebaseStatusOrderHelper {
 
 
     }
-    public void readSomeInfoOfBill()
-    {
-        mReferenceStatusOrder.child("Products").addValueEventListener(new ValueEventListener() {
+    public void readSomeInfoOfBill() {
+        mReferenceStatusOrder.child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (BillInfo info:temp)
@@ -217,16 +181,9 @@ public class FirebaseStatusOrderHelper {
             }
         });
     }
-    public void updateSoldOfProduct()
-    {
-        for (int i = 0;i < temp.size(); i++)
-        {
-            mReferenceStatusOrder.child("Products").child(temp.get(i).getProductId()).child("sold").setValue(tempInt.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-
-                }
-            });
+    public void updateSoldOfProduct() {
+        for (int i = 0; i < temp.size(); i++) {
+            mReferenceStatusOrder.child("Products").child(temp.get(i).getProductId()).child("sold").setValue(tempInt.get(i));
         }
     }
 }

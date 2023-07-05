@@ -15,7 +15,6 @@ import com.example.fooddeliveryapplication.Adapters.OrderAdapter.OrderDetailAdap
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
-import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityOrderDetailBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -50,12 +49,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
 
     @Override
     protected void onStart() {
@@ -94,7 +87,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
     }
-   private void initUI() {
+    private void initUI() {
         String status=currentBill.getOrderStatus();
         if (status.equalsIgnoreCase("Completed")) {
             binding.lnOderDetail.btn.setVisibility(View.VISIBLE);
@@ -108,7 +101,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding.lnOderDetail.ryc.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
         binding.lnOderDetail.ryc.setAdapter(adapter);
         binding.lnOderDetail.ryc.setHasFixedSize(true);
-        binding.lnOderDetail.txtTotalPrice.setText(CurrencyFormatter.getFormatter().format(Double.valueOf(currentBill.getTotalPrice()))+"");
+        binding.lnOderDetail.txtTotalPrice.setText(convertToMoney(currentBill.getTotalPrice())+ "đ");
         binding.txtId.setText(currentBill.getBillId());
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,5 +135,26 @@ public class OrderDetailActivity extends AppCompatActivity {
             if (billInfo.isCheck())
                 iterator.remove();
         }
+    }
+
+    private String convertToMoney(long price) {
+        String temp = String.valueOf(price);
+        String output = "";
+        int count = 3;
+        for (int i = temp.length() - 1; i >= 0; i--) {
+            count--;
+            if (count == 0) {
+                count = 3;
+                output = "," + temp.charAt(i) + output;
+            }
+            else {
+                output = temp.charAt(i) + output;
+            }
+        }
+
+        if (output.charAt(0) == ',')
+            return output.substring(1);
+
+        return output;
     }
 }

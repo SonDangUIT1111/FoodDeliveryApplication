@@ -17,6 +17,7 @@ import com.example.fooddeliveryapplication.Adapters.Cart.OrderProductAdapter;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Address;
+import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Notification;
@@ -75,7 +76,8 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
                     Set<String> cartInfoKeySet = cartInfoMap.keySet();
                     HashMap<String, List<CartInfo>> filterCartInfoMap = new HashMap<>();
-                    HashMap<String, Long> filterCartInfoPriceMap = new HashMap<String, Long>();
+                    HashMap<String, Long> filterCartInfoPriceMap = new HashMap<>();
+                    HashMap<String, String> filterCartInfoImageUrlMap = new HashMap<>();
                     FirebaseDatabase.getInstance().getReference().child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -89,7 +91,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
                                             // filterCartInfoPriceMap
                                             long totalPrice = filterCartInfoPriceMap.get(product.getPublisherId());
-                                            totalPrice += product.getProductPrice();
+                                            totalPrice += (long) product.getProductPrice() * cartInfoMap.get(productId).getAmount();
                                             filterCartInfoPriceMap.put(product.getPublisherId(), totalPrice);
                                         }
                                         else {
@@ -99,8 +101,12 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                             filterCartInfoMap.put(product.getPublisherId(), tempList);
 
                                             // filterCartInfoPriceMap
-                                            long currentTotalPrice = product.getProductPrice();
+                                            long currentTotalPrice = (long) product.getProductPrice() * cartInfoMap.get(productId).getAmount();
                                             filterCartInfoPriceMap.put(product.getPublisherId(), currentTotalPrice);
+
+                                            // filterCartInfoImageUrlMap
+                                            String currentImageUrl = product.getProductImage1();
+                                            filterCartInfoImageUrlMap.put(product.getPublisherId(), currentImageUrl);
                                         }
                                     }
                                 }
@@ -113,16 +119,8 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                 String billId = FirebaseDatabase.getInstance().getReference().push().getKey();
                                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                                 Date date = new Date();
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("addressId", GlobalConfig.choseAddressId);
-                                map.put("billId", billId);
-                                map.put("orderDate", formatter.format(date));
-                                map.put("orderStatus", "Confirm");
-                                map.put("recipientId", userId);
-                                map.put("senderId", senderId);
-                                map.put("checkAllComment", false);
-                                map.put("totalPrice", filterCartInfoPriceMap.get(senderId));
-                                FirebaseDatabase.getInstance().getReference().child("Bills").child(billId).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                Bill bill = new Bill(GlobalConfig.choseAddressId, billId, formatter.format(date), "Confirm", false, userId, senderId, filterCartInfoPriceMap.get(senderId), filterCartInfoImageUrlMap.get(senderId));
+                                FirebaseDatabase.getInstance().getReference().child("Bills").child(billId).setValue(bill).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {

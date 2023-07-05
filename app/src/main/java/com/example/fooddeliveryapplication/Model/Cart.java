@@ -1,13 +1,10 @@
 package com.example.fooddeliveryapplication.Model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Cart {
-    String cartId;
-    int totalAmount;
-    int totalPrice;
-    String userId;
+    private String cartId;
+    private int totalAmount;
+    private int totalPrice;
+    private String userId;
 
     public Cart(String cartId, int totalAmount, int totalPrice, String userId) {
         this.cartId = cartId;

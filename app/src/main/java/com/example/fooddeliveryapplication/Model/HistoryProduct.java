@@ -1,6 +1,10 @@
 package com.example.fooddeliveryapplication.Model;
 
 public class HistoryProduct {
+    private int resourceId;
+    private String NameHistoryProduct;
+    private String State;
+    private String PriceHistoryProduct;
 
     public HistoryProduct(int resourceId, String nameHistoryProduct, String state, String priceHistoryProduct) {
         this.resourceId = resourceId;
@@ -40,11 +44,6 @@ public class HistoryProduct {
     public void setPriceHistoryProduct(String priceHistoryProduct) {
         PriceHistoryProduct = priceHistoryProduct;
     }
-
-    private int resourceId;
-    private String NameHistoryProduct;
-    private String State;
-    private String PriceHistoryProduct;
 
 
 }

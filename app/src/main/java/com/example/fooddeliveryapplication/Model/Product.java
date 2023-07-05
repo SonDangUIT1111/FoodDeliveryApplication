@@ -3,20 +3,19 @@ package com.example.fooddeliveryapplication.Model;
 import java.io.Serializable;
 
 public class Product implements Serializable {
-    String productId;
-    String productName;
-    String productImage1;
-    String productImage2;
-    String productImage3;
-    String productImage4;
-    int productPrice;
-    String productType;
-    int remainAmount;
-    int sold;
-    String description;
-    Double ratingStar;
-
-    String publisherId;
+    private String productId;
+    private String productName;
+    private String productImage1;
+    private String productImage2;
+    private String productImage3;
+    private String productImage4;
+    private int productPrice;
+    private String productType;
+    private int remainAmount;
+    private int sold;
+    private String description;
+    private Double ratingStar;
+    private String publisherId;
 
     public Product() {
     }

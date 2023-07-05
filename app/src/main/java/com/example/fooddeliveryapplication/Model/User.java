@@ -1,28 +1,25 @@
 package com.example.fooddeliveryapplication.Model;
 
-import java.util.Date;
-
 public class User {
-    String accountName;
-    String userId;
-    String email;
-    String avatarURL;
-    String userName;
-    String birthDate;
-    String phoneNumber;
-    String registerDate;
-    String saleRegisterDate;
-
+    private String accountName;
+    private String userId;
+    private String email;
+    private String avatarURL;
+    private String userName;
+    private String birthDate;
+    private String phoneNumber;
+    private String registerDate;
+    private String saleRegisterDate;
 
     public User() {
     }
 
-    public User(String accountName, String userId, String email, String avatarURL, String nameOfUser, String birthDate, String phoneNumber, String registerDate, String saleRegisterDate) {
+    public User(String accountName, String userId, String email, String avatarURL, String userName, String birthDate, String phoneNumber, String registerDate, String saleRegisterDate) {
         this.accountName = accountName;
         this.userId = userId;
         this.email = email;
         this.avatarURL = avatarURL;
-        userName = nameOfUser;
+        this.userName = userName;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.registerDate = registerDate;
@@ -59,14 +56,6 @@ public class User {
 
     public void setAvatarURL(String avatarURL) {
         this.avatarURL = avatarURL;
-    }
-
-    public String getNameOfUser() {
-        return userName;
-    }
-
-    public void setNameOfUser(String nameOfUser) {
-        userName = nameOfUser;
     }
 
     public String getBirthDate() {
