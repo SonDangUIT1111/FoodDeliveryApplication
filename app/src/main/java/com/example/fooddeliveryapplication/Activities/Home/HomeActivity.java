@@ -28,6 +28,7 @@ import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivi
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
 import com.example.fooddeliveryapplication.Fragments.NotificationFragment;
@@ -310,7 +311,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(HomeActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                        Toast.makeText(HomeActivity.this, "Đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+                        new SuccessfulToast().showToast(HomeActivity.this, "Logout successfully!");
                         finish();
                     }
                 });

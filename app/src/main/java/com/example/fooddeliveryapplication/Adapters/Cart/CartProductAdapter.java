@@ -292,7 +292,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(mContext, "Delete product successfully!", Toast.LENGTH_SHORT).show();
+                                    new SuccessfulToast().showToast(mContext, "Delete product successfully!");
                                     if (adapterItemListener != null) {
                                         adapterItemListener.onDeleteProduct();
                                     }

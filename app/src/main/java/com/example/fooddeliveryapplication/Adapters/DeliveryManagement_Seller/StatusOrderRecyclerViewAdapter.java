@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DetailOfOrderDeliveryManagementActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
@@ -73,7 +74,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
                         @Override
                         public void DataIsUpdated() {
-                            Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái đang giao hàng", Toast.LENGTH_SHORT).show();
+                            new SuccessfulToast().showToast(mContext, "Order has been changed to shipping state!");
                             pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(), bill.getImageUrl());
                         }
 
@@ -104,7 +105,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
                         @Override
                         public void DataIsUpdated() {
-                            Toast.makeText(mContext, "Đơn hàng đã chuyển sang trạng thái hoàn thành", Toast.LENGTH_SHORT).show();
+                            new SuccessfulToast().showToast(mContext, "Order has been changed to completed state!");
                             pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(), bill.getImageUrl());
                         }
 

@@ -13,24 +13,24 @@ import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityIntroBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 public class IntroActivity extends AppCompatActivity {
     private ActivityIntroBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        checkFirstTime();
+        super.onCreate(savedInstanceState);
+        binding = ActivityIntroBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         ArrayList<Integer> ds = new ArrayList<>();
         ds.add(R.drawable.choice);
         ds.add(R.drawable.delivery);
         ds.add(R.drawable.tracking);
         IntroAdapter introAdapter = new IntroAdapter(ds,IntroActivity.this);
-
-        super.onCreate(savedInstanceState);
-        binding = ActivityIntroBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
         binding.viewpaper.setAdapter(introAdapter);
         binding.viewpaper.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         binding.dotsIndicator.attachTo(binding.viewpaper);
@@ -65,7 +65,14 @@ public class IntroActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseAuth.getInstance().signOut();
+        checkFirstTime();
     }
 
     private void checkFirstTime() {
@@ -84,6 +91,4 @@ public class IntroActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
 }

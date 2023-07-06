@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Activities.MyShop.AddFoodActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.LayoutFoodItemBinding;
@@ -65,9 +67,9 @@ public class MyShopAdapter extends RecyclerView.Adapter {
 
                             ds.remove(product);
                             notifyItemRemoved(position);
-                            Toast.makeText(context, "Đã xóa thành công", Toast.LENGTH_SHORT).show();
+                            new SuccessfulToast().showToast(context, "Delete successfully!");
                         } else {
-                            Toast.makeText(context, "Xóa không thành công", Toast.LENGTH_SHORT).show();
+                            new FailToast().showToast(context, "Delete failed!");
                             Log.e("My Shop","Error remove");
                         }
                     }

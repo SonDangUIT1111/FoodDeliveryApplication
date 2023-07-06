@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
 import com.example.fooddeliveryapplication.Adapters.Cart.OrderProductAdapter;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Address;
@@ -190,7 +192,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                             FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalPrice").setValue(cart.getTotalPrice() - totalPrice);
                                         }
                                     }
-                                    Toast.makeText(ProceedOrderActivity.this, "Đặt hàng thành công!", Toast.LENGTH_SHORT).show();
+                                    new SuccessfulToast().showToast(ProceedOrderActivity.this, "Order created successfully!");
 
                                     cartInfoList.clear();
                                     Intent intent = new Intent(ProceedOrderActivity.this, HomeActivity.class);
@@ -227,7 +229,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
     private boolean ValidateDate() {
         if (GlobalConfig.choseAddressId == null) {
-            Toast.makeText(this, "Bạn phải chọn địa chỉ giao hàng!", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "You must choose delivery address!");
             return false;
         }
 

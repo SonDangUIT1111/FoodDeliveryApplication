@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Model.Address;
@@ -113,7 +115,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (address.getState().equals("default")) {
-                            Toast.makeText(mContext, "You cannot delete the default address", Toast.LENGTH_SHORT).show();
+                            new FailToast().showToast(mContext, "You cannot delete the default address!");
                             dialogInterface.dismiss();
                         }
                         else {
@@ -121,7 +123,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(mContext, "Delete address successfully!", Toast.LENGTH_SHORT).show();
+                                        new SuccessfulToast().showToast(mContext, "Delete address successfully!");
                                         dialogInterface.dismiss();
                                         if (addressAdapterListener != null) {
                                             addressAdapterListener.onDeleteAddress();

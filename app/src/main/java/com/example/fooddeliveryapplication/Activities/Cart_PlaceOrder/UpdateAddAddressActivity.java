@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Model.Address;
@@ -216,17 +217,17 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
 
     private boolean validateAddressInfo() {
         if (binding.fullName.getText().toString().equals("")) {
-            Toast.makeText(this, "Receiver name must not be empty!", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "Receiver name must not be empty!");
             return false;
         }
 
         if (binding.phoneNumber.getText().toString().equals("")) {
-            Toast.makeText(this, "Receiver phone number must not be empty!", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "Receiver phone number must not be empty!");
             return false;
         }
 
         if (binding.detailAddress.getText().toString().equals("")) {
-            Toast.makeText(this, "Detail address must not be empty", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "Detail address must not be empty!");
             return false;
         }
 

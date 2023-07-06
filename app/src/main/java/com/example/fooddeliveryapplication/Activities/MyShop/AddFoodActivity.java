@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Dialog.UploadDialog;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
@@ -183,13 +185,13 @@ public class AddFoodActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         if (position==FOURTH_IMAGE) {
                             uploadDialog.dismiss();
-                            Toast.makeText(AddFoodActivity.this,"Đã xóa hình cũ thành công",Toast.LENGTH_LONG).show();
+                            new SuccessfulToast().showToast(AddFoodActivity.this, "Delete old image successfully!");
                             finish();
                         } else {
                             deleteOldImage(position+1);
                         }
                     } else {
-                        Toast.makeText(AddFoodActivity.this,"Bị lỗi xóa ảnh ở hình"+imageURL.toString(),Toast.LENGTH_LONG);
+                        new FailToast().showToast(AddFoodActivity.this, "Error delete image: " + imageURL);
                     }
                 }
             });
@@ -198,7 +200,7 @@ public class AddFoodActivity extends AppCompatActivity {
                 deleteOldImage(position + 1);
             } else {
                 uploadDialog.dismiss();
-                Toast.makeText(AddFoodActivity.this,"Đã xóa hình cũ thành công",Toast.LENGTH_LONG).show();
+                new SuccessfulToast().showToast(AddFoodActivity.this, "Delete old image successfully!");
                 finish();
             }
         }
@@ -237,13 +239,13 @@ public class AddFoodActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                        Toast.makeText(AddFoodActivity.this,"Permission denied!",Toast.LENGTH_SHORT).show();
+                        new FailToast().showToast(AddFoodActivity.this, "Permission denied!");
                     }
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
                         permissionToken.continuePermissionRequest();
-                        Toast.makeText(AddFoodActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
+                        new FailToast().showToast(AddFoodActivity.this, "Permission denied!");
 
                     }
                 }).check();
@@ -329,11 +331,11 @@ public class AddFoodActivity extends AppCompatActivity {
                                 }
 
                                 uploadDialog.dismiss();
-                                Toast.makeText(AddFoodActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                new SuccessfulToast().showToast(AddFoodActivity.this, "Update successfully!");
                                 finish();
                             } else {
                                 uploadDialog.dismiss();
-                                Toast.makeText(AddFoodActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
+                                new FailToast().showToast(AddFoodActivity.this, "Some errors occurred!");
                                 finish();
                             }
                         }
@@ -348,10 +350,10 @@ public class AddFoodActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         uploadDialog.dismiss();
                         finish();
-                        Toast.makeText(AddFoodActivity.this, "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                        new SuccessfulToast().showToast(AddFoodActivity.this, "Add product successfully!");
                     } else {
                         uploadDialog.dismiss();
-                        Toast.makeText(AddFoodActivity.this, "Không thành công", Toast.LENGTH_SHORT).show();
+                        new FailToast().showToast(AddFoodActivity.this, "Some error occurred!");
                         Log.e(TAG,"Lỗi thêm sản phẩm");
                     }
                 }

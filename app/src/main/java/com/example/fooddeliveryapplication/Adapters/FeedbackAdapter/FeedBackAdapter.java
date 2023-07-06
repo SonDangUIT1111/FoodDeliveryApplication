@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.Feedback.FeedBackActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Dialog.UploadDialog;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
@@ -106,7 +108,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                 // Văn bản đã đạt tới giới hạn 200 kí tự, không cho phép nhập thêm
                 // Văn bản chưa đạt tới giới hạn 200 kí tự, cho phép nhập tiếp
                 if (s.length() >= 200)
-                    Toast.makeText(mContext, "Không vượt quá 200 kí tự", Toast.LENGTH_SHORT).show();
+                    new FailToast().showToast(mContext, "Your comment's length must not be over 200 characters!");
 
             }
 
@@ -127,7 +129,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(mContext,"Cảm ơn bạn đã đánh giá cho sản phẩm",Toast.LENGTH_SHORT).show();
+                            new SuccessfulToast().showToast(mContext, "Thank you for giving feedback to my product!");
                             pushNotificationFeedBack(item);
                             dialog.dismiss();
                             updateListBillInfo(item);
@@ -147,7 +149,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                                 }
                             });
                         } else {
-                            Toast.makeText(mContext,"Đánh giá cho sản phẩm bị lỗi",Toast.LENGTH_SHORT).show();
+                            new FailToast().showToast(mContext, "Some errors occurred!");
                             dialog.dismiss();
                         }
                     }

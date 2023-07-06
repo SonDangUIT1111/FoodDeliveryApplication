@@ -22,6 +22,8 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityEditProfileBinding;
@@ -251,22 +253,22 @@ public class EditProfileActivity extends AppCompatActivity {
         String userNameTxt = binding.userName.getText().toString().trim();
 
         if (emailTxt.equals("")) {
-            Toast.makeText(this, "Email must not be empty!", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "Email must not be empty!");
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
-            Toast.makeText(this, "Invalid email!", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "Invalid email!!");
             return;
         }
 
         if (phoneNumberTxt.equals("")) {
-            Toast.makeText(this, "Phone number must not be empty!", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "Phone number must not be empty!");
             return;
         }
 
         if (userNameTxt.equals("")) {
-            Toast.makeText(this, "User name must not be empty!", Toast.LENGTH_SHORT).show();
+            new FailToast().showToast(this, "User name must not be empty!");
             return;
         }
 
@@ -281,7 +283,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(EditProfileActivity.this, "Updated successfully!", Toast.LENGTH_SHORT).show();
+                    new SuccessfulToast().showToast(EditProfileActivity.this, "Updated successfully!");
                 }
             }
         });
