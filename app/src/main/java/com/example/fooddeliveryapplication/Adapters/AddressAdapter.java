@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fooddeliveryapplication.Activities.Home.EditProfileActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.GlobalConfig;
@@ -103,20 +105,13 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
-                alertDialog.setMessage("Delete this address?");
-                alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "NO", new DialogInterface.OnClickListener() {
+                new CustomAlertDialog(mContext,"Delete this address?");
+                CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View view) {
                         if (address.getState().equals("default")) {
                             new FailToast().showToast(mContext, "You cannot delete the default address!");
-                            dialogInterface.dismiss();
+                            CustomAlertDialog.alertDialog.dismiss();
                         }
                         else {
                             FirebaseDatabase.getInstance().getReference().child("Address").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(address.getAddressId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -124,7 +119,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         new SuccessfulToast().showToast(mContext, "Delete address successfully!");
-                                        dialogInterface.dismiss();
+                                        CustomAlertDialog.alertDialog.dismiss();
                                         if (addressAdapterListener != null) {
                                             addressAdapterListener.onDeleteAddress();
                                         }
@@ -134,7 +129,13 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                         }
                     }
                 });
-                alertDialog.show();
+                CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CustomAlertDialog.alertDialog.dismiss();
+                    }
+                });
+                CustomAlertDialog.showAlertDialog();
 
                 return true;
             }

@@ -19,9 +19,9 @@ import android.util.Patterns;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Model.User;
@@ -45,7 +45,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     private Intent imagePickerIntent;
-    private AlertDialog.Builder builder;
     private String imageUrl;
     private String userId;
 
@@ -64,7 +63,6 @@ public class EditProfileActivity extends AppCompatActivity {
         initToolbar();
         initDatePickerDialog();
         initImagePickerActivity();
-        initDialogBuilder();
 
         getInfo();
 
@@ -225,28 +223,6 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void initDialogBuilder() {
-        builder = new AlertDialog.Builder(EditProfileActivity.this);
-        builder.setMessage("Save changes?");
-
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-
-                updateInfo();
-            }
-        });
-
-        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                finish();
-            }
-        });
-    }
-
     private void updateInfo() {
         String emailTxt = binding.email.getText().toString().trim();
         String phoneNumberTxt = binding.phoneNumber.getText().toString().trim();
@@ -400,8 +376,22 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (binding.update.isEnabled()) {
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                    new CustomAlertDialog(EditProfileActivity.this,"Save changes?");
+                    CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            CustomAlertDialog.alertDialog.dismiss();
+                            updateInfo();
+                        }
+                    });
+                    CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            CustomAlertDialog.alertDialog.dismiss();
+                            finish();
+                        }
+                    });
+                    CustomAlertDialog.showAlertDialog();
                 }
                 else {
                     finish();

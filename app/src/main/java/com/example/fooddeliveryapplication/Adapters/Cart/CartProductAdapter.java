@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+import com.example.fooddeliveryapplication.Activities.Home.EditProfileActivity;
 import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
@@ -280,13 +282,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         holder.binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage("Delete this product?");
-
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                new CustomAlertDialog(mContext,"Delete this product?");
+                CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onClick(View view) {
+                        CustomAlertDialog.alertDialog.dismiss();
 
                         FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -344,15 +344,13 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                         });
                     }
                 });
-
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onClick(View view) {
+                        CustomAlertDialog.alertDialog.dismiss();
                     }
                 });
-
-                builder.create().show();
+                CustomAlertDialog.showAlertDialog();
             }
         });
 

@@ -260,7 +260,6 @@ public class AddFoodActivity extends AppCompatActivity {
             String description=binding.lnAddFood.edtDescp.getText().toString();
             if (!checkUpdate) {
                 if (img1.isEmpty() || img2.isEmpty() || img3.isEmpty() || img4.isEmpty()) {
-
                     createDialog("Điền đủ 4 hình").create().show();
                     return false;
                 } else if (name.isEmpty() || name.length() < 8) {

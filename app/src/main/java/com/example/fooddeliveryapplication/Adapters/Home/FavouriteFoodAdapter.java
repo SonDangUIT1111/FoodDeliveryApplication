@@ -78,7 +78,7 @@ public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdap
                     .into(holder.binding.imgFavouriteFood);
 
             holder.binding.txtFavouriteFoodName.setText(product.getProductName());
-            double ratingStar = (double) Math.round(product.getRatingStar() * 100) / 100;
+            double ratingStar = (double) Math.round(product.getRatingStar() * 10) / 10;
             holder.binding.txtFavouriteRating.setText(ratingStar + "/5.0");
             if (product.getRatingStar()>=5) {
                 holder.binding.imgFavouriteRate.setImageResource(R.drawable.rating_star_filled);

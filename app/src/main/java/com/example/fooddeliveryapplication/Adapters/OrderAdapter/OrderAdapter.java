@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
 import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Bill;
@@ -54,15 +55,22 @@ public class OrderAdapter extends RecyclerView.Adapter {
             viewHolder.binding.btnSee.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomAlertDialog customAlertDialog = new CustomAlertDialog(context,"Do you want to confirm this order?");
-                    customAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+                    new CustomAlertDialog(context,"Do you want to confirm this order?");
+                    CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             FirebaseDatabase.getInstance().getReference("Bills").child(tmp.getBillId()).child("orderStatus").setValue("Completed");
-                            customAlertDialog.alertDialog.dismiss();
+                            new SuccessfulToast().showToast(context, "This order state has been updated to completed!");
+                            CustomAlertDialog.alertDialog.dismiss();
                         }
                     });
-                    customAlertDialog.showAlertDialog();
+                    CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            CustomAlertDialog.alertDialog.dismiss();
+                        }
+                    });
+                    CustomAlertDialog.showAlertDialog();
 
                 }
             });

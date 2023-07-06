@@ -28,6 +28,7 @@ import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivi
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
@@ -81,23 +82,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(HomeActivity.this).setTitle("Notice")
-                .setMessage("Trở về màn hình đăng nhập")
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        Intent intent=new Intent(HomeActivity.this,LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).create().show();
+        new CustomAlertDialog(HomeActivity.this,"Do you want to logout?");
+        CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAlertDialog.alertDialog.dismiss();
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAlertDialog.alertDialog.dismiss();
+            }
+        });
+        CustomAlertDialog.showAlertDialog();
     }
 
     private void initUI() {
@@ -297,25 +298,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent2);
                 break;
             case R.id.logoutMenu:
-                AlertDialog.Builder builder=new AlertDialog.Builder(this);
-                builder.setTitle("Notice");
-                builder.setMessage("Thoát ứng dụng?");
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                new CustomAlertDialog(HomeActivity.this,"Do you want to logout?");
+                CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View view) {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(HomeActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
                         new SuccessfulToast().showToast(HomeActivity.this, "Logout successfully!");
                         finish();
                     }
                 });
-                builder.create().show();
+                CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CustomAlertDialog.alertDialog.dismiss();
+                    }
+                });
+                CustomAlertDialog.showAlertDialog();
                 break;
         }
         binding.drawLayoutHome.close();

@@ -71,8 +71,8 @@ public class IntroActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseAuth.getInstance().signOut();
         checkFirstTime();
+        FirebaseAuth.getInstance().signOut();
     }
 
     private void checkFirstTime() {

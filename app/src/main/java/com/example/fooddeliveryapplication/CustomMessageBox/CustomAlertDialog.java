@@ -12,6 +12,7 @@ import com.example.fooddeliveryapplication.R;
 
 public class CustomAlertDialog {
     public static Button btnYes;
+    public static Button btnNo;
     public static AlertDialog alertDialog;
 
     public CustomAlertDialog(Context mContext,String content) {
@@ -20,15 +21,9 @@ public class CustomAlertDialog {
         builder.setView(view);
         ((TextView)view.findViewById(R.id.txtContentMessage)).setText(content);
         btnYes = view.findViewById(R.id.btnYes);
+        btnNo = view.findViewById(R.id.btnNo);
         alertDialog = builder.create();
-        view.findViewById(R.id.btnNo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
-        if (alertDialog.getWindow() != null)
-        {
+        if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
     }
