@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Model.Address;
 import com.example.fooddeliveryapplication.databinding.ActivityUpdateAddAddressBinding;
@@ -103,7 +104,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                        Toast.makeText(UpdateAddAddressActivity.this, "Thêm địa chỉ mới thành công!", Toast.LENGTH_SHORT).show();
+                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Added new address!");
 
                                         GlobalConfig.choseAddressId = addressId;
                                         Intent intent = new Intent();
@@ -124,7 +125,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(UpdateAddAddressActivity.this, "Thêm địa chỉ mới thành công!", Toast.LENGTH_SHORT).show();
+                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Added new address!");
 
                                         GlobalConfig.choseAddressId = addressId;
                                         Intent intent = new Intent();
@@ -161,7 +162,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                        Toast.makeText(UpdateAddAddressActivity.this, "Cập nhật địa chỉ thành công!", Toast.LENGTH_SHORT).show();
+                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Updated chose address!");
 
                                         Intent intent = new Intent();
                                         setResult(RESULT_OK, intent);
@@ -177,7 +178,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(UpdateAddAddressActivity.this, "Cập nhật địa chỉ thành công!", Toast.LENGTH_SHORT).show();
+                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Updated chose address!");
 
                                         Intent intent = new Intent();
                                         setResult(RESULT_OK, intent);
@@ -191,12 +192,6 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
 
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));

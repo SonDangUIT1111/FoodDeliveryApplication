@@ -42,7 +42,6 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        int pos = position;
         Bill bill = billList.get(position);
         holder.binding.txtOrderId.setText(bill.getBillId());
         holder.binding.txtStatus.setText(bill.getOrderStatus());
@@ -63,7 +62,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                 public void onClick(View v) {
                     new FirebaseStatusOrderHelper().setConfirmToShipping(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
                         @Override
-                        public void DataIsLoaded(List<Bill> bills) {
+                        public void DataIsLoaded(List<Bill> bills, boolean isExistingBill) {
 
                         }
 
@@ -94,7 +93,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
                 public void onClick(View v) {
                     new FirebaseStatusOrderHelper().setShippingToCompleted(bill.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
                         @Override
-                        public void DataIsLoaded(List<Bill> bills) {
+                        public void DataIsLoaded(List<Bill> bills, boolean isExistingBill) {
 
                         }
 

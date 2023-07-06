@@ -225,12 +225,6 @@ public class ProceedOrderActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
-
     private boolean ValidateDate() {
         if (GlobalConfig.choseAddressId == null) {
             Toast.makeText(this, "Bạn phải chọn địa chỉ giao hàng!", Toast.LENGTH_SHORT).show();

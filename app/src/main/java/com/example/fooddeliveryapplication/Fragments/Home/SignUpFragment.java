@@ -84,12 +84,6 @@ public class SignUpFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
-
     public boolean check() {
         String phone= binding.edtPhone.getText().toString();
         String name= binding.edtName.getText().toString();

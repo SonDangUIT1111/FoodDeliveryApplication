@@ -51,12 +51,6 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
-
     private void initUI() {
         OrderViewPaperAdapter viewPaperAdapter = new OrderViewPaperAdapter(OrderActivity.this, dsCurrentOrder, dsHistoryOrder, userId);
         binding.viewPaper2.setAdapter(viewPaperAdapter);

@@ -67,10 +67,4 @@ public class FavoriteFragment extends Fragment {
             }
         });
     }
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
 }

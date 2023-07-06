@@ -34,13 +34,16 @@ public class CompletedStatusDeliveryFragment extends Fragment {
         // pull data and set adapter for recycler view
         new FirebaseStatusOrderHelper(userId).readCompletedBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Bill> bills) {
+            public void DataIsLoaded(List<Bill> bills, boolean isExistingBill) {
                 StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills);
                 binding.recCompletedDelivery.setHasFixedSize(true);
                 binding.recCompletedDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recCompletedDelivery.setAdapter(adapter);
                 binding.progressBarCompletedDelivery.setVisibility(View.GONE);
-                if (bills.size() == 0) {
+                if (isExistingBill) {
+                    binding.txtNoneItem.setVisibility(View.GONE);
+                }
+                else {
                     binding.txtNoneItem.setVisibility(View.VISIBLE);
                 }
             }
@@ -63,10 +66,4 @@ public class CompletedStatusDeliveryFragment extends Fragment {
 
         return view;
     }
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
 }

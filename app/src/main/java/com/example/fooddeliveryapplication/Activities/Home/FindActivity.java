@@ -42,12 +42,6 @@ public class FindActivity extends AppCompatActivity {
         initUI();
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
-
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));

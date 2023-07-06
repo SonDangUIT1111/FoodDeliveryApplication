@@ -30,6 +30,7 @@ public class FirebaseArtToCartHelper {
         mDatabase = FirebaseDatabase.getInstance();
         mReferenceCart = mDatabase.getReference();
     }
+
     public FirebaseArtToCartHelper() {
         mDatabase = FirebaseDatabase.getInstance();
         mReferenceCart = mDatabase.getReference();
@@ -38,7 +39,6 @@ public class FirebaseArtToCartHelper {
 
     public void readCarts(final DataStatus dataStatus)
     {
-
         mReferenceCart.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -55,7 +55,7 @@ public class FirebaseArtToCartHelper {
                         break;
                     }
                 }
-                if (isExistsCart == true)
+                if (isExistsCart)
                 {
                     for (DataSnapshot keyNode: snapshot.child("CartInfos").child(cart.getCartId()).getChildren())
                     {
@@ -137,6 +137,20 @@ public class FirebaseArtToCartHelper {
                             if (dataStatus != null) {
                                 dataStatus.DataIsInserted();
                             }
+
+                            // Update remainAmount in Products of productId
+                            FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    int remainAmount = snapshot.getValue(int.class) - cartInfo.getAmount();
+                                    FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").setValue(remainAmount);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
                     });
         }

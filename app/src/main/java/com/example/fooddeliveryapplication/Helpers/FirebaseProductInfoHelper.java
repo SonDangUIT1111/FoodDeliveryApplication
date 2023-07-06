@@ -101,7 +101,7 @@ public class FirebaseProductInfoHelper {
 
     public void readInformationById(final FirebaseProductInfoHelper.DataStatusInformationOfProduct dataStatusInformationOfProduct)
     {
-        mReference.child("Products").child(productId).addValueEventListener(new ValueEventListener() {
+        mReference.child("Products").child(productId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Product item = snapshot.getValue(Product.class);

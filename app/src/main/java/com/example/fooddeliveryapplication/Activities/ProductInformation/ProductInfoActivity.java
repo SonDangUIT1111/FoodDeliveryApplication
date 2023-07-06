@@ -5,11 +5,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Helpers.FirebaseArtToCartHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseFavouriteInfoProductHelper;
@@ -23,6 +25,10 @@ import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityProductInfoBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
@@ -178,12 +184,6 @@ public class ProductInfoActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
-
     // DEFINE FUNCTION
 
     public void setCommentRecView()
@@ -212,7 +212,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     public void updateCart(boolean isCartExists, boolean isProductExists,Cart currentCart,CartInfo currentCartInfo,int amount)
     {
         // truong hop user moi tao chua co gio hang
-        if (isCartExists == false)
+        if (!isCartExists)
         {
             Cart cart = new Cart();
             cart.setTotalPrice(productPrice*amount);
@@ -222,7 +222,6 @@ public class ProductInfoActivity extends AppCompatActivity {
             cartInfo.setAmount(amount);
             cartInfo.setProductId(productId);
             new FirebaseArtToCartHelper().addCarts(cart,cartInfo, new FirebaseArtToCartHelper.DataStatus() {
-
                 @Override
                 public void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
 
@@ -242,60 +241,50 @@ public class ProductInfoActivity extends AppCompatActivity {
         }
         else {
             // truong hop chua co san pham hien tai trong gio hang
-            if (isProductExists == false)
+            if (!isProductExists)
             {
-                CartInfo cartInfo = new CartInfo();
-                cartInfo.setProductId(productId);
-                cartInfo.setAmount(amount);
-                currentCart.setTotalAmount(currentCart.getTotalAmount()+amount);
-                currentCart.setTotalPrice(currentCart.getTotalPrice()+amount*productPrice);
-                new FirebaseArtToCartHelper().updateCart(currentCart,cartInfo,false ,new FirebaseArtToCartHelper.DataStatus() {
-
+                FirebaseDatabase.getInstance().getReference().child("Products").child(productId).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int remainAmount = snapshot.getValue(int.class);
+                        if (amount <= remainAmount) {
+                            CartInfo cartInfo = new CartInfo();
+                            cartInfo.setProductId(productId);
+                            cartInfo.setAmount(amount);
+                            currentCart.setTotalAmount(currentCart.getTotalAmount()+amount);
+                            currentCart.setTotalPrice(currentCart.getTotalPrice()+amount*productPrice);
+                            new FirebaseArtToCartHelper().updateCart(currentCart,cartInfo,false ,new FirebaseArtToCartHelper.DataStatus() {
 
+                                @Override
+                                public void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
+
+                                }
+
+                                @Override
+                                public void DataIsInserted() {
+                                    new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your cart");
+                                }
+
+                                @Override
+                                public void DataIsUpdated() {
+                                }
+
+                                @Override
+                                public void DataIsDeleted() {
+
+                                }
+                            });
+                        }
                     }
 
                     @Override
-                    public void DataIsInserted() {
-                        new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your cart");
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
+                    public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
             }
             else {  // truong hop da co san pham hien tai trong gio hang
-                currentCart.setTotalAmount(currentCart.getTotalAmount()+amount);
-                currentCart.setTotalPrice(currentCart.getTotalPrice()+amount*productPrice);
-                currentCartInfo.setAmount(currentCartInfo.getAmount()+amount);
-                new FirebaseArtToCartHelper().updateCart(currentCart, currentCartInfo,true, new FirebaseArtToCartHelper.DataStatus() {
-                    @Override
-                    public void DataIsLoaded(Cart cart, CartInfo cartInfo, boolean isExistsCart, boolean isExistsProduct) {
-
-                    }
-
-                    @Override
-                    public void DataIsInserted() {
-
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-                        new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your cart");
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
-
-                    }
-                });
+                new FailToast().showToast(ProductInfoActivity.this,"This product has already been in the cart!");
             }
         }
     }
@@ -343,7 +332,7 @@ public class ProductInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // truong hop new user
-                if (isExistsFavourite[0] == false)
+                if (!isExistsFavourite[0])
                 {
 
                     new FirebaseFavouriteInfoProductHelper().addFavourite(userId,productId, new FirebaseFavouriteInfoProductHelper.DataStatus() {

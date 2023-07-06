@@ -77,12 +77,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         loadInformationForNavigationBar();
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
-
 
     @Override
     public void onBackPressed() {

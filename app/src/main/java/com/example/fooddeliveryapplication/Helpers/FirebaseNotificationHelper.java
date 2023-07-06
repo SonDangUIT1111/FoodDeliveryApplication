@@ -98,8 +98,7 @@ public class FirebaseNotificationHelper {
             }
         });
     }
-    public void addNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus)
-    {
+    public void addNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus) {
         String key = mReference.child("Notification").child(userId).push().getKey();
         notification.setNotificationId(key);
         mReference.child("Notification").child(userId).child(key).setValue(notification)

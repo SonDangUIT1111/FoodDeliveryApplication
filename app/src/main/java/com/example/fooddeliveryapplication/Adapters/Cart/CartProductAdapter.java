@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseUserInfoHelper;
@@ -117,43 +120,72 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         holder.binding.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Change display value
-                int amount = Integer.parseInt(holder.binding.productAmount.getText().toString());
-                amount++;
-                holder.binding.productAmount.setText(String.valueOf(amount));
-                holder.binding.checkBox.setChecked(false);
-                isCheckAll = false;
-
-                if (adapterItemListener != null) {
-                    adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
-                    adapterItemListener.onAddClicked();
-                }
-
-                // Save to firebase
-                FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).child("amount").setValue(amount);
-
-                FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Cart cart = snapshot.getValue(Cart.class);
-                        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                                Product product = snapshot1.getValue(Product.class);
-                                int totalAmount = cart.getTotalAmount() + 1;
-                                long totalPrice = cart.getTotalPrice() + product.getProductPrice();
+                        int amount = Integer.parseInt(holder.binding.productAmount.getText().toString());
+                        int remainAmount = snapshot.getValue(int.class);
+                        if (amount >= remainAmount) {
+                            new FailToast().showToast(mContext, "Can't add anymore!");
+                        }
+                        else {
+                            // Change display value
+                            amount++;
+                            holder.binding.productAmount.setText(String.valueOf(amount));
+                            holder.binding.checkBox.setChecked(false);
+                            isCheckAll = false;
 
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("totalAmount", totalAmount);
-                                map.put("totalPrice", totalPrice);
-                                FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).updateChildren(map);
+                            if (adapterItemListener != null) {
+                                adapterItemListener.onCheckedItemCountChanged(0, 0, new ArrayList<>());
+                                adapterItemListener.onAddClicked();
                             }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                            // Save to firebase
+                            FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cartId).child(cartInfo.getCartInfoId()).child("amount").setValue(amount);
 
-                            }
-                        });
+                            FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    Cart cart = snapshot.getValue(Cart.class);
+                                    FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                                            Product product = snapshot1.getValue(Product.class);
+                                            int totalAmount = cart.getTotalAmount() + 1;
+                                            long totalPrice = cart.getTotalPrice() + product.getProductPrice();
+
+                                            HashMap<String, Object> map = new HashMap<>();
+                                            map.put("totalAmount", totalAmount);
+                                            map.put("totalPrice", totalPrice);
+                                            FirebaseDatabase.getInstance().getReference().child("Carts").child(cartId).updateChildren(map);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                            FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    int remainAmount = snapshot.getValue(int.class) - 1;
+                                    FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").setValue(remainAmount);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
                     }
 
                     @Override
@@ -211,6 +243,22 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
                         }
                     });
+
+                    FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int remainAmount = snapshot.getValue(int.class) + 1;
+                            FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").setValue(remainAmount);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+                else {
+                    new FailToast().showToast(mContext, "Can't reduce anymore!");
                 }
             }
         });
@@ -221,6 +269,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 if (holder.binding.like.getTag().equals("like")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).setValue(true);
                     pushNotificationFavourite(cartInfo);
+                    new SuccessfulToast().showToast(mContext,"Added to your favourite list");
                 }
                 else if (holder.binding.like.getTag().equals("liked")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).removeValue();
@@ -273,6 +322,19 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
                                     }
                                 });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                        FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                int remainAmount = snapshot.getValue(int.class) + cartInfo.getAmount();
+                                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).child("remainAmount").setValue(remainAmount);
                             }
 
                             @Override

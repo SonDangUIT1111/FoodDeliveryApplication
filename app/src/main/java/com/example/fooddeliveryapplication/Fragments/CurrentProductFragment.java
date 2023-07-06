@@ -46,12 +46,6 @@ public class CurrentProductFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
-
     private List<InfoCurrentProduct> getListInfoCurrentProduct() {
         List<InfoCurrentProduct> list = new ArrayList<>();
 

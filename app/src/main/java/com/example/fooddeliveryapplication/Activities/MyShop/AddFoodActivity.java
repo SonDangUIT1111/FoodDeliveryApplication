@@ -53,7 +53,7 @@ public class AddFoodActivity extends AppCompatActivity {
     private Product productUpdate=null;
     private boolean checkUpdate=false;
     private String userId;
-    private static final int FRIST_IMAGE = 1;
+    private static final int FIRST_IMAGE = 1;
     private static final int SECOND_IMAGE = 2;
     private static final int THIRD_IMAGE = 3;
     private static final int FOURTH_IMAGE = 4;
@@ -126,25 +126,25 @@ public class AddFoodActivity extends AppCompatActivity {
 
         }
         //---------------------------------
-        position=-1;
+        position = -1;
         binding.addImage1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                position=1;
+                position = 1;
                 checkRuntimePermission();
             }
         });
         binding.addImage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                position=2;
+                position = 2;
                 checkRuntimePermission();
             }
         });
         binding.addImage3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                position=3;
+                position = 3;
                 checkRuntimePermission();
             }
         });
@@ -158,10 +158,10 @@ public class AddFoodActivity extends AppCompatActivity {
         binding.lnAddFood.btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkLoi()==true) {
+                if (checkLoi()) {
                     uploadDialog =new UploadDialog(AddFoodActivity.this);
                     uploadDialog.show();
-                    uploadImage(FRIST_IMAGE);
+                    uploadImage(FIRST_IMAGE);
                 }
             }
         });
@@ -172,12 +172,6 @@ public class AddFoodActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
 
     private void deleteOldImage(int position) {
         StringBuilder imageURL=new StringBuilder();
@@ -211,7 +205,7 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private void handleImagePosition(StringBuilder imageURL, int position) {
-        if (position==FRIST_IMAGE) {
+        if (position==FIRST_IMAGE) {
             if (!img1.equals(imgOld1)) {
                 imageURL.append(imgOld1);
             }
@@ -228,18 +222,6 @@ public class AddFoodActivity extends AppCompatActivity {
                 imageURL.append(imgOld4);
             }
         }
-    }
-
-
-
-
-    public void xoaHinhDaCo() {
-        FirebaseStorage reference= FirebaseStorage.getInstance();
-        reference.getReferenceFromUrl(imgOld1).delete();
-        reference.getReferenceFromUrl(imgOld2).delete();
-        reference.getReferenceFromUrl(imgOld3).delete();
-        reference.getReferenceFromUrl(imgOld4).delete();
-
     }
 
     public void pickImg() {
@@ -271,24 +253,37 @@ public class AddFoodActivity extends AppCompatActivity {
     public boolean checkLoi() {
         try {
             String name=binding.lnAddFood.edtNameOfProduct.getText().toString();
-            Double price=Double.valueOf(binding.lnAddFood.edtPrice.getText().toString()+".0");
-            int amount=Integer.valueOf(binding.lnAddFood.edtAmount.getText().toString());
+            double price= Double.parseDouble(binding.lnAddFood.edtPrice.getText().toString() + ".0");
+            int amount=Integer.parseInt(binding.lnAddFood.edtAmount.getText().toString());
             String description=binding.lnAddFood.edtDescp.getText().toString();
-            if ((img1.isEmpty()||img2.isEmpty()||img3.isEmpty()||img4.isEmpty())&&checkUpdate==false) {
+            if (!checkUpdate) {
+                if (img1.isEmpty() || img2.isEmpty() || img3.isEmpty() || img4.isEmpty()) {
 
-                createDialog("Điền đủ 4 hình").create().show();
-                return false;
-            } else
-            if (name.isEmpty()||name.length()<8) {
+                    createDialog("Điền đủ 4 hình").create().show();
+                    return false;
+                } else if (name.isEmpty() || name.length() < 8) {
+                    createDialog("Tên ít nhất phải từ 8 kí tự và không được bỏ trống").create().show();
+                    return false;
+                } else if (price < 5000.0) {
+                    createDialog("Giá phải từ 5000 trở lên").create().show();
+                    return false;
+                } else if (amount <= 0) {
+                    createDialog("Số lượng phải lớn hơn 0").create().show();
+                    return false;
+                } else if (description.isEmpty() || description.length() < 10) {
+                    createDialog("Phần mô tả phải từ 10 ký tự trở lên và không được bỏ trống").create().show();
+                    return false;
+                }
+            } else if (name.isEmpty() || name.length() < 8) {
                 createDialog("Tên ít nhất phải từ 8 kí tự và không được bỏ trống").create().show();
                 return false;
-            } else if (price<5000.0) {
+            } else if (price < 5000.0) {
                 createDialog("Giá phải từ 5000 trở lên").create().show();
                 return false;
-            } else if (amount<=0) {
+            } else if (amount <= 0) {
                 createDialog("Số lượng phải lớn hơn 0").create().show();
                 return false;
-            } else if (description.isEmpty()||description.length()<10) {
+            } else if (description.isEmpty() || description.length() < 10) {
                 createDialog("Phần mô tả phải từ 10 ký tự trở lên và không được bỏ trống").create().show();
                 return false;
             }
@@ -320,14 +315,22 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     public void uploadProduct(Product tmp) {
-        if (checkUpdate==true) {
+        if (checkUpdate) {
             tmp.setProductId(productUpdate.getProductId());
-            FirebaseDatabase.getInstance().getReference().child("Products").child(productUpdate.getProductId())
-                    .setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
+            FirebaseDatabase.getInstance().getReference().child("Products").child(productUpdate.getProductId()).setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                deleteOldImage(FRIST_IMAGE);
+                                StringBuilder imageURL=new StringBuilder();
+                                handleImagePosition(imageURL,position);
+
+                                if (!imageURL.toString().isEmpty()) {
+                                    FirebaseStorage.getInstance().getReferenceFromUrl(imageURL.toString()).delete();
+                                }
+
+                                uploadDialog.dismiss();
+                                Toast.makeText(AddFoodActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                finish();
                             } else {
                                 uploadDialog.dismiss();
                                 Toast.makeText(AddFoodActivity.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
@@ -335,7 +338,8 @@ public class AddFoodActivity extends AppCompatActivity {
                             }
                         }
                     });
-        } else {
+        }
+        else {
             DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("Products").push();
             tmp.setProductId(reference.getKey()+"");
             reference.setValue(tmp).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -382,10 +386,10 @@ public class AddFoodActivity extends AppCompatActivity {
                                 String amount=binding.lnAddFood.edtAmount.getText().toString();
                                 String description=binding.lnAddFood.edtDescp.getText().toString();
                                 Product tmp=new Product("null",name,img1,img2,img3,img4,Integer.valueOf(price),
-                                        binding.lnAddFood.rbFood.isChecked()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0,userId);
+                                        binding.lnAddFood.rbFood.isChecked()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0, 0,userId);
                                 uploadProduct(tmp);
                             } else {
-                                if (position==FRIST_IMAGE)  {
+                                if (position==FIRST_IMAGE)  {
                                     img1=uri.toString();
                                 } else if (position==SECOND_IMAGE) {
                                     img2=uri.toString();
@@ -400,7 +404,7 @@ public class AddFoodActivity extends AppCompatActivity {
             });
         } else {
             if (position!=FOURTH_IMAGE) {
-                if (position == FRIST_IMAGE) img1 = imgOld1;
+                if (position == FIRST_IMAGE) img1 = imgOld1;
                 else if (position == SECOND_IMAGE) img2 = imgOld2;
                 else if (position == THIRD_IMAGE) img3 = imgOld3;
                 uploadImage(position+1);
@@ -412,7 +416,7 @@ public class AddFoodActivity extends AppCompatActivity {
                 String amount=binding.lnAddFood.edtAmount.getText().toString();
                 String description=binding.lnAddFood.edtDescp.getText().toString();
                 Product tmp=new Product("null",name,img1,img2,img3,img4,Integer.valueOf(price),
-                        binding.lnAddFood.rbFood.isChecked()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0,userId);
+                        binding.lnAddFood.rbFood.isChecked()?"Food":"Drink", Integer.valueOf(amount), 0, description, 0.0, 0, userId);
                 uploadProduct(tmp);
             }
         }

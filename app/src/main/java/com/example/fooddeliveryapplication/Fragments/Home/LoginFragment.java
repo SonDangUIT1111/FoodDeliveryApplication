@@ -93,12 +93,6 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
-
     public void getLauncher() {
         launcher =registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode()==CODE_SUCCESS) {

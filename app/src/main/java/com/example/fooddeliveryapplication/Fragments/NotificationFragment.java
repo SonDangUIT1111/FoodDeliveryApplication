@@ -41,12 +41,6 @@ public class NotificationFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
-
     public void readNotification()
     {
         new FirebaseNotificationHelper(getContext()).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {

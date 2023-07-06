@@ -35,13 +35,16 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
         //set data and adapter for list
         new FirebaseStatusOrderHelper(userId).readConfirmBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Bill> bills) {
+            public void DataIsLoaded(List<Bill> bills, boolean isExistingBill) {
                 StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(), bills);
                 binding.recConfirmDelivery.setHasFixedSize(true);
                 binding.recConfirmDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recConfirmDelivery.setAdapter(adapter);
                 binding.progressBarConfirmDelivery.setVisibility(View.GONE);
-                if (bills.size() == 0) {
+                if (isExistingBill) {
+                    binding.txtNoneItem.setVisibility(View.GONE);
+                }
+                else {
                     binding.txtNoneItem.setVisibility(View.VISIBLE);
                 }
             }
@@ -61,10 +64,4 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
         // return statement
         return view;
     }
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
 }

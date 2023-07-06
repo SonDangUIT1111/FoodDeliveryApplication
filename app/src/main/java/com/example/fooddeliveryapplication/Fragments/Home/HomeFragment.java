@@ -57,12 +57,5 @@ public class HomeFragment extends Fragment {
                     break;
             }
         })).attach();
-
     }
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
 }

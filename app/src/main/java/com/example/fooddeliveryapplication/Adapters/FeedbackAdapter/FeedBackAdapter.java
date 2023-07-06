@@ -131,7 +131,21 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                             pushNotificationFeedBack(item);
                             dialog.dismiss();
                             updateListBillInfo(item);
-                            // Cập nhật lại danh sách billInfo chưa comment
+
+                            FirebaseDatabase.getInstance().getReference().child("Products").child(item.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    int ratingAmount = snapshot.child("ratingAmount").getValue(int.class) + 1;
+                                    double ratingStar = (snapshot.child("ratingStar").getValue(double.class) * snapshot.child("ratingAmount").getValue(int.class) + starRating.getValue()) / ratingAmount;
+                                    FirebaseDatabase.getInstance().getReference().child("Products").child(item.getProductId()).child("ratingAmount").setValue(ratingAmount);
+                                    FirebaseDatabase.getInstance().getReference().child("Products").child(item.getProductId()).child("ratingStar").setValue(ratingStar);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         } else {
                             Toast.makeText(mContext,"Đánh giá cho sản phẩm bị lỗi",Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
@@ -215,33 +229,6 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
             super(binding.getRoot());
             this.binding = binding;
         }
-    }
-
-    public void pushNotificationOrderStatusForReceiver(String billId,String status,String receiverId,String productImage1) {
-        String title = "Tình trạng đơn hàng";
-        String content = "Đơn hàng "+ billId+" đã chuyển sang trạng thái "+ status+", vào My Order để xem tình trạng đơn hàng nào";
-        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,"None",billId,"None");
-        new FirebaseNotificationHelper(mContext).addNotification(receiverId, notification, new FirebaseNotificationHelper.DataStatus() {
-            @Override
-            public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
-
-            }
-
-            @Override
-            public void DataIsInserted() {
-
-            }
-
-            @Override
-            public void DataIsUpdated() {
-
-            }
-
-            @Override
-            public void DataIsDeleted() {
-
-            }
-        });
     }
 
     public void pushNotificationFeedBack(BillInfo billInfo) {

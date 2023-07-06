@@ -35,14 +35,16 @@ public class ShippingStatusDeliveryFragment extends Fragment {
         //set adapter and pull data for recycler view
         new FirebaseStatusOrderHelper(userId).readShippingBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Bill> bills) {
+            public void DataIsLoaded(List<Bill> bills, boolean isExistingBill) {
                 StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(), bills);
                 binding.recShippingDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
                 binding.recShippingDelivery.setHasFixedSize(true);
                 binding.recShippingDelivery.setAdapter(adapter);
                 binding.progressBarShippingDelivery.setVisibility(View.GONE);
-                if (bills.size() == 0)
-                {
+                if (isExistingBill) {
+                    binding.txtNoneItem.setVisibility(View.GONE);
+                }
+                else {
                     binding.txtNoneItem.setVisibility(View.VISIBLE);
                 }
             }

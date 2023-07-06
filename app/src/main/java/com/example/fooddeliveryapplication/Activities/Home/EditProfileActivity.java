@@ -45,7 +45,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private Intent imagePickerIntent;
     private AlertDialog.Builder builder;
     private String imageUrl;
-
     private String userId;
 
     @Override
@@ -223,12 +222,6 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
 
     private void initDialogBuilder() {
         builder = new AlertDialog.Builder(EditProfileActivity.this);

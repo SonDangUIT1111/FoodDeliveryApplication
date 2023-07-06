@@ -68,12 +68,6 @@ public class IntroActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        binding = null;
-//    }
-
     private void checkFirstTime() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);

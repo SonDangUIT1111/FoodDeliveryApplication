@@ -54,12 +54,6 @@ public class DrinkHomeFrg extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        binding = null;
-//    }
-
     private void initData() {
         dsDrink=new ArrayList<>();
 

@@ -15,12 +15,13 @@ public class Product implements Serializable {
     private int sold;
     private String description;
     private Double ratingStar;
+    private int ratingAmount;
     private String publisherId;
 
     public Product() {
     }
 
-    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, String publisherId) {
+    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, int ratingAmount, String publisherId) {
         this.productId = productId;
         this.productName = productName;
         this.productImage1 = productImage1;
@@ -33,6 +34,7 @@ public class Product implements Serializable {
         this.sold = sold;
         this.description = description;
         this.ratingStar = ratingStar;
+        this.ratingAmount = ratingAmount;
         this.publisherId = publisherId;
     }
 
@@ -130,6 +132,14 @@ public class Product implements Serializable {
 
     public void setRatingStar(Double ratingStar) {
         this.ratingStar = ratingStar;
+    }
+
+    public int getRatingAmount() {
+        return ratingAmount;
+    }
+
+    public void setRatingAmount(int ratingAmount) {
+        this.ratingAmount = ratingAmount;
     }
 
     public String getPublisherId() {
