@@ -72,7 +72,6 @@ public class IntroActivity extends AppCompatActivity {
         super.onStart();
 
         checkFirstTime();
-        FirebaseAuth.getInstance().signOut();
     }
 
     private void checkFirstTime() {
@@ -80,6 +79,9 @@ public class IntroActivity extends AppCompatActivity {
         boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
 
         if (isFirstStart) {
+            // Logout previous user
+            FirebaseAuth.getInstance().signOut();
+
             // Sau khi hiển thị, lưu trạng thái đã hiển thị
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("isFirstStart", false);

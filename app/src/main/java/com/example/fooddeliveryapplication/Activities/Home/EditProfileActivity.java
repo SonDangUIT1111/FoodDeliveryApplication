@@ -44,7 +44,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private ActivityEditProfileBinding binding;
     private DatePickerDialog datePickerDialog;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-    private Intent imagePickerIntent;
     private String imageUrl;
     private String userId;
 
@@ -271,11 +270,6 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void initImagePickerActivity() {
-        // Init intent
-        imagePickerIntent = new Intent();
-        imagePickerIntent.setType("image/");
-        imagePickerIntent.setAction(Intent.ACTION_GET_CONTENT);
-
         // Init launcher
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
@@ -287,7 +281,11 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void openImagePicker() {
-        imagePickerLauncher.launch(imagePickerIntent);
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        imagePickerLauncher.launch(intent);
     }
 
     private void getInfo() {

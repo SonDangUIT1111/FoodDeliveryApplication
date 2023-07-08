@@ -82,23 +82,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        new CustomAlertDialog(HomeActivity.this,"Do you want to logout?");
-        CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAlertDialog.alertDialog.dismiss();
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAlertDialog.alertDialog.dismiss();
-            }
-        });
-        CustomAlertDialog.showAlertDialog();
+        moveTaskToBack(true);
     }
 
     private void initUI() {

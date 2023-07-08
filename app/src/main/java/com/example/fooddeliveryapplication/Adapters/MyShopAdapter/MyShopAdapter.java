@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Adapters.MyShopAdapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -45,14 +46,15 @@ public class MyShopAdapter extends RecyclerView.Adapter {
         return new ViewHolder(LayoutFoodItemBinding.inflate(LayoutInflater.from(context),parent,false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Product product =ds.get(position);
-       ViewHolder viewHolder=(ViewHolder) holder;
+        ViewHolder viewHolder=(ViewHolder) holder;
         viewBinderHelper.bind(viewHolder.binding.SwipeRevealLayout, product.getProductId());
 
-       viewHolder.binding.txtNameProdiuct.setText(product.getProductName());
-       viewHolder.binding.txtPrice.setText(product.getProductPrice()+"đ");
+        viewHolder.binding.txtNameProdiuct.setText(product.getProductName());
+        viewHolder.binding.txtPrice.setText(convertToMoney(product.getProductPrice()) + "đ");
         Glide.with(context)
                 .load(product.getProductImage1())
                 .placeholder(R.drawable.baseline_image_search_24)
@@ -101,5 +103,26 @@ public class MyShopAdapter extends RecyclerView.Adapter {
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    private String convertToMoney(long price) {
+        String temp = String.valueOf(price);
+        String output = "";
+        int count = 3;
+        for (int i = temp.length() - 1; i >= 0; i--) {
+            count--;
+            if (count == 0) {
+                count = 3;
+                output = "," + temp.charAt(i) + output;
+            }
+            else {
+                output = temp.charAt(i) + output;
+            }
+        }
+
+        if (output.charAt(0) == ',')
+            return output.substring(1);
+
+        return output;
     }
 }
