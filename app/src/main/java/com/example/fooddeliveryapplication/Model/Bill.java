@@ -3,17 +3,18 @@ package com.example.fooddeliveryapplication.Model;
 import java.io.Serializable;
 
 public class Bill implements Serializable {
-    String addressId;
-    String billId;
-    String orderDate;
-    String orderStatus;
+    private String addressId;
+    private String billId;
+    private String orderDate;
+    private String orderStatus;
 
-    boolean checkAllComment;
-    String recipientId;
-    String senderId;
-    int totalPrice;
+    private boolean checkAllComment;
+    private String recipientId;
+    private String senderId;
+    private long totalPrice;
+    private String imageUrl;
 
-    public Bill(String addressId, String billId, String orderDate, String orderStatus, boolean checkAllComment, String recipientId,String senderId, int totalPrice) {
+    public Bill(String addressId, String billId, String orderDate, String orderStatus, boolean checkAllComment, String recipientId, String senderId, long totalPrice, String imageUrl) {
         this.addressId = addressId;
         this.billId = billId;
         this.orderDate = orderDate;
@@ -22,6 +23,7 @@ public class Bill implements Serializable {
         this.recipientId = recipientId;
         this.senderId = senderId;
         this.totalPrice = totalPrice;
+        this.imageUrl = imageUrl;
     }
 
     public Bill() {
@@ -75,11 +77,11 @@ public class Bill implements Serializable {
         this.senderId = senderId;
     }
 
-    public int getTotalPrice() {
+    public long getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(long totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -89,5 +91,13 @@ public class Bill implements Serializable {
 
     public void setCheckAllComment(boolean checkAllComment) {
         this.checkAllComment = checkAllComment;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

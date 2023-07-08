@@ -10,14 +10,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.Manifest;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -29,8 +28,9 @@ import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivi
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
-import com.example.fooddeliveryapplication.Fragments.Home.HistoryFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
 import com.example.fooddeliveryapplication.Fragments.NotificationFragment;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
@@ -43,28 +43,18 @@ import com.example.fooddeliveryapplication.databinding.ActivityHomeBinding;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-
-import java.util.Collections;
 import java.util.List;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String userId;
-    private FirebaseUser firebaseUser;
-    FirebaseDatabase database= FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference();
-    ActivityHomeBinding binding;
+    private ActivityHomeBinding binding;
     private LinearLayout layoutMain;
+    private Fragment selectionFragment;
 
     private static final int NOTIFICATION_PERMISSION_CODE = 10023;
     private static final int STORAGE_PERMISSION_CODE = 101;
@@ -81,18 +71,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
         checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",STORAGE_PERMISSION_CODE);
         //----------
+
+        //----------------------
+
+        //----------------------
         initUI();
-        //----------------------
-
-        //----------------------
-
-
         loadInformationForNavigationBar();
-
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
@@ -103,12 +94,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         layoutMain=binding.layoutMain;
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(layoutMain.getId(),new HomeFragment(userId))
+                .replace(layoutMain.getId(),new HomeFragment(userId))
                 .commit();
         setEventNavigationBottom();
         setCartNavigation();
         binding.navigationLeft.setNavigationItemSelectedListener(this);
-
     }
     
     private void setCartNavigation()
@@ -122,32 +112,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot ds : snapshot.getChildren()) {
-                                        Cart cart = ds.getValue(Cart.class);
-                                        if (cart.getUserId().equals(userId)) {
-                                            FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    if (snapshot.getChildrenCount() == 0) {
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    Cart cart = ds.getValue(Cart.class);
+                                    if (cart.getUserId().equals(userId)) {
+                                        FirebaseDatabase.getInstance().getReference().child("CartInfos").child(cart.getCartId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.getChildrenCount() == 0) {
 
-                                                        startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
-                                                        return;
-                                                    }
-                                                    else {
-                                                        Intent intent = new Intent(HomeActivity.this,CartActivity.class);
-                                                        intent.putExtra("userId",userId);
-                                                        startActivity(intent);
-                                                        return;
-                                                    }
+                                                    startActivity(new Intent(HomeActivity.this, EmptyCartActivity.class));
+                                                    return;
                                                 }
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                else {
+                                                    Intent intent = new Intent(HomeActivity.this,CartActivity.class);
+                                                    intent.putExtra("userId",userId);
+                                                    startActivity(intent);
+                                                    return;
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                                }
-                                            });
-                                        }
+                                            }
+                                        });
                                     }
-
+                                }
                             }
 
                             @Override
@@ -162,91 +151,51 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
     private void setEventNavigationBottom() {
-        binding.bottomNavigation.show(2,true);
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1,R.drawable.ic_favourite));
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2,R.drawable.ic_home));
-        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3,R.drawable.notification_icon));
-        binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                Fragment fragment;
+        binding.bottomNavigation.show(2, true);
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_favourite));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_home));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.notification_icon));
 
-                switch (model.getId())
-                {
-                    case 1:
-                        fragment=new FavoriteFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
-                        break;
-                    case 2:
-                        fragment=new HomeFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
-                        break;
-                    case 3:
-                        fragment = new NotificationFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
-                        break;
-                }
-                return null;
+        binding.bottomNavigation.setOnClickMenuListener(model -> {
+            switch (model.getId()) {
+                case 1:
+                    selectionFragment = new FavoriteFragment(userId);
+                    break;
+                case 2:
+                    selectionFragment = new HomeFragment(userId);
+                    break;
+                case 3:
+                    selectionFragment = new NotificationFragment(userId);
+                    break;
             }
+
+            if (selectionFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+            }
+
+            return null;
         });
 
-        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch (model.getId())
-                {
-                    case 1:
-                        Fragment fragment;
-                        fragment=new FavoriteFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
-                        break;
-                }
-                return null;
+        binding.bottomNavigation.setOnShowListener(model -> {
+            switch (model.getId()) {
+                case 1:
+                    selectionFragment = new FavoriteFragment(userId);
+                    break;
+                case 2:
+                    selectionFragment = new HomeFragment(userId);
+                    break;
+                case 3:
+                    selectionFragment = new NotificationFragment(userId);
+                    break;
             }
-        });
-        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch (model.getId())
-                {
-                    case 2:
-                        Fragment fragment;
-                        fragment=new HomeFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
-                        break;
-                }
-                return null;
-            }
-        });
-        binding.bottomNavigation.setOnShowListener(new Function1<MeowBottomNavigation.Model, Unit>() {
-            @Override
-            public Unit invoke(MeowBottomNavigation.Model model) {
-                switch (model.getId())
-                {
-                    case 3:
-                        Fragment fragment;
-                        fragment = new NotificationFragment(userId);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(layoutMain.getId(),fragment)
-                                .commit();
-                        break;
-                }
-                return null;
-            }
-        });
 
+            if (selectionFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(layoutMain.getId(), selectionFragment).commit();
+            }
+
+            return null;
+        });
     }
-
 
     private void createActionBar() {
         setSupportActionBar(binding.toolbar);
@@ -264,31 +213,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId()==android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             binding.drawLayoutHome.openDrawer(GravityCompat.START);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding=null;
-    }
-
     // Function to check and request permission.
-    public void checkPermission(String permission, int requestCode)
-    {
+    public void checkPermission(String permission, int requestCode) {
         if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
-
             // Requesting the permission
-            ActivityCompat.requestPermissions(this, new String[] { permission }, requestCode);
-        }
-        else {
-
+            ActivityCompat.requestPermissions(this, new String[]{permission}, requestCode);
+        } else {
+            // Permission already granted
         }
     }
+
 
     // This function is called when the user accepts or decline the permission.
     // Request Code is used to check which permission called this function.
@@ -341,22 +282,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent2);
                 break;
             case R.id.logoutMenu:
-                AlertDialog.Builder builder=new AlertDialog.Builder(this);
-                builder.setTitle("Notice");
-                builder.setMessage("Thoát ứng dụng?");
-                builder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                new CustomAlertDialog(HomeActivity.this,"Do you want to logout?");
+                CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onClick(View view) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(HomeActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                        new SuccessfulToast().showToast(HomeActivity.this, "Logout successfully!");
+                        finish();
                     }
                 });
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        System.exit(0);
+                    public void onClick(View view) {
+                        CustomAlertDialog.alertDialog.dismiss();
                     }
                 });
-                builder.create().show();
+                CustomAlertDialog.showAlertDialog();
                 break;
         }
         binding.drawLayoutHome.close();
@@ -368,11 +310,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // load number of notification not read in bottom navigation bar
         new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
+            public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
                 int count = 0;
                 for (int i = 0;i<notificationList.size();i++)
                 {
-                    if (notificationList.get(i).isRead() == false)
+                    if (!notificationList.get(i).isRead())
                     {
                         count++;
                     }
@@ -435,8 +377,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
-
-
     }
 }

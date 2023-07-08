@@ -13,10 +13,9 @@ import com.example.fooddeliveryapplication.Model.Bill;
 import java.util.ArrayList;
 
 public class OrderViewPaperAdapter extends FragmentStateAdapter {
-
-    ArrayList<Bill> dsCurrentOrder=new ArrayList<>();
-    ArrayList <Bill> dsHistoryOrder=new ArrayList<>();
-    String userId;
+    private ArrayList<Bill> dsCurrentOrder;
+    private ArrayList <Bill> dsHistoryOrder;
+    private String userId;
 
     public OrderViewPaperAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<Bill> dsCurrentOrder, ArrayList <Bill> dsHistoryOrder,String id) {
         super(fragmentActivity);
@@ -28,12 +27,10 @@ public class OrderViewPaperAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 1:
-                return new HistoryOrderFragment(dsHistoryOrder,userId);
-            default:
-                return new CurrentOrderFragment(dsCurrentOrder,userId);
+        if (position == 1) {
+            return new HistoryOrderFragment(dsHistoryOrder, userId);
         }
+        return new CurrentOrderFragment(dsCurrentOrder, userId);
     }
 
     @Override

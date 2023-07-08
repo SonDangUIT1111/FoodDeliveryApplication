@@ -3,25 +3,25 @@ package com.example.fooddeliveryapplication.Model;
 import java.io.Serializable;
 
 public class Product implements Serializable {
-    String productId;
-    String productName;
-    String productImage1;
-    String productImage2;
-    String productImage3;
-    String productImage4;
-    int productPrice;
-    String productType;
-    int remainAmount;
-    int sold;
-    String description;
-    Double ratingStar;
-
-    String publisherId;
+    private String productId;
+    private String productName;
+    private String productImage1;
+    private String productImage2;
+    private String productImage3;
+    private String productImage4;
+    private int productPrice;
+    private String productType;
+    private int remainAmount;
+    private int sold;
+    private String description;
+    private Double ratingStar;
+    private int ratingAmount;
+    private String publisherId;
 
     public Product() {
     }
 
-    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, String publisherId) {
+    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, int ratingAmount, String publisherId) {
         this.productId = productId;
         this.productName = productName;
         this.productImage1 = productImage1;
@@ -34,6 +34,7 @@ public class Product implements Serializable {
         this.sold = sold;
         this.description = description;
         this.ratingStar = ratingStar;
+        this.ratingAmount = ratingAmount;
         this.publisherId = publisherId;
     }
 
@@ -131,6 +132,14 @@ public class Product implements Serializable {
 
     public void setRatingStar(Double ratingStar) {
         this.ratingStar = ratingStar;
+    }
+
+    public int getRatingAmount() {
+        return ratingAmount;
+    }
+
+    public void setRatingAmount(int ratingAmount) {
+        this.ratingAmount = ratingAmount;
     }
 
     public String getPublisherId() {

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.example.fooddeliveryapplication.R;
 
 public class LoadingDialog {
@@ -16,15 +15,13 @@ public class LoadingDialog {
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
-        dialog.setContentView(R.layout.loading_dialog);
+        dialog.setContentView(R.layout.dialog_loading);
         dialog.getWindow().setDimAmount(0f);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
     }
 
     public void show() {
         if (dialog != null && !dialog.isShowing()) {
-            LottieAnimationView animationView = dialog.findViewById(R.id.animationView);
             dialog.show();
         }
     }

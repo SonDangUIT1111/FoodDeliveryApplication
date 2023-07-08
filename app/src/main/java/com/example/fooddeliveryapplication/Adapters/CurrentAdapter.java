@@ -2,26 +2,23 @@ package com.example.fooddeliveryapplication.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fooddeliveryapplication.Model.InfoCurrentProduct;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ItemInfoCurrentProductBinding;
 
 import java.util.List;
 
 public class CurrentAdapter extends RecyclerView.Adapter<CurrentAdapter.CurrentViewHolder> {
-
     private Context mContext;
     private List<InfoCurrentProduct> mListInfoCurrentProducts;
 
-    public CurrentAdapter() {
+    public CurrentAdapter(Context mContext, List<InfoCurrentProduct> mListInfoCurrentProducts) {
         this.mContext = mContext;
+        this.mListInfoCurrentProducts = mListInfoCurrentProducts;
     }
 
     public void setData(List<InfoCurrentProduct> list){
@@ -32,45 +29,33 @@ public class CurrentAdapter extends RecyclerView.Adapter<CurrentAdapter.CurrentV
     @NonNull
     @Override
     public CurrentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_info_current_product, parent,false);
-        return new CurrentViewHolder(view);
+        return new CurrentViewHolder(ItemInfoCurrentProductBinding.inflate(LayoutInflater.from(mContext), parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull CurrentViewHolder holder, int position) {
-
         InfoCurrentProduct infoCurrentProduct = mListInfoCurrentProducts.get(position);
-        if(infoCurrentProduct==null)
+
+        if (infoCurrentProduct == null)
             return;
-        holder.imgCurrentProduct.setImageResource(infoCurrentProduct.getResourceId());
-        holder.txtNameCurrentProduct.setText(infoCurrentProduct.getNameCurrentProduct());
-        holder.txtStateCurrentProduct.setText(infoCurrentProduct.getState());
-        holder.txtPriceCurrentProduct.setText(infoCurrentProduct.getPriceCurrentProduct());
+
+        holder.binding.imgCurrentProduct.setImageResource(infoCurrentProduct.getResourceId());
+        holder.binding.txtNameCurrentProduct.setText(infoCurrentProduct.getNameCurrentProduct());
+        holder.binding.txtState.setText(infoCurrentProduct.getState());
+        holder.binding.txtPriceCurrentProduct.setText(infoCurrentProduct.getPriceCurrentProduct());
     }
 
     @Override
     public int getItemCount() {
-        if(mListInfoCurrentProducts!= null){
-            return mListInfoCurrentProducts.size();
-        }
-        return 0;
+        return mListInfoCurrentProducts == null ? 0 : mListInfoCurrentProducts.size();
     }
 
-    public class CurrentViewHolder extends RecyclerView.ViewHolder{
+    public static class CurrentViewHolder extends RecyclerView.ViewHolder{
+        private final ItemInfoCurrentProductBinding binding;
 
-        private ImageView imgCurrentProduct;
-        private TextView txtNameCurrentProduct;
-        private TextView txtStateCurrentProduct;
-        private TextView txtPriceCurrentProduct;
-
-        public CurrentViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            imgCurrentProduct = itemView.findViewById(R.id.img_Current_product);
-            txtNameCurrentProduct = itemView.findViewById(R.id.txtNameCurrentProduct);
-            txtStateCurrentProduct = itemView.findViewById(R.id.txtState);
-            txtPriceCurrentProduct = itemView.findViewById(R.id.txtPriceCurrentProduct);
-
+        public CurrentViewHolder(@NonNull ItemInfoCurrentProductBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

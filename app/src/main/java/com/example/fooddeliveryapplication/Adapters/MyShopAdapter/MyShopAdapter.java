@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Adapters.MyShopAdapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Activities.MyShop.AddFoodActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.LayoutFoodItemBinding;
@@ -25,11 +28,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class MyShopAdapter extends RecyclerView.Adapter {
-
     private ArrayList<Product> ds;
     private ViewBinderHelper viewBinderHelper=new ViewBinderHelper();
     private Context context;
-    String userId;
+    private String userId;
 
     public MyShopAdapter(ArrayList<Product> ds, Context context,String id) {
         viewBinderHelper.setOpenOnlyOne(true);
@@ -44,14 +46,15 @@ public class MyShopAdapter extends RecyclerView.Adapter {
         return new ViewHolder(LayoutFoodItemBinding.inflate(LayoutInflater.from(context),parent,false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Product product =ds.get(position);
-       ViewHolder viewHolder=(ViewHolder) holder;
+        ViewHolder viewHolder=(ViewHolder) holder;
         viewBinderHelper.bind(viewHolder.binding.SwipeRevealLayout, product.getProductId());
 
-       viewHolder.binding.txtNameProdiuct.setText(product.getProductName());
-       viewHolder.binding.txtPrice.setText(product.getProductPrice()+"đ");
+        viewHolder.binding.txtNameProdiuct.setText(product.getProductName());
+        viewHolder.binding.txtPrice.setText(convertToMoney(product.getProductPrice()) + "đ");
         Glide.with(context)
                 .load(product.getProductImage1())
                 .placeholder(R.drawable.baseline_image_search_24)
@@ -66,9 +69,9 @@ public class MyShopAdapter extends RecyclerView.Adapter {
 
                             ds.remove(product);
                             notifyItemRemoved(position);
-                            Toast.makeText(context, "Đã xóa thành công", Toast.LENGTH_SHORT).show();
+                            new SuccessfulToast().showToast(context, "Delete successfully!");
                         } else {
-                            Toast.makeText(context, "Xóa không thành công", Toast.LENGTH_SHORT).show();
+                            new FailToast().showToast(context, "Delete failed!");
                             Log.e("My Shop","Error remove");
                         }
                     }
@@ -90,15 +93,36 @@ public class MyShopAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return ds.size();
+        return ds == null ? 0 : ds.size();
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder {
-        LayoutFoodItemBinding binding;
-        public ViewHolder(@NonNull LayoutFoodItemBinding tmp) {
-            super(tmp.getRoot());
-            binding=tmp;
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        private final LayoutFoodItemBinding binding;
+
+        public ViewHolder(@NonNull LayoutFoodItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 
+    private String convertToMoney(long price) {
+        String temp = String.valueOf(price);
+        String output = "";
+        int count = 3;
+        for (int i = temp.length() - 1; i >= 0; i--) {
+            count--;
+            if (count == 0) {
+                count = 3;
+                output = "," + temp.charAt(i) + output;
+            }
+            else {
+                output = temp.charAt(i) + output;
+            }
+        }
+
+        if (output.charAt(0) == ',')
+            return output.substring(1);
+
+        return output;
+    }
 }

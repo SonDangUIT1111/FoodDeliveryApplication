@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.fooddeliveryapplication.Adapters.Home.FoodDrinkFrgAdapter;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.FragmentDrinkHomeFrgBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -24,9 +24,8 @@ import java.util.ArrayList;
 
 
 public class FoodHomeFrg extends Fragment {
-    FragmentDrinkHomeFrgBinding binding;
-    private ArrayList<Product>dsFood;
-    private final DatabaseReference productsReference= FirebaseDatabase.getInstance().getReference("Products");
+    private FragmentDrinkHomeFrgBinding binding;
+    private ArrayList<Product> dsFood;
     private FoodDrinkFrgAdapter adapter;
     private String userId;
 
@@ -37,8 +36,8 @@ public class FoodHomeFrg extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding=FragmentDrinkHomeFrgBinding.inflate(inflater,container,false);
-        View view=binding.getRoot();
+        binding = FragmentDrinkHomeFrgBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         initData();
         initUI();
         return view;
@@ -54,15 +53,14 @@ public class FoodHomeFrg extends Fragment {
 
 
     private void initData() {
-        dsFood=new ArrayList<>();
-
-        productsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        dsFood = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference("Products").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot item:snapshot.getChildren()) {
-                    Product tmp=item.getValue(Product.class);
-                    if (tmp.getProductType().equals("food")) {
-                        dsFood.add(tmp);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Product product = ds.getValue(Product.class);
+                    if (product.getProductType().equalsIgnoreCase("Food") && !product.getPublisherId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        dsFood.add(product);
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -74,10 +72,5 @@ public class FoodHomeFrg extends Fragment {
 
             }
         });
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding=null;
     }
 }

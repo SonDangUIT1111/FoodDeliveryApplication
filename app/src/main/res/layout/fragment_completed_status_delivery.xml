@@ -23,9 +23,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/app_color2"
         android:textStyle="bold"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
-        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
         android:text="Hiện không có sản phẩm nào trong danh sách này." />
 
 </FrameLayout>

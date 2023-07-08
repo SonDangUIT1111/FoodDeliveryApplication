@@ -57,12 +57,14 @@ public class FirebaseFavouriteUserHelper {
         mReferenceFavourite.child("Products").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (int i = 0; i < keys.size(); i++)
-                {
+                for (int i = 0; i < keys.size(); i++) {
                     Product product = snapshot.child(keys.get(i)).getValue(Product.class);
                     favouriteList.add(product);
                 }
-                returnDataStatus(dataStatus);
+
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(favouriteList,keyProducts);
+                }
             }
 
             @Override
@@ -71,9 +73,4 @@ public class FirebaseFavouriteUserHelper {
             }
         });
     }
-    public void returnDataStatus(FirebaseFavouriteUserHelper.DataStatus dataStatus)
-    {
-        dataStatus.DataIsLoaded(favouriteList,keyProducts);
-    }
-
 }

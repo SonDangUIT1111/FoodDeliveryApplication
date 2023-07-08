@@ -2,9 +2,7 @@ package com.example.fooddeliveryapplication.Helpers;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,12 +11,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
-import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DeliveryManagementActivity;
-import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
-import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Notification;
-import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -93,7 +86,10 @@ public class FirebaseNotificationHelper {
                                 });
                     }
                 }
-                dataStatus.DataIsLoaded(notificationList,notificationListToNotify);
+
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(notificationList, notificationListToNotify);
+                }
             }
 
             @Override
@@ -102,25 +98,27 @@ public class FirebaseNotificationHelper {
             }
         });
     }
-    public void addNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus)
-    {
+    public void addNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus) {
         String key = mReference.child("Notification").child(userId).push().getKey();
         notification.setNotificationId(key);
         mReference.child("Notification").child(userId).child(key).setValue(notification)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsInserted();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsInserted();
+                        }
                     }
                 });
     }
-    public void updateNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus)
-    {
+    public void updateNotification(String userId,Notification notification, final FirebaseNotificationHelper.DataStatus dataStatus) {
         mReference.child("Notification").child(userId).child(notification.getNotificationId()).setValue(notification)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsUpdated();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsUpdated();
+                        }
                     }
                 });
     }

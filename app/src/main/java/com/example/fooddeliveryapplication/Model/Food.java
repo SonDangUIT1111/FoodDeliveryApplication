@@ -1,10 +1,9 @@
 package com.example.fooddeliveryapplication.Model;
 
 public class Food {
-
-    int imgSrc;
-    String name;
-    Double Price;
+    private int imgSrc;
+    private String name;
+    private Double price;
 
     public Food() {
     }
@@ -12,7 +11,7 @@ public class Food {
     public Food(int imgSrc, String name, Double price) {
         this.imgSrc = imgSrc;
         this.name = name;
-        Price = price;
+        price = price;
     }
 
     public int getImgSrc() {
@@ -32,10 +31,10 @@ public class Food {
     }
 
     public Double getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(Double price) {
-        Price = price;
+        this.price = price;
     }
 }

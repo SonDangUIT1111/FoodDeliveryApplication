@@ -4,29 +4,23 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller.StatusOrderRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.FragmentConfirmStatusDeliveryBinding;
 
 import java.util.List;
 
 
 public class ConfirmStatusDeliveryFragment extends Fragment {
-    TextView txtNoneItem;
+    private FragmentConfirmStatusDeliveryBinding binding;
+    private String userId;
 
-    RecyclerView recConfirmDelivery;
-    View view;
-    String userId;
-    ProgressBar progressBarConfirmDelivery;
     public ConfirmStatusDeliveryFragment(String Id) {
         userId = Id;
     }
@@ -35,24 +29,23 @@ public class ConfirmStatusDeliveryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_confirm_status_delivery,container,false);
+        binding = FragmentConfirmStatusDeliveryBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        // find view by id
-        txtNoneItem = (TextView) view.findViewById(R.id.txtNoneItem);
-        recConfirmDelivery = (RecyclerView) view.findViewById(R.id.recConfirmDelivery);
-        progressBarConfirmDelivery = (ProgressBar) view.findViewById(R.id.progressBarConfirmDelivery);
         //set data and adapter for list
         new FirebaseStatusOrderHelper(userId).readConfirmBills(userId, new FirebaseStatusOrderHelper.DataStatus() {
             @Override
-            public void DataIsLoaded(List<Bill> bills,List<String> imgUrl) {
-                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(),bills,imgUrl);
-                recConfirmDelivery.setHasFixedSize(true);
-                recConfirmDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
-                recConfirmDelivery.setAdapter(adapter);
-                progressBarConfirmDelivery.setVisibility(View.GONE);
-                if (bills.size() == 0)
-                {
-                    txtNoneItem.setVisibility(View.VISIBLE);
+            public void DataIsLoaded(List<Bill> bills, boolean isExistingBill) {
+                StatusOrderRecyclerViewAdapter adapter = new StatusOrderRecyclerViewAdapter(getContext(), bills);
+                binding.recConfirmDelivery.setHasFixedSize(true);
+                binding.recConfirmDelivery.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.recConfirmDelivery.setAdapter(adapter);
+                binding.progressBarConfirmDelivery.setVisibility(View.GONE);
+                if (isExistingBill) {
+                    binding.txtNoneItem.setVisibility(View.GONE);
+                }
+                else {
+                    binding.txtNoneItem.setVisibility(View.VISIBLE);
                 }
             }
 

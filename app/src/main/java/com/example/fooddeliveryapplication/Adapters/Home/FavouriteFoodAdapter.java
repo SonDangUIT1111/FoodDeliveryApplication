@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
-import com.google.android.material.imageview.ShapeableImageView;
+import com.example.fooddeliveryapplication.databinding.ItemFavouriteProductBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,16 +24,18 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdapter.ViewHolder>{
+public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Product> favouriteLists;
     private String userId;
     private String userName;
-    NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
     public FavouriteFoodAdapter(Context mContext, ArrayList<Product> lists,String id) {
         this.mContext = mContext;
         this.favouriteLists = lists;
         this.userId = id;
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -53,16 +52,13 @@ public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.favourite_product_item,parent,false);
-        return new FavouriteFoodAdapter.ViewHolder(view);
+        return new FavouriteFoodAdapter.ViewHolder(ItemFavouriteProductBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull FavouriteFoodAdapter.ViewHolder holder, int position) {
         Product product = favouriteLists.get(position);
-        if (product == null) {
-            return;
-        } else {
+        if (product != null) {
             if (position==1) {
                 RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
                 int margin = 120;
@@ -79,19 +75,20 @@ public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdap
             Glide.with(mContext)
                     .load(product.getProductImage1())
                     .placeholder(R.drawable.image_default)
-                    .into(holder.imgFavouriteFood);
+                    .into(holder.binding.imgFavouriteFood);
 
-            holder.txtFavouriteFoodName.setText(product.getProductName());
-            holder.txtFavouriteRating.setText(product.getRatingStar()+"/5.0");
+            holder.binding.txtFavouriteFoodName.setText(product.getProductName());
+            double ratingStar = (double) Math.round(product.getRatingStar() * 10) / 10;
+            holder.binding.txtFavouriteRating.setText(ratingStar + "/5.0");
             if (product.getRatingStar()>=5) {
-                holder.imgFavouriteRate.setImageResource(R.drawable.rating_star_filled);
+                holder.binding.imgFavouriteRate.setImageResource(R.drawable.rating_star_filled);
             } else if (product.getRatingStar()>=3 && product.getRatingStar()<5) {
-                holder.imgFavouriteRate.setImageResource(R.drawable.rating_star_half);
+                holder.binding.imgFavouriteRate.setImageResource(R.drawable.rating_star_half);
             } else {
-                holder.imgFavouriteRate.setImageResource(R.drawable.rating_star_empty);
+                holder.binding.imgFavouriteRate.setImageResource(R.drawable.rating_star_empty);
             }
-            holder.txtFavouriteFoodPrice.setText(nf.format(product.getProductPrice()));
-            holder.parentOfItemInFavourite.setOnClickListener(new View.OnClickListener() {
+            holder.binding.txtFavouriteFoodPrice.setText(nf.format(product.getProductPrice()));
+            holder.binding.parentOfItemInFavourite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ProductInfoActivity.class);
@@ -116,24 +113,15 @@ public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdap
 
     @Override
     public int getItemCount() {
-        return favouriteLists.size();
+        return favouriteLists == null ? 0 : favouriteLists.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ShapeableImageView imgFavouriteFood;
-        TextView txtFavouriteFoodName;
-        TextView txtFavouriteRating;
-        ImageView imgFavouriteRate;
-        TextView txtFavouriteFoodPrice;
-        LinearLayout parentOfItemInFavourite;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgFavouriteFood = itemView.findViewById(R.id.imgFavouriteFood);
-            txtFavouriteFoodName = itemView.findViewById(R.id.txtFavouriteFoodName);
-            txtFavouriteRating = itemView.findViewById(R.id.txtFavouriteRating);
-            imgFavouriteRate = itemView.findViewById(R.id.imgFavouriteRate);
-            txtFavouriteFoodPrice = itemView.findViewById(R.id.txtFavouriteFoodPrice);
-            parentOfItemInFavourite = itemView.findViewById(R.id.parent_of_item_in_favourite);
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ItemFavouriteProductBinding binding;
+
+        public ViewHolder(ItemFavouriteProductBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

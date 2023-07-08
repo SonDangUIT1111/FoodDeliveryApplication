@@ -1,19 +1,21 @@
 package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityEmptyCartBinding;
 
 public class EmptyCartActivity extends AppCompatActivity {
+    private ActivityEmptyCartBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_empty_cart);
+        binding = ActivityEmptyCartBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         initToolbar();
     }
@@ -21,11 +23,10 @@ public class EmptyCartActivity extends AppCompatActivity {
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Cart");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

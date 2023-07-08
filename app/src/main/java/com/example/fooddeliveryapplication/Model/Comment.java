@@ -1,12 +1,10 @@
 package com.example.fooddeliveryapplication.Model;
 
-import java.util.List;
-
 public class Comment {
-   String commentDetail;
-   String commentId;
-   String publisherId;
-   float rating;
+   private String commentDetail;
+   private String commentId;
+   private String publisherId;
+   private float rating;
 
     public Comment(String commentDetail, String commentId, String publisherId, float rating) {
         this.commentDetail = commentDetail;

@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapplication.Model;
 
 public class InfoCurrentProduct {
-
     private int resourceId;
     private String NameCurrentProduct;
     private String State;

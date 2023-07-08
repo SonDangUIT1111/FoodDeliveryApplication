@@ -64,7 +64,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Do Minh Nhat"
+                android:text="Your full name"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="10dp"
@@ -74,7 +74,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hoang Nhu Street, Hop Giang Ward, Cao Bang"
+                android:text="Your detail address"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textSize="16sp"
@@ -83,11 +83,10 @@
                 android:layout_marginEnd="20dp"
                 android:id="@+id/detail_address" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0824670790"
+                android:text="0xxxxxxxxx"
                 android:textSize="18sp"
                 android:textColor="#717171"
                 android:textStyle="bold"

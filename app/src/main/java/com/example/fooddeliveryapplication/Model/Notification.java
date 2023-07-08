@@ -1,16 +1,16 @@
 package com.example.fooddeliveryapplication.Model;
 
 public class Notification {
-    String notificationId;
-    String title;
-    String content;
-    String imageURL;
-    String time;
-    boolean read;
-    boolean notified;
-    String productId;
-    String billId;
-    String confirmId;
+    private String notificationId;
+    private String title;
+    private String content;
+    private String imageURL;
+    private String time;
+    private boolean read;
+    private boolean notified;
+    private String productId;
+    private String billId;
+    private String confirmId;
 
     public Notification(String notificationId, String title, String content, String imageURL, String time, boolean read, boolean notified, String productId, String billId, String confirmId) {
         this.notificationId = notificationId;

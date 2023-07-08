@@ -1,7 +1,6 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
@@ -9,14 +8,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.databinding.ActivityForgotBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotActivity extends AppCompatActivity {
-    ActivityForgotBinding binding;
-    FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
+    private ActivityForgotBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,26 +25,28 @@ public class ForgotActivity extends AppCompatActivity {
 
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
+
         binding.btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (binding.edtEmail.getText().toString().isEmpty()) {
-                    Toast.makeText(ForgotActivity.this, "Hãy nhập email mà bạn muốn reset mật khẩu", Toast.LENGTH_SHORT).show();
+                    new FailToast().showToast(ForgotActivity.this, "Please enter the email you want to reset password");
                 } else {
-                    mFirebaseAuth.sendPasswordResetEmail(binding.edtEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(binding.edtEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(ForgotActivity.this,"Reset thành công, hãy kiểm tra email",Toast.LENGTH_SHORT).show();
+                                new SuccessfulToast().showToast(ForgotActivity.this, "Reset password successfully! Please check your email");
                                 finish();
                             } else {
-                                Toast.makeText(ForgotActivity.this,"Kiếm tra lại email",Toast.LENGTH_SHORT).show();
+                                new FailToast().showToast(ForgotActivity.this, "Make sure your enter email is correct!");
                             }
                         }
                     });
                 }
             }
         });
+
         binding.signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

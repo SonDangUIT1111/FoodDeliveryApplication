@@ -14,11 +14,12 @@ import com.example.fooddeliveryapplication.databinding.FragmentHistoryBinding;
 
 
 public class HistoryFragment extends Fragment {
-    FragmentHistoryBinding binding;
+    private FragmentHistoryBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding=FragmentHistoryBinding.inflate(inflater,container,false);
+        binding = FragmentHistoryBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 }

@@ -3,10 +3,10 @@ package com.example.fooddeliveryapplication.Model;
 import java.io.Serializable;
 
 public class BillInfo implements Serializable {
-    int amount;
-    String billInfoId;
-    String productId;
-    boolean check;
+    private int amount;
+    private String billInfoId;
+    private String productId;
+    private boolean check;
 
     public BillInfo() {
     }

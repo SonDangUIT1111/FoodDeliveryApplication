@@ -109,7 +109,6 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:lines="1"
-                        android:inputType="number"
                         android:ems="10"
                         android:id="@+id/edtPass"/>
                 </com.google.android.material.textfield.TextInputLayout>

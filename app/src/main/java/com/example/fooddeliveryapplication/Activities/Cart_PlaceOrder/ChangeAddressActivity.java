@@ -3,23 +3,20 @@ package com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.fooddeliveryapplication.Adapters.AddressAdapter;
 import com.example.fooddeliveryapplication.GlobalConfig;
 import com.example.fooddeliveryapplication.Interfaces.IAddressAdapterListener;
 import com.example.fooddeliveryapplication.Model.Address;
-import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ActivityChangeAddressBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,27 +26,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChangeAddressActivity extends AppCompatActivity {
-    String userId;
-    private ImageView add1;
-    private RecyclerView recyclerViewAddresses;
+    private String userId;
+    private ActivityChangeAddressBinding binding;
     private AddressAdapter addressAdapter;
     private List<Address> addressList;
     private ActivityResultLauncher<Intent> updateAddAddressLauncher;
+    static private final int UPDATE_ADDRESS_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_address);
+        binding = ActivityChangeAddressBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         userId = getIntent().getStringExtra("userId");
 
         initToolbar();
         initUpdateAddAddressActivity();
 
-        add1 = findViewById(R.id.add1);
-        recyclerViewAddresses = findViewById(R.id.recycler_view_address);
-        recyclerViewAddresses.setHasFixedSize(true);
-        recyclerViewAddresses.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewAddress.setHasFixedSize(true);
+        binding.recyclerViewAddress.setLayoutManager(new LinearLayoutManager(this));
         addressList = new ArrayList<>();
         addressAdapter = new AddressAdapter(this, addressList, userId);
         addressAdapter.setAddressAdapterListener(new IAddressAdapterListener() {
@@ -60,27 +56,58 @@ public class ChangeAddressActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
                 finish();
             }
+
+            @Override
+            public void onDeleteAddress() {
+                loadInfo();
+            }
         });
-        recyclerViewAddresses.setAdapter(addressAdapter);
+        binding.recyclerViewAddress.setAdapter(addressAdapter);
 
         loadInfo();
 
-        add1.setOnClickListener(new View.OnClickListener() {
+        binding.add1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
-                intent.putExtra("userId",userId);
-                intent.putExtra("mode", "add");
-                updateAddAddressLauncher.launch(intent);
+                FirebaseDatabase.getInstance().getReference().child("Address").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.getChildrenCount() == 0) {
+                            Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("mode", "add - default");
+                            updateAddAddressLauncher.launch(intent);
+                        }
+                        else {
+                            Intent intent = new Intent(ChangeAddressActivity.this, UpdateAddAddressActivity.class);
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("mode", "add - non-default");
+                            updateAddAddressLauncher.launch(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == UPDATE_ADDRESS_REQUEST_CODE) {
+            loadInfo();
+        }
     }
 
     private void initUpdateAddAddressActivity() {
         // Init launcher
         updateAddAddressLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK) {
-                addressAdapter.notifyDataSetChanged();
+                loadInfo();
             }
         });
     }
@@ -115,11 +142,10 @@ public class ChangeAddressActivity extends AppCompatActivity {
     private void initToolbar() {
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Change address");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();

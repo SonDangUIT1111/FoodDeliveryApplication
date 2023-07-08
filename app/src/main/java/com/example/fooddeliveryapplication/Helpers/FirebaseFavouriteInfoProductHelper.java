@@ -9,9 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FirebaseFavouriteInfoProductHelper {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReferenceFavourite;
@@ -42,7 +39,9 @@ public class FirebaseFavouriteInfoProductHelper {
                         isFavouriteDetailExists = true;
                 }
 
-                dataStatus.DataIsLoaded(isFavouriteExists,isFavouriteDetailExists);
+                if (dataStatus != null) {
+                    dataStatus.DataIsLoaded(isFavouriteExists,isFavouriteDetailExists);
+                }
             }
 
             @Override
@@ -58,7 +57,9 @@ public class FirebaseFavouriteInfoProductHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        dataStatus.DataIsInserted();
+                        if (dataStatus != null) {
+                            dataStatus.DataIsInserted();
+                        }
                     }
                 });
     }
@@ -68,8 +69,9 @@ public class FirebaseFavouriteInfoProductHelper {
         mReferenceFavourite.child(userId).child(productId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                dataStatus.DataIsDeleted();
-            }
-        });
+                if (dataStatus != null)
+                    dataStatus.DataIsDeleted();
+                }
+            });
     }
 }

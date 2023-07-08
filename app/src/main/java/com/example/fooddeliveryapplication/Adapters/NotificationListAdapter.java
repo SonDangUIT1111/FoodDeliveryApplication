@@ -7,17 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
-import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
 import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DeliveryManagementActivity;
 import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
@@ -27,6 +22,7 @@ import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
+import com.example.fooddeliveryapplication.databinding.ItemNotificationBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,8 +33,7 @@ import java.util.List;
 public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ViewHolder> {
     private Context mContext;
     private List<Notification> notificationList;
-    private List<String> mKeys;
-    String userId;
+    private String userId;
 
     public NotificationListAdapter(Context mContext, List<Notification> notificationList,String id) {
         this.mContext = mContext;
@@ -49,38 +44,37 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @NonNull
     @Override
     public NotificationListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.notification_item,parent,false);
-        return new NotificationListAdapter.ViewHolder(view);
+        return new NotificationListAdapter.ViewHolder(ItemNotificationBinding.inflate(LayoutInflater.from(mContext), parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull NotificationListAdapter.ViewHolder holder, int position) {
         Notification notification = notificationList.get(position);
-        holder.txtTitleNotification.setText(notification.getTitle());
-        holder.txtContentNotification.setText(notification.getContent());
-        holder.txtTimeNotification.setText(notification.getTime());
+        holder.binding.txtTitleNotification.setText(notification.getTitle());
+        holder.binding.txtContentNotification.setText(notification.getContent());
+        holder.binding.txtTimeNotification.setText(notification.getTime());
         if (notification.getImageURL().isEmpty())
         {
-            holder.imgNotification.setImageResource(R.drawable.ic_launcher_background);
+            holder.binding.imgNotification.setImageResource(R.drawable.ic_launcher_background);
         }
         else {
-            holder.imgNotification.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            holder.binding.imgNotification.setScaleType(ImageView.ScaleType.CENTER_CROP);
             Glide.with(mContext)
                     .asBitmap()
                     .load(notificationList.get(position).getImageURL())
-                    .into(holder.imgNotification);
+                    .into(holder.binding.imgNotification);
         }
-        if (notification.isRead()==false)
+        if (!notification.isRead())
         {
-            holder.dotStatusRead.setVisibility(View.VISIBLE);
-            holder.background_notification_item.setBackgroundColor(Color.parseColor("#e3e3e3"));
+            holder.binding.dotStatusRead.setVisibility(View.VISIBLE);
+            holder.binding.backgroundNotificationItem.setBackgroundColor(Color.parseColor("#e3e3e3"));
         }
         else {
-            holder.dotStatusRead.setVisibility(View.GONE);
-            holder.background_notification_item.setBackgroundColor(Color.TRANSPARENT);
+            holder.binding.dotStatusRead.setVisibility(View.GONE);
+            holder.binding.backgroundNotificationItem.setBackgroundColor(Color.TRANSPARENT);
         }
         // trigger for navigate to another activity
-        holder.background_notification_item.setOnClickListener(new View.OnClickListener() {
+        holder.binding.backgroundNotificationItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //todo write code to navigate to the activity refer to notification
@@ -180,24 +174,15 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
 
     @Override
     public int getItemCount() {
-        return notificationList.size();
+        return notificationList == null ? 0 : notificationList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView txtTitleNotification;
-        TextView txtContentNotification;
-        TextView txtTimeNotification;
-        ImageView imgNotification;
-        CardView dotStatusRead;
-        ConstraintLayout background_notification_item;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtTitleNotification = itemView.findViewById(R.id.txtTitleNotification);
-            txtContentNotification = itemView.findViewById(R.id.txtContentNotification);
-            txtTimeNotification = itemView.findViewById(R.id.txtTimeNotification);
-            imgNotification = itemView.findViewById(R.id.imgNotification);
-            dotStatusRead = itemView.findViewById(R.id.dotStatusRead);
-            background_notification_item = itemView.findViewById(R.id.background_notification_item);
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        private final ItemNotificationBinding binding;
+
+        public ViewHolder(@NonNull ItemNotificationBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

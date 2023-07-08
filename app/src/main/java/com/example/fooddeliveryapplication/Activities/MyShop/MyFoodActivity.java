@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,16 +22,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class MyFoodActivity extends AppCompatActivity {
-    ActivityMyFoodBinding binding;
-    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+    private ActivityMyFoodBinding binding;
     private ArrayList<Product> ds=new ArrayList<>();
     private MyShopAdapter adapter;
-    String userId;
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityMyFoodBinding.inflate(getLayoutInflater());
+        binding = ActivityMyFoodBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
 
@@ -55,7 +54,6 @@ public class MyFoodActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -63,14 +61,16 @@ public class MyFoodActivity extends AppCompatActivity {
         super.onStart();
         LoadingDialog dialog=new LoadingDialog(this);
         dialog.show();
-        firebaseDatabase.getReference("Products").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Products").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ds.clear();
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Product tmp=item.getValue(Product.class);
-                    if (tmp.getPublisherId().equals(userId)) {
-                        ds.add(tmp);
+                    if (tmp.getPublisherId()!=null) {
+                        if (tmp.getPublisherId().equals(userId)) {
+                            ds.add(tmp);
+                        }
                     }
                 }
                 dialog.dismiss();
@@ -82,11 +82,5 @@ public class MyFoodActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding=null;
     }
 }

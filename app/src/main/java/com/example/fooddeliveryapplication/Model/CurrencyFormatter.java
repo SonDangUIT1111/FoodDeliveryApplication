@@ -11,9 +11,10 @@ public class CurrencyFormatter {
             VNFormatCurrency=NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     }
     public static CurrencyFormatter getFormatter() {
-        if (formatter==null)
-            formatter=new CurrencyFormatter();
-            return formatter;
+        if (formatter == null) {
+            formatter = new CurrencyFormatter();
+        }
+        return formatter;
     }
 
     public String format(Double plainText) {

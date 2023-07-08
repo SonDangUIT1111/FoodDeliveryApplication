@@ -11,8 +11,8 @@ import com.example.fooddeliveryapplication.Fragments.DeliveryManagement_Seller.C
 import com.example.fooddeliveryapplication.Fragments.DeliveryManagement_Seller.ShippingStatusDeliveryFragment;
 
 public class StatusManagementPagerAdapter extends FragmentStateAdapter {
+    private String userId;
 
-    String userId;
     public StatusManagementPagerAdapter(@NonNull FragmentActivity fragmentActivity,String Id) {
         super(fragmentActivity);
         userId = Id;
