@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
@@ -182,6 +185,15 @@ public class ProductInfoActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(ProductInfoActivity.this, ChatDetailActivity.class);
+                intent.setAction("productInfoActivity");
+                intent.putExtra("publisherId", publisherId);
+                startActivity(intent);
+            }
+        });
     }
 
     // DEFINE FUNCTION

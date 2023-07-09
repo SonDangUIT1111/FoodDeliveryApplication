@@ -47,6 +47,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_pink_favourite" />
 
+        <ImageButton
+            android:id="@+id/btnChat"
+            android:layout_width="30dp"
+            android:layout_height="26dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/baseline_mark_unread_chat_alt_24" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView

@@ -108,6 +108,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId())
                 {
+                    case R.id.message_menu:
+                        Intent intent=new Intent(HomeActivity.this,ChatActivity.class);
+                        intent.putExtra("userId",userId);
+                        startActivity(intent);
+                        break;
                     case R.id.cart_menu:
                         FirebaseDatabase.getInstance().getReference().child("Carts").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
