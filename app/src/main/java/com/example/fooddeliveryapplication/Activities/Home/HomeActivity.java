@@ -288,16 +288,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.logoutMenu:
                 new CustomAlertDialog(HomeActivity.this,"Do you want to logout?");
-                CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+                CustomAlertDialog.binding.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        new SuccessfulToast(HomeActivity.this, "Logout successfully!").showToast();
+                        CustomAlertDialog.alertDialog.dismiss();
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(HomeActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                        new SuccessfulToast().showToast(HomeActivity.this, "Logout successfully!");
                         finish();
                     }
                 });
-                CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                CustomAlertDialog.binding.btnNo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         CustomAlertDialog.alertDialog.dismiss();
@@ -362,9 +363,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 ShapeableImageView imgAvatarInNavigationBar = (ShapeableImageView) headerView.findViewById(R.id.imgAvatarInNavigationBar);
                 TextView txtNameInNavigationBar = (TextView) headerView.findViewById(R.id.txtNameInNavigationBar);
                 txtNameInNavigationBar.setText("Hi, "+ user.getUserName());
-                Glide.with(HomeActivity.this)
-                        .load(user.getAvatarURL())
-                        .into(imgAvatarInNavigationBar);
+                Glide.with(HomeActivity.this).load(user.getAvatarURL()).placeholder(R.drawable.default_avatar).into(imgAvatarInNavigationBar);
             }
 
             @Override

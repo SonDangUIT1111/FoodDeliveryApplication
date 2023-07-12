@@ -14,13 +14,13 @@ import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
 import com.example.fooddeliveryapplication.Model.ItemChatRoom;
-import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ItemChatBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChatAdapter extends RecyclerView.Adapter {
     private ViewBinderHelper viewBinderHelper=new ViewBinderHelper();
@@ -36,8 +36,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         currentBunchOfItemChatRooms=bunchOfItemChatRooms;
         viewBinderHelper.setOpenOnlyOne(true);
     }
-
-
 
     @NonNull
     @Override
@@ -63,10 +61,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 viewHolder.binding.imgNewMessage.setVisibility(View.VISIBLE);
             }
         }
-        Glide.with(context)
-                .load(itemChatRoom.getReceiver().getAvatarURL())
-                .error(R.drawable.image_default)
-                .into(viewHolder.binding.lnItemChat.imgUser);
+        Glide.with(context).load(itemChatRoom.getReceiver().getAvatarURL()).placeholder(R.drawable.default_avatar).error(R.drawable.image_default).into(viewHolder.binding.lnItemChat.imgUser);
         viewHolder.binding.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

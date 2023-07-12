@@ -106,11 +106,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             @Override
             public boolean onLongClick(View view) {
                 new CustomAlertDialog(mContext,"Delete this address?");
-                CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+                CustomAlertDialog.binding.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (address.getState().equals("default")) {
-                            new FailToast().showToast(mContext, "You cannot delete the default address!");
+                            new FailToast(mContext, "You cannot delete the default address!").showToast();
                             CustomAlertDialog.alertDialog.dismiss();
                         }
                         else {
@@ -118,7 +118,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        new SuccessfulToast().showToast(mContext, "Delete address successfully!");
+                                        new SuccessfulToast(mContext, "Delete address successfully!").showToast();
                                         CustomAlertDialog.alertDialog.dismiss();
                                         if (addressAdapterListener != null) {
                                             addressAdapterListener.onDeleteAddress();
@@ -129,7 +129,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                         }
                     }
                 });
-                CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                CustomAlertDialog.binding.btnNo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         CustomAlertDialog.alertDialog.dismiss();

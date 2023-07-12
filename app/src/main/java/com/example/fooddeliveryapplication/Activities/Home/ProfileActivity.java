@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class ProfileActivity extends AppCompatActivity {
     private ActivityProfileBinding binding;
     private String userId;
@@ -90,7 +92,7 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.userName.setText(user.getUserName());
                 binding.userEmail.setText(user.getEmail());
                 binding.userPhoneNumber.setText(user.getPhoneNumber());
-                Glide.with(mContext).load(user.getAvatarURL()).placeholder(R.drawable.profile_image).into(binding.userAvatar);
+                Glide.with(mContext.getApplicationContext()).load(user.getAvatarURL()).placeholder(R.drawable.default_avatar).into(binding.userAvatar);
             }
 
             @Override

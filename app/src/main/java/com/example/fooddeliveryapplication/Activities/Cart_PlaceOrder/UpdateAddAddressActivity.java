@@ -105,7 +105,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Added new address!");
+                                        new SuccessfulToast(UpdateAddAddressActivity.this,"Added new address!").showToast();
 
                                         GlobalConfig.choseAddressId = addressId;
                                         Intent intent = new Intent();
@@ -126,7 +126,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Added new address!");
+                                        new SuccessfulToast(UpdateAddAddressActivity.this, "Added new address!").showToast();
 
                                         GlobalConfig.choseAddressId = addressId;
                                         Intent intent = new Intent();
@@ -163,7 +163,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Updated chose address!");
+                                        new SuccessfulToast(UpdateAddAddressActivity.this, "Updated chose address!").showToast();
 
                                         Intent intent = new Intent();
                                         setResult(RESULT_OK, intent);
@@ -179,7 +179,7 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        new SuccessfulToast().showToast(UpdateAddAddressActivity.this,"Updated chose address!");
+                                        new SuccessfulToast(UpdateAddAddressActivity.this,"Updated chose address!").showToast();
 
                                         Intent intent = new Intent();
                                         setResult(RESULT_OK, intent);
@@ -217,17 +217,17 @@ public class UpdateAddAddressActivity extends AppCompatActivity {
 
     private boolean validateAddressInfo() {
         if (binding.fullName.getText().toString().equals("")) {
-            new FailToast().showToast(this, "Receiver name must not be empty!");
+            new FailToast(this, "Receiver name must not be empty!").showToast();
             return false;
         }
 
         if (binding.phoneNumber.getText().toString().equals("")) {
-            new FailToast().showToast(this, "Receiver phone number must not be empty!");
+            new FailToast(this, "Receiver phone number must not be empty!").showToast();
             return false;
         }
 
         if (binding.detailAddress.getText().toString().equals("")) {
-            new FailToast().showToast(this, "Detail address must not be empty!");
+            new FailToast(this, "Detail address must not be empty!").showToast();
             return false;
         }
 

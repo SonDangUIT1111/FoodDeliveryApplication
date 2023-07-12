@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChatDetailActivity extends AppCompatActivity {
     ActivityChatDetailBinding binding;
@@ -115,10 +116,7 @@ public class ChatDetailActivity extends AppCompatActivity {
     }
 
     private void loadDataIntoUI() {
-        Glide.with(ChatDetailActivity.this)
-                .load(publisher.getValue().getAvatarURL())
-                .error(R.drawable.image_default)
-                .into(binding.imgPublisher);
+        Glide.with(ChatDetailActivity.this).load(publisher.getValue().getAvatarURL()).placeholder(R.drawable.default_avatar).error(R.drawable.image_default).into(binding.imgPublisher);
         binding.txtNamePublisher.setText(publisher.getValue().getUserName());
         binding.recycleViewMessage.setLayoutManager(new LinearLayoutManager(ChatDetailActivity.this, RecyclerView.VERTICAL,false));
         binding.recycleViewMessage.setAdapter(chatDetailAdapter);
@@ -183,13 +181,6 @@ public class ChatDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding=null;
-        messageReference.child(userId).child(publisherId).removeEventListener(messageListener);
     }
 
     private void registerForObserver() {

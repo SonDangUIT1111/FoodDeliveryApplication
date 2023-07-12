@@ -74,7 +74,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
                         @Override
                         public void DataIsUpdated() {
-                            new SuccessfulToast().showToast(mContext, "Order has been changed to shipping state!");
+                            new SuccessfulToast(mContext, "Order has been changed to shipping state!").showToast();
                             pushNotificationOrderStatusForReceiver(bill.getBillId()," đang giao hàng",bill.getRecipientId(), bill.getImageUrl());
                         }
 
@@ -105,7 +105,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
 
                         @Override
                         public void DataIsUpdated() {
-                            new SuccessfulToast().showToast(mContext, "Order has been changed to completed state!");
+                            new SuccessfulToast(mContext, "Order has been changed to completed state!").showToast();
                             pushNotificationOrderStatusForReceiver(bill.getBillId()," giao hàng thành công",bill.getRecipientId(), bill.getImageUrl());
                         }
 

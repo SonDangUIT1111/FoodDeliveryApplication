@@ -46,7 +46,7 @@ public class AddFoodActivity extends AppCompatActivity {
     private ActivityAddFoodBinding binding;
     private String TAG="Add Food";
     private int position;
-    private int PERMISSION_REQUEST_CODE=10001;
+    private int PERMISSION_REQUEST_CODE = 10001;
     private UploadDialog uploadDialog;
     private Uri uri1,uri2,uri3,uri4;
     private String img1="",img2="",img3="",img4="";
@@ -71,7 +71,7 @@ public class AddFoodActivity extends AppCompatActivity {
         //Nhận intent từ edit--------------
         Intent intentUpdate=getIntent();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        if (intentUpdate!=null&&intentUpdate.hasExtra("Product updating")) {
+        if (intentUpdate != null && intentUpdate.hasExtra("Product updating")) {
             productUpdate= (Product) intentUpdate.getSerializableExtra("Product updating");
             checkUpdate=true;
             binding.lnAddFood.btnAddProduct.setText("Update");
@@ -133,35 +133,47 @@ public class AddFoodActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 position = 1;
-                checkRuntimePermission();
+                //checkRuntimePermission();
+                Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                pickImageLauncher.launch(intent);
             }
         });
         binding.addImage2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position = 2;
-                checkRuntimePermission();
+                //checkRuntimePermission();
+                Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                pickImageLauncher.launch(intent);
             }
         });
         binding.addImage3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position = 3;
-                checkRuntimePermission();
+                //checkRuntimePermission();
+                Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                pickImageLauncher.launch(intent);
             }
         });
         binding.addImage4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 position = 4;
-                checkRuntimePermission();
+                //checkRuntimePermission();
+                Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                pickImageLauncher.launch(intent);
             }
         });
         binding.lnAddFood.btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (checkLoi()) {
-                    uploadDialog =new UploadDialog(AddFoodActivity.this);
+                    uploadDialog = new UploadDialog(AddFoodActivity.this);
                     uploadDialog.show();
                     uploadImage(FIRST_IMAGE);
                 }
@@ -183,15 +195,15 @@ public class AddFoodActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        if (position==FOURTH_IMAGE) {
+                        if (position == FOURTH_IMAGE) {
                             uploadDialog.dismiss();
-                            new SuccessfulToast().showToast(AddFoodActivity.this, "Delete old image successfully!");
+                            new SuccessfulToast(AddFoodActivity.this, "Delete old image successfully!").showToast();
                             finish();
                         } else {
                             deleteOldImage(position+1);
                         }
                     } else {
-                        new FailToast().showToast(AddFoodActivity.this, "Error delete image: " + imageURL);
+                        new FailToast(AddFoodActivity.this, "Error delete image: " + imageURL).showToast();
                     }
                 }
             });
@@ -200,7 +212,7 @@ public class AddFoodActivity extends AppCompatActivity {
                 deleteOldImage(position + 1);
             } else {
                 uploadDialog.dismiss();
-                new SuccessfulToast().showToast(AddFoodActivity.this, "Delete old image successfully!");
+                new SuccessfulToast(AddFoodActivity.this, "Delete old image successfully!").showToast();
                 finish();
             }
         }
@@ -239,13 +251,13 @@ public class AddFoodActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                        new FailToast().showToast(AddFoodActivity.this, "Permission denied!");
+                        new FailToast(AddFoodActivity.this, "Permission denied!").showToast();
                     }
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
                         permissionToken.continuePermissionRequest();
-                        new FailToast().showToast(AddFoodActivity.this, "Permission denied!");
+                        new FailToast(AddFoodActivity.this, "Permission denied!").showToast();
 
                     }
                 }).check();
@@ -330,11 +342,11 @@ public class AddFoodActivity extends AppCompatActivity {
                                 }
 
                                 uploadDialog.dismiss();
-                                new SuccessfulToast().showToast(AddFoodActivity.this, "Update successfully!");
+                                new SuccessfulToast(AddFoodActivity.this, "Update successfully!").showToast();
                                 finish();
                             } else {
                                 uploadDialog.dismiss();
-                                new FailToast().showToast(AddFoodActivity.this, "Some errors occurred!");
+                                new FailToast(AddFoodActivity.this, "Some errors occurred!").showToast();
                                 finish();
                             }
                         }
@@ -349,10 +361,10 @@ public class AddFoodActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         uploadDialog.dismiss();
                         finish();
-                        new SuccessfulToast().showToast(AddFoodActivity.this, "Add product successfully!");
+                        new SuccessfulToast(AddFoodActivity.this, "Add product successfully!").showToast();
                     } else {
                         uploadDialog.dismiss();
-                        new FailToast().showToast(AddFoodActivity.this, "Some error occurred!");
+                        new FailToast(AddFoodActivity.this, "Some error occurred!").showToast();
                         Log.e(TAG,"Lỗi thêm sản phẩm");
                     }
                 }

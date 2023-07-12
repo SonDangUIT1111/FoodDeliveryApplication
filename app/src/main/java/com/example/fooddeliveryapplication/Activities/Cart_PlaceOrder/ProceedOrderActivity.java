@@ -192,7 +192,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                             FirebaseDatabase.getInstance().getReference().child("Carts").child(cart.getCartId()).child("totalPrice").setValue(cart.getTotalPrice() - totalPrice);
                                         }
                                     }
-                                    new SuccessfulToast().showToast(ProceedOrderActivity.this, "Order created successfully!");
+                                    new SuccessfulToast(ProceedOrderActivity.this, "Order created successfully!").showToast();
 
                                     cartInfoList.clear();
                                     Intent intent = new Intent(ProceedOrderActivity.this, HomeActivity.class);
@@ -229,7 +229,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
 
     private boolean ValidateDate() {
         if (GlobalConfig.choseAddressId == null) {
-            new FailToast().showToast(this, "You must choose delivery address!");
+            new FailToast(this, "You must choose delivery address!").showToast();
             return false;
         }
 
@@ -311,7 +311,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
     public void pushNotificationCartCompleteForSeller(String billId,String senderId) {
         String title2 = "Vừa có đơn hàng mới";
         String content2 = "Nhanh nào, vừa có đơn hàng mới. Vào Food Delivery để kiểm tra và phục vụ nhanh tay khách hàng nào.";
-        Notification notification2 = FirebaseNotificationHelper.createNotification(title2, content2, "https://media.cnn.com/api/v1/images/stellar/prod/220428140436-04-classic-american-hamburgers.jpg?c=1x1", "None", "None", billId);
+        Notification notification2 = FirebaseNotificationHelper.createNotification(title2, content2, "", "None", "None", billId);
         new FirebaseNotificationHelper(ProceedOrderActivity.this).addNotification(senderId, notification2, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {

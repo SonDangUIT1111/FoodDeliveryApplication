@@ -16,16 +16,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Activities.MyShop.AddFoodActivity;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
+import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.LayoutFoodItemBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MyShopAdapter extends RecyclerView.Adapter {
     private ArrayList<Product> ds;
@@ -49,7 +55,7 @@ public class MyShopAdapter extends RecyclerView.Adapter {
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Product product =ds.get(position);
+        Product product = ds.get(position);
         ViewHolder viewHolder=(ViewHolder) holder;
         viewBinderHelper.bind(viewHolder.binding.SwipeRevealLayout, product.getProductId());
 
@@ -62,20 +68,34 @@ public class MyShopAdapter extends RecyclerView.Adapter {
         viewHolder.binding.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("Products").child(product.getProductId()+"").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                new CustomAlertDialog(context,"Delete this product?");
+                CustomAlertDialog.binding.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
+                    public void onClick(View view) {
+                        CustomAlertDialog.alertDialog.dismiss();
 
-                            ds.remove(product);
-                            notifyItemRemoved(position);
-                            new SuccessfulToast().showToast(context, "Delete successfully!");
-                        } else {
-                            new FailToast().showToast(context, "Delete failed!");
-                            Log.e("My Shop","Error remove");
-                        }
+                        FirebaseDatabase.getInstance().getReference("Products").child(product.getProductId()+"").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    ds.remove(product);
+                                    notifyItemRemoved(position);
+                                    new SuccessfulToast(context, "Delete successfully!").showToast();
+                                } else {
+                                    new FailToast(context, "Delete failed!").showToast();
+                                    Log.e("My Shop","Error remove");
+                                }
+                            }
+                        });
                     }
                 });
+                CustomAlertDialog.binding.btnNo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CustomAlertDialog.alertDialog.dismiss();
+                    }
+                });
+                CustomAlertDialog.showAlertDialog();
             }
         });
         viewHolder.binding.imgEdit.setOnClickListener(new View.OnClickListener() {

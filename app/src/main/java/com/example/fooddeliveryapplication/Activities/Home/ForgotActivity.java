@@ -30,16 +30,16 @@ public class ForgotActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (binding.edtEmail.getText().toString().isEmpty()) {
-                    new FailToast().showToast(ForgotActivity.this, "Please enter the email you want to reset password");
+                    new FailToast(ForgotActivity.this, "Please enter the email you want to reset password").showToast();
                 } else {
                     FirebaseAuth.getInstance().sendPasswordResetEmail(binding.edtEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                new SuccessfulToast().showToast(ForgotActivity.this, "Reset password successfully! Please check your email");
+                                new SuccessfulToast(ForgotActivity.this, "Reset password successfully! Please check your email").showToast();
                                 finish();
                             } else {
-                                new FailToast().showToast(ForgotActivity.this, "Make sure your enter email is correct!");
+                                new FailToast(ForgotActivity.this, "Make sure your enter email is correct!").showToast();
                             }
                         }
                     });

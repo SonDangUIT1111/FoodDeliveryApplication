@@ -108,7 +108,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                 // Văn bản đã đạt tới giới hạn 200 kí tự, không cho phép nhập thêm
                 // Văn bản chưa đạt tới giới hạn 200 kí tự, cho phép nhập tiếp
                 if (s.length() >= 200)
-                    new FailToast().showToast(mContext, "Your comment's length must not be over 200 characters!");
+                    new FailToast(mContext, "Your comment's length must not be over 200 characters!").showToast();
 
             }
 
@@ -129,7 +129,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            new SuccessfulToast().showToast(mContext, "Thank you for giving feedback to my product!");
+                            new SuccessfulToast(mContext, "Thank you for giving feedback to my product!").showToast();
                             pushNotificationFeedBack(item);
                             dialog.dismiss();
                             updateListBillInfo(item);
@@ -149,7 +149,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                                 }
                             });
                         } else {
-                            new FailToast().showToast(mContext, "Some errors occurred!");
+                            new FailToast(mContext, "Some errors occurred!").showToast();
                             dialog.dismiss();
                         }
                     }

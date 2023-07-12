@@ -3,8 +3,6 @@ package com.example.fooddeliveryapplication.Fragments.Home;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -17,7 +15,7 @@ import android.widget.TextView;
 import com.example.fooddeliveryapplication.Activities.Home.ForgotActivity;
 import com.example.fooddeliveryapplication.Activities.Home.HomeActivity;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
-import com.example.fooddeliveryapplication.Model.User;
+import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.FragmentLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,10 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
-    private ActivityResultLauncher launcher;
-    private static final String TAG="firebase - LOGIN";
-    public static final int CODE_SUCCESS = 100001;
-    private static User currentUser = new User();
+    private static final String TAG = "firebase - LOGIN";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,11 +39,9 @@ public class LoginFragment extends Fragment {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        getLauncher();
-
         binding.btnReset.setOnClickListener(view1 -> {
             if (binding.edtPasswordLogin.getText().toString().isEmpty() || binding.edtEmail.getText().toString().isEmpty()) {
-                new FailToast().showToast(getContext(),"Please fill all the information");
+                new FailToast(getContext(), "Please fill all the information").showToast();
             } else {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.edtEmail.getText().toString(),binding.edtPasswordLogin.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -58,7 +51,7 @@ public class LoginFragment extends Fragment {
                             FirebaseDatabase.getInstance().getReference("Users").child(idCurrentUser).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    currentUser=snapshot.getValue(User.class);
+                                    new SuccessfulToast(getContext(), "Login successfully!").showToast();
                                     Log.d(TAG, "đăng nhập thành công", task.getException());
                                     Intent intent=new Intent(getContext(), HomeActivity.class);
                                     startActivity(intent);
@@ -73,7 +66,7 @@ public class LoginFragment extends Fragment {
 
                         } else {
                             Log.w(TAG, "đăng nhập thất bại", task.getException());
-                            new FailToast().showToast(getContext(),"Wrong email or password");
+                            new FailToast(getContext(), "Wrong email or password!").showToast();
                         }
                     }
                 });
@@ -91,15 +84,5 @@ public class LoginFragment extends Fragment {
 
 
         return view;
-    }
-
-    public void getLauncher() {
-        launcher =registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode()==CODE_SUCCESS) {
-                Intent tmp=result.getData();
-                currentUser = (User) tmp.getSerializableExtra("User");
-                binding.edtEmail.setText(currentUser.getEmail().toString());
-            }
-        });
     }
 }

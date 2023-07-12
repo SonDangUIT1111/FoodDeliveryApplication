@@ -128,7 +128,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                         int amount = Integer.parseInt(holder.binding.productAmount.getText().toString());
                         int remainAmount = snapshot.getValue(int.class);
                         if (amount >= remainAmount) {
-                            new FailToast().showToast(mContext, "Can't add anymore!");
+                            new FailToast(mContext, "Can't add anymore!").showToast();
                         }
                         else {
                             // Change display value
@@ -260,7 +260,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     });
                 }
                 else {
-                    new FailToast().showToast(mContext, "Can't reduce anymore!");
+                    new FailToast(mContext, "Can't reduce anymore!").showToast();
                 }
             }
         });
@@ -271,7 +271,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 if (holder.binding.like.getTag().equals("like")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).setValue(true);
                     pushNotificationFavourite(cartInfo);
-                    new SuccessfulToast().showToast(mContext,"Added to your favourite list");
+                    new SuccessfulToast(mContext,"Added to your favourite list").showToast();
                 }
                 else if (holder.binding.like.getTag().equals("liked")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).removeValue();
@@ -283,7 +283,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             @Override
             public void onClick(View view) {
                 new CustomAlertDialog(mContext,"Delete this product?");
-                CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+                CustomAlertDialog.binding.btnYes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         CustomAlertDialog.alertDialog.dismiss();
@@ -292,7 +292,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    new SuccessfulToast().showToast(mContext, "Delete product successfully!");
+                                    new SuccessfulToast(mContext, "Delete product successfully!").showToast();
                                     if (adapterItemListener != null) {
                                         adapterItemListener.onDeleteProduct();
                                     }
@@ -344,7 +344,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                         });
                     }
                 });
-                CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                CustomAlertDialog.binding.btnNo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         CustomAlertDialog.alertDialog.dismiss();

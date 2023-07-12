@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -39,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class EditProfileActivity extends AppCompatActivity {
     private ActivityEditProfileBinding binding;
@@ -228,22 +228,22 @@ public class EditProfileActivity extends AppCompatActivity {
         String userNameTxt = binding.userName.getText().toString().trim();
 
         if (emailTxt.equals("")) {
-            new FailToast().showToast(this, "Email must not be empty!");
+            new FailToast(this, "Email must not be empty!").showToast();
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(emailTxt).matches()) {
-            new FailToast().showToast(this, "Invalid email!!");
+            new FailToast(this, "Invalid email!!").showToast();
             return;
         }
 
         if (phoneNumberTxt.equals("")) {
-            new FailToast().showToast(this, "Phone number must not be empty!");
+            new FailToast(this, "Phone number must not be empty!").showToast();
             return;
         }
 
         if (userNameTxt.equals("")) {
-            new FailToast().showToast(this, "User name must not be empty!");
+            new FailToast(this, "User name must not be empty!").showToast();
             return;
         }
 
@@ -258,7 +258,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    new SuccessfulToast().showToast(EditProfileActivity.this, "Updated successfully!");
+                    new SuccessfulToast(EditProfileActivity.this, "Updated successfully!").showToast();
                 }
             }
         });
@@ -267,6 +267,12 @@ public class EditProfileActivity extends AppCompatActivity {
 //        firebaseUser.updateEmail(email.getText().toString());
 
         finish();
+    }
+
+    private void deleteOldImage() {
+        if (!Objects.equals(imageUrl, "")) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl).delete();
+        }
     }
 
     private void initImagePickerActivity() {
@@ -293,7 +299,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                Glide.with(getApplicationContext()).load(user.getAvatarURL()).placeholder(R.drawable.profile_image).into(binding.profileImage);
+                Glide.with(getApplicationContext()).load(user.getAvatarURL()).placeholder(R.drawable.default_avatar).into(binding.profileImage);
                 binding.userName.setText(user.getUserName());
                 binding.email.setText(user.getEmail());
                 binding.phoneNumber.setText(user.getPhoneNumber());
@@ -322,6 +328,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            deleteOldImage();
+
                             imageUrl = uri.toString();
                             Glide.with(EditProfileActivity.this).load(imageUrl).placeholder(R.drawable.profile_image).into(binding.profileImage);
 
@@ -375,14 +383,14 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (binding.update.isEnabled()) {
                     new CustomAlertDialog(EditProfileActivity.this,"Save changes?");
-                    CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+                    CustomAlertDialog.binding.btnYes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             CustomAlertDialog.alertDialog.dismiss();
                             updateInfo();
                         }
                     });
-                    CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                    CustomAlertDialog.binding.btnNo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             CustomAlertDialog.alertDialog.dismiss();

@@ -56,15 +56,15 @@ public class OrderAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     new CustomAlertDialog(context,"Do you want to confirm this order?");
-                    CustomAlertDialog.btnYes.setOnClickListener(new View.OnClickListener() {
+                    CustomAlertDialog.binding.btnYes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             FirebaseDatabase.getInstance().getReference("Bills").child(tmp.getBillId()).child("orderStatus").setValue("Completed");
-                            new SuccessfulToast().showToast(context, "This order state has been updated to completed!");
+                            new SuccessfulToast(context, "This order state has been updated to completed!").showToast();
                             CustomAlertDialog.alertDialog.dismiss();
                         }
                     });
-                    CustomAlertDialog.btnNo.setOnClickListener(new View.OnClickListener() {
+                    CustomAlertDialog.binding.btnNo.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             CustomAlertDialog.alertDialog.dismiss();

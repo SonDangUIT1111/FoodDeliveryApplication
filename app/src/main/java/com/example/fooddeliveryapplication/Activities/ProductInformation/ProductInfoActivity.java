@@ -241,7 +241,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                 @Override
                 public void DataIsInserted() {
-                    new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your favourite list");
+                    new SuccessfulToast(ProductInfoActivity.this, "Added to your favourite list").showToast();
                 }
 
                 @Override
@@ -274,7 +274,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                                 @Override
                                 public void DataIsInserted() {
-                                    new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your cart");
+                                    new SuccessfulToast(ProductInfoActivity.this, "Added to your cart").showToast();
                                 }
 
                                 @Override
@@ -296,7 +296,7 @@ public class ProductInfoActivity extends AppCompatActivity {
                 });
             }
             else {  // truong hop da co san pham hien tai trong gio hang
-                new FailToast().showToast(ProductInfoActivity.this,"This product has already been in the cart!");
+                new FailToast(ProductInfoActivity.this,"This product has already been in the cart!").showToast();
             }
         }
     }
@@ -356,7 +356,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                         @Override
                         public void DataIsInserted() {
-                            new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your favourite list");
+                            new SuccessfulToast(ProductInfoActivity.this, "Added to your favourite list").showToast();
                             pushNotificationFavourite();
                         }
 
@@ -384,7 +384,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                             @Override
                             public void DataIsInserted() {
-                                new SuccessfulToast().showToast(ProductInfoActivity.this,"Added to your favourite list");
+                                new SuccessfulToast(ProductInfoActivity.this,"Added to your favourite list").showToast();
                                 pushNotificationFavourite();
                             }
 
@@ -426,7 +426,7 @@ public class ProductInfoActivity extends AppCompatActivity {
 
                     @Override
                     public void DataIsDeleted() {
-                        new SuccessfulToast().showToast(ProductInfoActivity.this,"Removed from your favourite list");
+                        new SuccessfulToast(ProductInfoActivity.this, "Removed from your favourite list").showToast();
                     }
                 });
             }

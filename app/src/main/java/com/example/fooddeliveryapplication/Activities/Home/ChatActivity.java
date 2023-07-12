@@ -168,11 +168,4 @@ public class ChatActivity extends AppCompatActivity {
             chatReference.addValueEventListener(chatListener);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding=null;
-        chatReference.removeEventListener(chatListener);
-    }
-
 }
