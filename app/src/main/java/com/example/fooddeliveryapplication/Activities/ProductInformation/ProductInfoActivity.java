@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
+import com.example.fooddeliveryapplication.Activities.MyShop.AddFoodActivity;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
@@ -25,6 +26,7 @@ import com.example.fooddeliveryapplication.Model.CartInfo;
 import com.example.fooddeliveryapplication.Model.Comment;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Notification;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityProductInfoBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +54,9 @@ public class ProductInfoActivity extends AppCompatActivity {
     private String userId;
     private String publisherId;
     private int sold;
+    private String productType;
+    private int remainAmount;
+    private int ratingAmount;
     private boolean own;
 
     @Override
@@ -77,6 +82,9 @@ public class ProductInfoActivity extends AppCompatActivity {
         publisherId = intent.getStringExtra("publisherId");
         userId = intent.getStringExtra("userId");
         sold = intent.getIntExtra("sold",0);
+        productType = intent.getStringExtra("productType");
+        remainAmount = intent.getIntExtra("remainAmount", 0);
+        ratingAmount = intent.getIntExtra("ratingAmount", 0);
 
         // set up default value
         binding.txtNameProduct.setText(productName);
@@ -84,14 +92,17 @@ public class ProductInfoActivity extends AppCompatActivity {
         binding.txtDesciption.setText(productDescription);
         binding.txtSell.setText(String.valueOf(sold));
         binding.ratingBar.setRating(ratingStar.floatValue());
-        if (publisherId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        binding.txtRemainAmount.setText(String.valueOf(remainAmount));
+        if (publisherId.equals(userId)) {
             own = true;
             binding.btnAddToCart.setVisibility(View.INVISIBLE);
             binding.btnCancelFavourite.setVisibility(View.INVISIBLE);
             binding.btnAddFavourite.setVisibility(View.INVISIBLE);
+            binding.btnChat.setVisibility(View.INVISIBLE);
         }
         else {
             own = false;
+            binding.btnEditProduct.setVisibility(View.INVISIBLE);
         }
 
         // set Adapter for image slider
@@ -110,8 +121,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         }
         ProductInfoImageAdapter imageAdapter2=new ProductInfoImageAdapter(this,dsImage);
         binding.pagerProductImage.setAdapter(imageAdapter2);
-        WormDotsIndicator dotsIndicator=findViewById(R.id.tabDots);
-        dotsIndicator.attachTo(binding.pagerProductImage);
+        binding.tabDots.attachTo(binding.pagerProductImage);
 
 
         // load sell, favourite
@@ -191,6 +201,16 @@ public class ProductInfoActivity extends AppCompatActivity {
                 Intent intent=new Intent(ProductInfoActivity.this, ChatDetailActivity.class);
                 intent.setAction("productInfoActivity");
                 intent.putExtra("publisherId", publisherId);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnEditProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProductInfoActivity.this, AddFoodActivity.class);
+                Product product = new Product(productId, productName, productImage1, productImage2, productImage3, productImage4, productPrice, productType, remainAmount, sold, productDescription, ratingStar, ratingAmount, publisherId);
+                intent.putExtra("Product updating", product);
                 startActivity(intent);
             }
         });

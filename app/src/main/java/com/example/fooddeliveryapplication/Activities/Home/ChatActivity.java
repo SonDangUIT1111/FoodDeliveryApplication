@@ -1,6 +1,7 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fooddeliveryapplication.Adapters.Home.ChatAdapter;
+import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.Model.ItemChatRoom;
 import com.example.fooddeliveryapplication.Model.Message;
 import com.example.fooddeliveryapplication.Model.User;
@@ -25,28 +27,41 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ChatActivity extends AppCompatActivity {
-    ActivityChatBinding binding;
-    String userId;
-    DatabaseReference userReference;
-    MutableLiveData<ArrayList<String>> bunchOfReceiverId=new MutableLiveData<>();
-    ArrayList<ItemChatRoom> bunchOfItemChatRoom=new ArrayList<>();
-    MutableLiveData <ArrayList<ItemChatRoom>> bunchOfItemChatRoomLive=new MutableLiveData<>();
-    DatabaseReference chatReference;
-    ValueEventListener chatListener;
-    ChatAdapter chatAdapter;
+    private ActivityChatBinding binding;
+    private String userId;
+    private DatabaseReference userReference;
+    private MutableLiveData<ArrayList<String>> bunchOfReceiverId = new MutableLiveData<>();
+    private ArrayList<ItemChatRoom> bunchOfItemChatRoom=new ArrayList<>();
+    private MutableLiveData <ArrayList<ItemChatRoom>> bunchOfItemChatRoomLive=new MutableLiveData<>();
+    private DatabaseReference chatReference;
+    private ValueEventListener chatListener;
+    private ChatAdapter chatAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityChatBinding.inflate(getLayoutInflater());
+        binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        userId=getIntent().getStringExtra("userId");
+        userId = getIntent().getStringExtra("userId");
+        initToolbar();
         initUI();
         initFilterForSearchView();
         createReference();
         createObserver();
         createChatListener();
         loadReceiverId();
-        
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle("Messages");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void initFilterForSearchView() {
@@ -137,11 +152,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void createChatListener() {
-        chatListener=new ValueEventListener() {
+        chatListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> receiverIds=new ArrayList<>();
-                includeHanldeWhenChatChanged(receiverIds,snapshot);
+                ArrayList<String> receiverIds = new ArrayList<>();
+                includeHanldeWhenChatChanged(receiverIds, snapshot);
                 bunchOfReceiverId.postValue(receiverIds);
             }
 
@@ -152,9 +167,9 @@ public class ChatActivity extends AppCompatActivity {
         };
     }
 
-    private void includeHanldeWhenChatChanged(ArrayList<String> receiverIds ,DataSnapshot snapshot) {
-        for (DataSnapshot item:snapshot.getChildren()) {
-            String receiverId=item.getKey();
+    private void includeHanldeWhenChatChanged(ArrayList<String> receiverIds, DataSnapshot snapshot) {
+        for (DataSnapshot item : snapshot.getChildren()) {
+            String receiverId = item.getKey();
             receiverIds.add(receiverId);
         }
     }

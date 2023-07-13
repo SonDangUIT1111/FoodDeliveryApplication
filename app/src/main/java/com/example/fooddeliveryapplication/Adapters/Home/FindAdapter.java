@@ -96,19 +96,22 @@ public class FindAdapter extends RecyclerView.Adapter implements Filterable {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ProductInfoActivity.class);
-                    intent.putExtra("productId",item.getProductId());
-                    intent.putExtra("productName",item.getProductName());
-                    intent.putExtra("productPrice",item.getProductPrice());
-                    intent.putExtra("productImage1",item.getProductImage1());
-                    intent.putExtra("productImage2",item.getProductImage2());
-                    intent.putExtra("productImage3",item.getProductImage3());
-                    intent.putExtra("productImage4",item.getProductImage4());
-                    intent.putExtra("ratingStar",item.getRatingStar());
-                    intent.putExtra("productDescription",item.getDescription());
-                    intent.putExtra("publisherId",item.getPublisherId());
-                    intent.putExtra("sold",item.getSold());
-                    intent.putExtra("userId",userId);
-                    intent.putExtra("userName",userName);
+                    intent.putExtra("productId", item.getProductId());
+                    intent.putExtra("productName", item.getProductName());
+                    intent.putExtra("productPrice", item.getProductPrice());
+                    intent.putExtra("productImage1", item.getProductImage1());
+                    intent.putExtra("productImage2", item.getProductImage2());
+                    intent.putExtra("productImage3", item.getProductImage3());
+                    intent.putExtra("productImage4", item.getProductImage4());
+                    intent.putExtra("ratingStar", item.getRatingStar());
+                    intent.putExtra("productDescription", item.getDescription());
+                    intent.putExtra("publisherId", item.getPublisherId());
+                    intent.putExtra("sold", item.getSold());
+                    intent.putExtra("productType", item.getProductType());
+                    intent.putExtra("remainAmount", item.getRemainAmount());
+                    intent.putExtra("ratingAmount", item.getRatingAmount());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("userName", userName);
                     mContext.startActivity(intent);
                 }
             });

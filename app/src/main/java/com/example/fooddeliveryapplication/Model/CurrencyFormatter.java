@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class CurrencyFormatter {
-    private static CurrencyFormatter formatter=null;
+    private static CurrencyFormatter formatter = null;
     private NumberFormat VNFormatCurrency;
 
     private CurrencyFormatter() {

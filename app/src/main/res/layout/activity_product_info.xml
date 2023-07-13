@@ -48,14 +48,26 @@
             app:srcCompat="@drawable/ic_pink_favourite" />
 
         <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnEditProduct"
+            android:layout_marginEnd="20dp"
+            android:background="#00FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_black_edit"/>
+
+        <ImageButton
             android:id="@+id/btnChat"
             android:layout_width="30dp"
             android:layout_height="26dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.85"
+            app:layout_constraintHorizontal_bias="0.816"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.533"
             app:srcCompat="@drawable/baseline_mark_unread_chat_alt_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -163,6 +175,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtPriceProduct"
                     app:layout_constraintVertical_bias="0.5">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -178,6 +191,7 @@
                         android:layout_marginEnd="20dp"
                         android:text="100"
                         android:textSize="16sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -185,12 +199,30 @@
                         android:text="Liked:"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/txtFavourite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
                         android:text="100"
                         android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Amount:"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="10dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtRemainAmount"
+                        android:text="100"
+                        android:textSize="16sp"/>
+
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

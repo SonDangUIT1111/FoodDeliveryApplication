@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_chat"
+    android:background="#E8584D"
     android:orientation="vertical"
     android:weightSum="10"
     tools:context=".Activities.Home.ChatDetailActivity">
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/blue_chat"
+        android:background="#E8584D"
         android:orientation="horizontal"
         android:weightSum="10">
 
@@ -29,8 +29,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgPublisher"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_margin="10dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
@@ -45,7 +45,7 @@
             android:fontFamily="@font/sfpro_regular"
             android:text="NameUser"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,7 +91,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#00FFFFFF"
-                        android:hint="....."
+                        android:hint="Type a message"
                         android:maxHeight="130dp"
                         android:textSize="14sp" />
 

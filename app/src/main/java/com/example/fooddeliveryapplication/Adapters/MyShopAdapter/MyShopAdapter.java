@@ -80,9 +80,9 @@ public class MyShopAdapter extends RecyclerView.Adapter {
                                 if (task.isSuccessful()) {
                                     ds.remove(product);
                                     notifyItemRemoved(position);
-                                    new SuccessfulToast(context, "Delete successfully!").showToast();
+                                    new SuccessfulToast(context, "Delete product successfully!").showToast();
                                 } else {
-                                    new FailToast(context, "Delete failed!").showToast();
+                                    new FailToast(context, "Delete product failed!").showToast();
                                     Log.e("My Shop","Error remove");
                                 }
                             }
