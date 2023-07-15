@@ -176,7 +176,7 @@ public class StatusOrderRecyclerViewAdapter extends RecyclerView.Adapter<StatusO
     public void pushNotificationOrderStatusForReceiver(String billId,String status,String receiverId,String productImage1) {
         String title = "Tình trạng đơn hàng";
         String content = "Đơn hàng "+ billId+" đã chuyển sang trạng thái "+ status+", vào My Order để xem tình trạng đơn hàng nào";
-        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,"None",billId,"None");
+        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,"None",billId,"None", null);
         new FirebaseNotificationHelper(mContext).addNotification(receiverId, notification, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {

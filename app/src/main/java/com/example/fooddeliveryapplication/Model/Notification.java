@@ -11,8 +11,9 @@ public class Notification {
     private String productId;
     private String billId;
     private String confirmId;
+    private User publisher;
 
-    public Notification(String notificationId, String title, String content, String imageURL, String time, boolean read, boolean notified, String productId, String billId, String confirmId) {
+    public Notification(String notificationId, String title, String content, String imageURL, String time, boolean read, boolean notified, String productId, String billId, String confirmId, User publisher) {
         this.notificationId = notificationId;
         this.title = title;
         this.content = content;
@@ -23,6 +24,7 @@ public class Notification {
         this.productId = productId;
         this.billId = billId;
         this.confirmId = confirmId;
+        this.publisher = publisher;
     }
 
     public Notification() {
@@ -108,6 +110,12 @@ public class Notification {
         this.confirmId = confirmId;
     }
 
+    public User getPublisher() {
+        return publisher;
+    }
 
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
+    }
 }
 

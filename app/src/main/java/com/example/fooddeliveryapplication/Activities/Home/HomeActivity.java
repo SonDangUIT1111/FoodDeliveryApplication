@@ -1,6 +1,5 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,11 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -311,8 +308,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
 
     }
-    public void loadInformationForNavigationBar()
-    {
+    public void loadInformationForNavigationBar() {
         // load number of notification not read in bottom navigation bar
         new FirebaseNotificationHelper(this).readNotification(userId, new FirebaseNotificationHelper.DataStatus() {
             @Override
@@ -336,7 +332,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                 for (int i = 0;i<notificationListToNotify.size(); i++)
                 {
-                    new FirebaseNotificationHelper(HomeActivity.this).notificationPush(notificationListToNotify.get(i),userId);
+                    new FirebaseNotificationHelper(HomeActivity.this).notificationPush(notificationListToNotify.get(i));
                 }
             }
 

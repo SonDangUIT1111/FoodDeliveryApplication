@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Fragments.Home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.fooddeliveryapplication.Activities.Home.FindActivity;
 import com.example.fooddeliveryapplication.Adapters.Home.FoodDrinkFrgAdapter;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.FragmentDrinkHomeFrgBinding;
@@ -49,6 +51,14 @@ public class FoodHomeFrg extends Fragment {
         adapter=new FoodDrinkFrgAdapter(dsFood, userId,getContext());
         binding.rycDrinkHome.setAdapter(adapter);
         binding.rycDrinkHome.setHasFixedSize(true);
+        binding.txtSeemoreDrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), FindActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -59,12 +69,11 @@ public class FoodHomeFrg extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Product product = ds.getValue(Product.class);
-                    if (product.getProductType().equalsIgnoreCase("Food") && !product.getPublisherId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    if (product != null && !product.getState().equals("deleted") && product.getProductType().equalsIgnoreCase("Food") && !product.getPublisherId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         dsFood.add(product);
                     }
                     adapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override

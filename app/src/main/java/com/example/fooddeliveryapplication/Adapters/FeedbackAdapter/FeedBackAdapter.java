@@ -240,7 +240,7 @@ public class FeedBackAdapter extends RecyclerView.Adapter<FeedBackAdapter.ViewHo
                 Product product = snapshot.getValue(Product.class);
                 String title = "Đánh giá sản phẩm";
                 String content = "Yay, vừa có một đánh giá mới cho sản phẩm '" +product.getProductName() + "' của bạn ở ngay rating đầu tiên đó, vô xem liền nào.";
-                Notification notification = FirebaseNotificationHelper.createNotification(title, content, product.getProductImage1(), product.getProductId(), "None", "None");
+                Notification notification = FirebaseNotificationHelper.createNotification(title, content, product.getProductImage1(), product.getProductId(), "None", "None", null);
                 new FirebaseNotificationHelper(mContext).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override
                     public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {

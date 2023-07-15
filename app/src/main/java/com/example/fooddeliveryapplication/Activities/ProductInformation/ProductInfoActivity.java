@@ -57,6 +57,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     private String productType;
     private int remainAmount;
     private int ratingAmount;
+    private String state;
     private boolean own;
 
     @Override
@@ -85,6 +86,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         productType = intent.getStringExtra("productType");
         remainAmount = intent.getIntExtra("remainAmount", 0);
         ratingAmount = intent.getIntExtra("ratingAmount", 0);
+        state = intent.getStringExtra("state");
 
         // set up default value
         binding.txtNameProduct.setText(productName);
@@ -209,7 +211,7 @@ public class ProductInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProductInfoActivity.this, AddFoodActivity.class);
-                Product product = new Product(productId, productName, productImage1, productImage2, productImage3, productImage4, productPrice, productType, remainAmount, sold, productDescription, ratingStar, ratingAmount, publisherId);
+                Product product = new Product(productId, productName, productImage1, productImage2, productImage3, productImage4, productPrice, productType, remainAmount, sold, productDescription, ratingStar, ratingAmount, publisherId, state);
                 intent.putExtra("Product updating", product);
                 startActivity(intent);
             }
@@ -453,11 +455,10 @@ public class ProductInfoActivity extends AppCompatActivity {
         });
     }
 
-    public void pushNotificationFavourite()
-    {
+    public void pushNotificationFavourite() {
         String title = "Sản phẩm yêu thích";
         String content = userName + " đã thích sản phẩm "+ productName + " của bạn. Nhấn vào để xem lượt yêu thích nào.";
-        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,productId,"None","None");
+        Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,productId,"None","None", null);
         new FirebaseNotificationHelper(this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {

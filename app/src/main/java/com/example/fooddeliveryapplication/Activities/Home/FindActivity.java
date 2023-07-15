@@ -81,8 +81,10 @@ public class FindActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot item:snapshot.getChildren()) {
-                    Product tmp=item.getValue(Product.class);
-                        dsAll.add(tmp);
+                    Product product = item.getValue(Product.class);
+                    if (product != null && !product.getState().equals("deleted")) {
+                        dsAll.add(product);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }

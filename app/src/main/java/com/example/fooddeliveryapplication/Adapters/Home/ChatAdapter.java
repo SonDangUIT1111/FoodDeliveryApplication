@@ -28,8 +28,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private ArrayList<ItemChatRoom> bunchOfItemChatRooms;
     private ArrayList<ItemChatRoom> currentBunchOfItemChatRooms;
 
-    private ValueEventListener messsageListener;
-
     public ChatAdapter(Context context, ArrayList<ItemChatRoom> itemChatRooms) {
         this.context = context;
         this.bunchOfItemChatRooms = itemChatRooms;
@@ -45,11 +43,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ItemChatRoom itemChatRoom=currentBunchOfItemChatRooms.get(position);
+        ItemChatRoom itemChatRoom = currentBunchOfItemChatRooms.get(position);
         ViewHolder viewHolder=(ViewHolder) holder;
         viewBinderHelper.bind(viewHolder.binding.SwipeRevealLayout, itemChatRoom.getReceiver().getUserId());
         viewHolder.binding.txtNameUser.setText(itemChatRoom.getReceiver().getUserName());
-        viewHolder.binding.txtLastMessage.setTextColor(context.getColor(R.color.blue_chat));
+        viewHolder.binding.txtLastMessage.setTextColor(context.getColor(R.color.app_color2));
         if (itemChatRoom.getLastMessage().getSenderId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             viewHolder.binding.imgNewMessage.setVisibility(View.INVISIBLE);
             viewHolder.binding.txtLastMessage.setTextColor(context.getColor(R.color.gray));

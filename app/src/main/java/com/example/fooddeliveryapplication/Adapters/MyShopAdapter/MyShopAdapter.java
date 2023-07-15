@@ -74,7 +74,7 @@ public class MyShopAdapter extends RecyclerView.Adapter {
                     public void onClick(View view) {
                         CustomAlertDialog.alertDialog.dismiss();
 
-                        FirebaseDatabase.getInstance().getReference("Products").child(product.getProductId()+"").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        FirebaseDatabase.getInstance().getReference("Products").child(product.getProductId()).child("state").setValue("deleted").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {

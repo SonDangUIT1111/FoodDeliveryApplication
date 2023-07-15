@@ -106,6 +106,7 @@ public class FavouriteFoodAdapter extends RecyclerView.Adapter<FavouriteFoodAdap
                     intent.putExtra("productType", product.getProductType());
                     intent.putExtra("remainAmount", product.getRemainAmount());
                     intent.putExtra("ratingAmount", product.getRatingAmount());
+                    intent.putExtra("state", product.getState());
                     intent.putExtra("userId", userId);
                     intent.putExtra("userName", userName);
                     mContext.startActivity(intent);

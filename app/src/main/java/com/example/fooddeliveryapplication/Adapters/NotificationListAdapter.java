@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
+import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
 import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DeliveryManagementActivity;
 import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
@@ -103,6 +104,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                         }
                     });
                 }
+
                 if (!notification.getBillId().equals("None"))
                 {
                     Bill bill = new Bill();
@@ -144,6 +146,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                             intent.putExtra("productType", item.getProductType());
                             intent.putExtra("remainAmount", item.getRemainAmount());
                             intent.putExtra("ratingAmount", item.getRatingAmount());
+                            intent.putExtra("state", item.getState());
                             intent.putExtra("userId", userId);
                             intent.putExtra("userName", userName);
                             mContext.startActivity(intent);
@@ -169,6 +172,12 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                 {
                     Intent intent=new Intent(mContext, DeliveryManagementActivity.class);
                     intent.putExtra("userId",userId);
+                    mContext.startActivity(intent);
+                }
+                else if (notification.getPublisher() != null) {
+                    Intent intent = new Intent(mContext, ChatDetailActivity.class);
+                    intent.setAction("chatActivity");
+                    intent.putExtra("publisher", notification.getPublisher());
                     mContext.startActivity(intent);
                 }
             }

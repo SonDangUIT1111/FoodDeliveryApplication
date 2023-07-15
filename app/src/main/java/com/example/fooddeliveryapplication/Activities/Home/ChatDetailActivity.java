@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.fooddeliveryapplication.Adapters.Home.ChatDetailAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Message;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityChatDetailBinding;
@@ -30,24 +32,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ChatDetailActivity extends AppCompatActivity {
-    ActivityChatDetailBinding binding;
-    String publisherId;
-    MutableLiveData<User> publisher=new MutableLiveData<>();
-    ArrayList<Message> messages=new ArrayList<>();
-    String userId;
-    LoadingDialog uploadDialog;
-    ChatDetailAdapter chatDetailAdapter;
-    DatabaseReference messageReference=FirebaseDatabase.getInstance().getReference("Message");
-    ChildEventListener messageListener;
+    private ActivityChatDetailBinding binding;
+    private String publisherId;
+    private MutableLiveData<User> publisher = new MutableLiveData<>();
+    private ArrayList<Message> messages = new ArrayList<>();
+    private String userId;
+    private LoadingDialog uploadDialog;
+    private ChatDetailAdapter chatDetailAdapter;
+    private DatabaseReference messageReference = FirebaseDatabase.getInstance().getReference("Message");
+    private ChildEventListener messageListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding=ActivityChatDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        //---------------------
+
         launchLoadingDialog();
         registerForObserver();
         registerListenerForMessage();
@@ -131,17 +135,15 @@ public class ChatDetailActivity extends AppCompatActivity {
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String message=binding.edtMessage.getText().toString().trim();
+                String message = binding.edtMessage.getText().toString().trim();
                 sendMessage(message);
             }
         });
     }
 
     private void sendMessage(String message) {
-        if (message.isEmpty()) {
-            Toast.makeText(ChatDetailActivity.this,"Chưa nhập tin nhắn",Toast.LENGTH_SHORT).show();
-        } else {
-            Message newMessage=new Message(message,userId,System.currentTimeMillis(),false);
+        if (!message.isEmpty()) {
+            Message newMessage = new Message(message, userId, System.currentTimeMillis(), false);
             loadMessageToFirebase(newMessage);
         }
     }
@@ -152,9 +154,47 @@ public class ChatDetailActivity extends AppCompatActivity {
         userMessageReference.setValue(newMessage).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                messageReference.child(publisherId).child(userId).child(newMessage.getIdMessage())
-                        .setValue(newMessage);
+                messageReference.child(publisherId).child(userId).child(newMessage.getIdMessage()).setValue(newMessage);
                 binding.edtMessage.setText("");
+                pushSendMessageNotification();
+            }
+        });
+    }
+
+    private void pushSendMessageNotification() {
+        FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User sender = snapshot.getValue(User.class);
+                String title = "New message";
+                String content = sender.getUserName() + " sent you a message. Please check it";
+                Notification notification = FirebaseNotificationHelper.createNotification(title, content, sender.getAvatarURL(), "None", "None", "None", sender);
+                new FirebaseNotificationHelper(ChatDetailActivity.this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

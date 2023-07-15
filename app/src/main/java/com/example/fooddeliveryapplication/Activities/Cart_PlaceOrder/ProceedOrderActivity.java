@@ -69,7 +69,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
         binding.complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ValidateDate()) {
+                if (validateDate()) {
                     // Filter new map to add to bills
                     HashMap<String, CartInfo> cartInfoMap = new HashMap<>();
                     for (CartInfo cartInfo : cartInfoList) {
@@ -227,7 +227,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
         });
     }
 
-    private boolean ValidateDate() {
+    private boolean validateDate() {
         if (GlobalConfig.choseAddressId == null) {
             new FailToast(this, "You must choose delivery address!").showToast();
             return false;
@@ -308,10 +308,10 @@ public class ProceedOrderActivity extends AppCompatActivity {
     }
 
 
-    public void pushNotificationCartCompleteForSeller(String billId,String senderId) {
+    public void pushNotificationCartCompleteForSeller(String billId, String senderId) {
         String title2 = "Vừa có đơn hàng mới";
         String content2 = "Nhanh nào, vừa có đơn hàng mới. Vào Food Delivery để kiểm tra và phục vụ nhanh tay khách hàng nào.";
-        Notification notification2 = FirebaseNotificationHelper.createNotification(title2, content2, "", "None", "None", billId);
+        Notification notification2 = FirebaseNotificationHelper.createNotification(title2, content2, "", "None", "None", billId, null);
         new FirebaseNotificationHelper(ProceedOrderActivity.this).addNotification(senderId, notification2, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {

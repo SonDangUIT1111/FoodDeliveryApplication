@@ -1,5 +1,6 @@
 package com.example.fooddeliveryapplication.Fragments.Home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.fooddeliveryapplication.Activities.Home.FindActivity;
 import com.example.fooddeliveryapplication.Adapters.Home.FoodDrinkFrgAdapter;
 import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.databinding.FragmentDrinkHomeFrgBinding;
@@ -44,7 +46,9 @@ public class DrinkHomeFrg extends Fragment {
         binding.txtSeemoreDrink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "See more", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), FindActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
             }
         });
         initData();
@@ -61,8 +65,8 @@ public class DrinkHomeFrg extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot item:snapshot.getChildren()) {
-                    Product tmp=item.getValue(Product.class);
-                    if (tmp.getProductType().equalsIgnoreCase("Drink") && !tmp.getPublisherId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    Product tmp = item.getValue(Product.class);
+                    if (tmp != null && !tmp.getState().equals("deleted") && tmp.getProductType().equalsIgnoreCase("Drink") && !tmp.getPublisherId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                         dsDrink.add(tmp);
                     }
                     adapter.notifyDataSetChanged();

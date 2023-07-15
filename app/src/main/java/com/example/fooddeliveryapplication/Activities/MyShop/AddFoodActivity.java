@@ -392,14 +392,14 @@ public class AddFoodActivity extends AppCompatActivity {
                     reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            if (position==FOURTH_IMAGE) {
+                            if (position == FOURTH_IMAGE) {
                                 String img4=uri.toString();
                                 String name=binding.lnAddFood.edtNameOfProduct.getText().toString();
                                 String price=binding.lnAddFood.edtPrice.getText().toString();
                                 String amount=binding.lnAddFood.edtAmount.getText().toString();
                                 String description=binding.lnAddFood.edtDescp.getText().toString();
-                                Product tmp=new Product("null",name,img1,img2,img3,img4,Integer.valueOf(price),
-                                        binding.lnAddFood.rbFood.isChecked()?"Food":"Drink",Integer.valueOf(amount),0,description,0.0, 0,userId);
+                                Product tmp = new Product("null", name, img1, img2, img3, img4, Integer.valueOf(price),
+                                        binding.lnAddFood.rbFood.isChecked() ? "Food" : "Drink", Integer.valueOf(amount), 0, description, 0.0, 0, userId, "");
                                 uploadProduct(tmp);
                             } else {
                                 if (position==FIRST_IMAGE)  {
@@ -429,7 +429,7 @@ public class AddFoodActivity extends AppCompatActivity {
                 String amount=binding.lnAddFood.edtAmount.getText().toString();
                 String description=binding.lnAddFood.edtDescp.getText().toString();
                 Product tmp=new Product("null",name,img1,img2,img3,img4,Integer.valueOf(price),
-                        binding.lnAddFood.rbFood.isChecked()?"Food":"Drink", Integer.valueOf(amount), 0, description, 0.0, 0, userId);
+                        binding.lnAddFood.rbFood.isChecked()?"Food":"Drink", Integer.valueOf(amount), 0, description, 0.0, 0, userId, "");
                 uploadProduct(tmp);
             }
         }

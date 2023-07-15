@@ -67,8 +67,8 @@ public class MyFoodActivity extends AppCompatActivity {
                 ds.clear();
                 for (DataSnapshot item:snapshot.getChildren()) {
                     Product tmp=item.getValue(Product.class);
-                    if (tmp.getPublisherId()!=null) {
-                        if (tmp.getPublisherId().equals(userId)) {
+                    if (tmp != null && tmp.getPublisherId()!=null) {
+                        if (tmp.getPublisherId().equals(userId) && !tmp.getState().equals("deleted")) {
                             ds.add(tmp);
                         }
                     }

@@ -81,6 +81,7 @@ public class FoodDrinkFrgAdapter extends RecyclerView.Adapter {
                 intent.putExtra("productType", item.getProductType());
                 intent.putExtra("remainAmount", item.getRemainAmount());
                 intent.putExtra("ratingAmount", item.getRatingAmount());
+                intent.putExtra("state", item.getState());
                 intent.putExtra("userId", userId);
                 intent.putExtra("userName", userName);
                 mContext.startActivity(intent);

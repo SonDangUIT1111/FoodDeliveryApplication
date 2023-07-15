@@ -8,7 +8,7 @@ public class CurrencyFormatter {
     private NumberFormat VNFormatCurrency;
 
     private CurrencyFormatter() {
-            VNFormatCurrency=NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        VNFormatCurrency = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     }
     public static CurrencyFormatter getFormatter() {
         if (formatter == null) {

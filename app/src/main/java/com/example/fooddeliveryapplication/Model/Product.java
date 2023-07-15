@@ -17,11 +17,12 @@ public class Product implements Serializable {
     private Double ratingStar;
     private int ratingAmount;
     private String publisherId;
+    private String state;
 
     public Product() {
     }
 
-    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, int ratingAmount, String publisherId) {
+    public Product(String productId, String productName, String productImage1, String productImage2, String productImage3, String productImage4, int productPrice, String productType, int remainAmount, int sold, String description, Double ratingStar, int ratingAmount, String publisherId, String state) {
         this.productId = productId;
         this.productName = productName;
         this.productImage1 = productImage1;
@@ -36,6 +37,7 @@ public class Product implements Serializable {
         this.ratingStar = ratingStar;
         this.ratingAmount = ratingAmount;
         this.publisherId = publisherId;
+        this.state = state;
     }
 
     public String getProductId() {
@@ -150,6 +152,13 @@ public class Product implements Serializable {
         this.publisherId = publisherId;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     @Override
     public String toString() {
