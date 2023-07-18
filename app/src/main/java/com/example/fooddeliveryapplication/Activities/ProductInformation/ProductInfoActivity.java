@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.AddFoodActivity;
+import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.CommentRecyclerViewAdapter;
 import com.example.fooddeliveryapplication.Adapters.ProductInfomation.ProductInfoImageAdapter;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
@@ -59,6 +60,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     private int ratingAmount;
     private String state;
     private boolean own;
+    private Notification notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,9 +218,40 @@ public class ProductInfoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        setNotificationAsRead();
     }
 
     // DEFINE FUNCTION
+    private void setNotificationAsRead() {
+        notification = (Notification) getIntent().getSerializableExtra("notification");
+        if (notification != null) {
+            if (!notification.isRead()) {
+                notification.setRead(true);
+                new FirebaseNotificationHelper(ProductInfoActivity.this).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+        }
+    }
 
     public void setCommentRecView()
     {
@@ -456,8 +489,8 @@ public class ProductInfoActivity extends AppCompatActivity {
     }
 
     public void pushNotificationFavourite() {
-        String title = "Sản phẩm yêu thích";
-        String content = userName + " đã thích sản phẩm "+ productName + " của bạn. Nhấn vào để xem lượt yêu thích nào.";
+        String title = "Favourite product";
+        String content = userName + " liked your product: "+ productName + ". Go to Product Information to check it.";
         Notification notification = FirebaseNotificationHelper.createNotification(title,content,productImage1,productId,"None","None", null);
         new FirebaseNotificationHelper(this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
             @Override

@@ -1,20 +1,30 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -25,15 +35,21 @@ import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.CartActivi
 import com.example.fooddeliveryapplication.Activities.Cart_PlaceOrder.EmptyCartActivity;
 import com.example.fooddeliveryapplication.Activities.MyShop.MyShopActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
+import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
+import com.example.fooddeliveryapplication.Activities.OrderSellerManagement.DeliveryManagementActivity;
+import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
 import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
 import com.example.fooddeliveryapplication.Fragments.Home.FavoriteFragment;
 import com.example.fooddeliveryapplication.Fragments.Home.HomeFragment;
 import com.example.fooddeliveryapplication.Fragments.NotificationFragment;
 import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
+import com.example.fooddeliveryapplication.Helpers.FirebaseProductInfoHelper;
 import com.example.fooddeliveryapplication.Helpers.FirebaseUserInfoHelper;
+import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.Cart;
 import com.example.fooddeliveryapplication.Model.Notification;
+import com.example.fooddeliveryapplication.Model.Product;
 import com.example.fooddeliveryapplication.Model.User;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityHomeBinding;
@@ -64,14 +80,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // request permission here
-        checkPermission("android.permission.POST_NOTIFICATIONS",NOTIFICATION_PERMISSION_CODE);
-        checkPermission("android.permission.WRITE_EXTERNAL_STORAGE",STORAGE_PERMISSION_CODE);
-        //----------
+        // Request permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(HomeActivity.this,
+                    Manifest.permission.POST_NOTIFICATIONS) !=
+                    PackageManager.PERMISSION_GRANTED) {
 
-        //----------------------
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
 
-        //----------------------
+            if (ContextCompat.checkSelfPermission(HomeActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
+            }
+
+            if (ContextCompat.checkSelfPermission(HomeActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 103);
+            }
+        }
+
         initUI();
         loadInformationForNavigationBar();
     }
@@ -314,14 +346,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
                 int count = 0;
-                for (int i = 0;i<notificationList.size();i++)
+                for (int i = 0; i<notificationList.size(); i++)
                 {
                     if (!notificationList.get(i).isRead())
                     {
                         count++;
                     }
                 }
-                if (count > 0 )
+                if (count > 0)
                 {
                     binding.bottomNavigation.setCount(3, String.valueOf(count));
                 }
@@ -330,9 +362,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     binding.bottomNavigation.clearCount(3);
                 }
 
-                for (int i = 0;i<notificationListToNotify.size(); i++)
-                {
-                    new FirebaseNotificationHelper(HomeActivity.this).notificationPush(notificationListToNotify.get(i));
+                for (int i = 0; i < notificationListToNotify.size(); i++) {
+                    makeNotification(notificationListToNotify.get(i));
                 }
             }
 
@@ -377,5 +408,167 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+
+    private void makeNotification(Notification notification) {
+        String channelId = "CHANNEL_ID_NOTIFICATION";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channelId);
+        Bitmap largeIcon = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.bkg);
+        builder.setSmallIcon(R.drawable.bkg)
+                .setContentTitle("Food services")
+                .setContentText(notification.getTitle())
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .setBigContentTitle(notification.getTitle())
+                        .bigText(notification.getContent()))
+                .setLargeIcon(largeIcon)
+                .setColor(Color.RED)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        if (!notification.getBillId().equals("None")) {
+            Bill bill = new Bill();
+            bill.setBillId(notification.getBillId());
+            Intent intent = new Intent(getApplicationContext(), OrderDetailActivity.class);
+            intent.putExtra("Bill", bill);
+            intent.putExtra("userId", userId);
+            intent.putExtra("notification", notification);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+            builder.setContentIntent(pendingIntent);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+                if (notificationChannel == null) {
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                    notificationChannel = new NotificationChannel(channelId, "Some description", importance);
+                    notificationChannel.setLightColor(Color.GREEN);
+                    notificationChannel.enableVibration(true);
+                    notificationManager.createNotificationChannel(notificationChannel);
+                }
+            }
+
+            notificationManager.notify(0, builder.build());
+        }
+        else if (!notification.getProductId().equals("None")) {
+            final String[] userName = new String[1];
+            FirebaseDatabase.getInstance().getReference().child("Users").child(userId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userName[0] = snapshot.child("userName").getValue(String.class);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            new FirebaseProductInfoHelper(notification.getProductId()).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
+                @Override
+                public void DataIsLoaded(Product item) {
+                    Intent intent = new Intent(getApplicationContext(), ProductInfoActivity.class);
+                    intent.putExtra("productId", item.getProductId());
+                    intent.putExtra("productName", item.getProductName());
+                    intent.putExtra("productPrice", item.getProductPrice());
+                    intent.putExtra("productImage1", item.getProductImage1());
+                    intent.putExtra("productImage2", item.getProductImage2());
+                    intent.putExtra("productImage3", item.getProductImage3());
+                    intent.putExtra("productImage4", item.getProductImage4());
+                    intent.putExtra("ratingStar", item.getRatingStar());
+                    intent.putExtra("productDescription", item.getDescription());
+                    intent.putExtra("publisherId", item.getPublisherId());
+                    intent.putExtra("sold", item.getSold());
+                    intent.putExtra("productType", item.getProductType());
+                    intent.putExtra("remainAmount", item.getRemainAmount());
+                    intent.putExtra("ratingAmount", item.getRatingAmount());
+                    intent.putExtra("state", item.getState());
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("userName", userName);
+                    intent.putExtra("notification", notification);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+                    builder.setContentIntent(pendingIntent);
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+                        if (notificationChannel == null) {
+                            int importance = NotificationManager.IMPORTANCE_HIGH;
+                            notificationChannel = new NotificationChannel(channelId, "Some description", importance);
+                            notificationChannel.setLightColor(Color.GREEN);
+                            notificationChannel.enableVibration(true);
+                            notificationManager.createNotificationChannel(notificationChannel);
+                        }
+                    }
+
+                    notificationManager.notify(0, builder.build());
+                }
+
+                @Override
+                public void DataIsInserted() {
+
+                }
+
+                @Override
+                public void DataIsUpdated() {
+
+                }
+
+                @Override
+                public void DataIsDeleted() {
+
+                }
+            });
+        }
+        else if (!notification.getConfirmId().equals("None")) {
+            Intent intent = new Intent(getApplicationContext(), DeliveryManagementActivity.class);
+            intent.putExtra("userId", userId);
+            intent.putExtra("notification", notification);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+            builder.setContentIntent(pendingIntent);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+                if (notificationChannel == null) {
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                    notificationChannel = new NotificationChannel(channelId, "Some description", importance);
+                    notificationChannel.setLightColor(Color.GREEN);
+                    notificationChannel.enableVibration(true);
+                    notificationManager.createNotificationChannel(notificationChannel);
+                }
+            }
+
+            notificationManager.notify(0, builder.build());
+        }
+        else if (notification.getPublisher() != null) {
+            Intent intent = new Intent(getApplicationContext(), ChatDetailActivity.class);
+            intent.setAction("homeActivity");
+            intent.putExtra("notification", notification);
+            intent.putExtra("publisher", notification.getPublisher());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+            builder.setContentIntent(pendingIntent);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            Toast.makeText(this, notification.getPublisher().getUserName(), Toast.LENGTH_SHORT).show();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+                if (notificationChannel == null) {
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                    notificationChannel = new NotificationChannel(channelId, "Some description", importance);
+                    notificationChannel.setLightColor(Color.GREEN);
+                    notificationChannel.enableVibration(true);
+                    notificationManager.createNotificationChannel(notificationChannel);
+                }
+            }
+
+            notificationManager.notify(0, builder.build());
+        }
     }
 }

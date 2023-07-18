@@ -459,8 +459,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         new FirebaseProductInfoHelper(cartInfo.getProductId()).readInformationById(new FirebaseProductInfoHelper.DataStatusInformationOfProduct() {
             @Override
             public void DataIsLoaded(Product product) {
-                String title = "Sản phẩm yêu thích";
-                String content = userName + " đã thích sản phẩm "+ product.getProductName() + " của bạn. Nhấn vào để xem lượt yêu thích nào.";
+                String title = "Favourite product";
+                String content = userName + " liked your product: "+ product.getProductName() + ". Go to Product Information to check it.";
                 Notification notification = FirebaseNotificationHelper.createNotification(title,content,product.getProductImage1(),product.getProductId(),"None","None", null);
                 new FirebaseNotificationHelper(mContext).addNotification(product.getPublisherId(), notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override

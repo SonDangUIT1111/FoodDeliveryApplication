@@ -157,7 +157,7 @@ public class ProceedOrderActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-                                pushNotificationCartCompleteForSeller(billId,senderId);
+                                pushNotificationCartCompleteForSeller(bill);
                             }
                         }
 
@@ -308,11 +308,11 @@ public class ProceedOrderActivity extends AppCompatActivity {
     }
 
 
-    public void pushNotificationCartCompleteForSeller(String billId, String senderId) {
-        String title2 = "Vừa có đơn hàng mới";
-        String content2 = "Nhanh nào, vừa có đơn hàng mới. Vào Food Delivery để kiểm tra và phục vụ nhanh tay khách hàng nào.";
-        Notification notification2 = FirebaseNotificationHelper.createNotification(title2, content2, "", "None", "None", billId, null);
-        new FirebaseNotificationHelper(ProceedOrderActivity.this).addNotification(senderId, notification2, new FirebaseNotificationHelper.DataStatus() {
+    public void pushNotificationCartCompleteForSeller(Bill bill) {
+        String title2 = "New order";
+        String content2 = "Hurry up! There is a new order. Go to Delivery Manage for customer serving!";
+        Notification notification2 = FirebaseNotificationHelper.createNotification(title2, content2, bill.getImageUrl(), "None", "None", bill.getBillId(), null);
+        new FirebaseNotificationHelper(ProceedOrderActivity.this).addNotification(bill.getSenderId(), notification2, new FirebaseNotificationHelper.DataStatus() {
             @Override
             public void DataIsLoaded(List<Notification> notificationList,List<Notification> notificationListToNotify) {
 

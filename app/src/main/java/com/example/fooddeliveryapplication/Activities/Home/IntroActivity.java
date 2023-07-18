@@ -77,17 +77,13 @@ public class IntroActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
 
-        if (isFirstStart) {
-            // Logout previous user
-            FirebaseAuth.getInstance().signOut();
-            // Sau khi hiển thị, lưu trạng thái đã hiển thị
+        if (!isFirstStart) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("isFirstStart", false);
             editor.apply();
-        } else {
-            // Đã hiển thị trước đó, chuyển đến Activity chính
-            Intent intent = new Intent(IntroActivity.this, LoginActivity.class);
-            startActivity(intent);
+        }
+        else {
+            startActivity(new Intent(IntroActivity.this, LoginActivity.class));
             finish();
         }
     }

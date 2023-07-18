@@ -7,14 +7,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
 import com.example.fooddeliveryapplication.Adapters.DeliveryManagement_Seller.StatusManagementPagerAdapter;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.databinding.ActivityDeliveryManagementBinding;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 public class DeliveryManagementActivity extends AppCompatActivity {
     private ActivityDeliveryManagementBinding binding;
     private String userId;
     private StatusManagementPagerAdapter statusPagerAdapter;
+    private Notification notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +30,7 @@ public class DeliveryManagementActivity extends AppCompatActivity {
 
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
+
         //get input
         userId = getIntent().getStringExtra("userId");
 
@@ -57,5 +64,37 @@ public class DeliveryManagementActivity extends AppCompatActivity {
                 binding.tabLayoutDelivery.getTabAt(position).select();
             }
         });
+
+        setNotificationAsRead();
+    }
+
+    private void setNotificationAsRead() {
+        notification = (Notification) getIntent().getSerializableExtra("notification");
+        if (notification != null) {
+            if (!notification.isRead()) {
+                notification.setRead(true);
+                new FirebaseNotificationHelper(DeliveryManagementActivity.this).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+        }
     }
 }

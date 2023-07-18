@@ -79,8 +79,7 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             @Override
             public void onClick(View v) {
                 //todo write code to navigate to the activity refer to notification
-                if (!notification.isRead())
-                {
+                if (!notification.isRead()) {
                     notification.setRead(true);
                     new FirebaseNotificationHelper(mContext).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
                         @Override

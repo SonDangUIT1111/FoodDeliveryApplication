@@ -45,17 +45,50 @@ public class ChatDetailActivity extends AppCompatActivity {
     private ChatDetailAdapter chatDetailAdapter;
     private DatabaseReference messageReference = FirebaseDatabase.getInstance().getReference("Message");
     private ChildEventListener messageListener;
+    private Notification notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityChatDetailBinding.inflate(getLayoutInflater());
+        binding = ActivityChatDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         launchLoadingDialog();
         registerForObserver();
         registerListenerForMessage();
         initData();
+
+        setNotificationAsRead();
+    }
+
+    private void setNotificationAsRead() {
+        notification = (Notification) getIntent().getSerializableExtra("notification");
+        if (notification != null) {
+            if (!notification.isRead()) {
+                notification.setRead(true);
+                new FirebaseNotificationHelper(ChatDetailActivity.this).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+        }
     }
 
     private void registerListenerForMessage() {
@@ -167,7 +200,7 @@ public class ChatDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User sender = snapshot.getValue(User.class);
                 String title = "New message";
-                String content = sender.getUserName() + " sent you a message. Please check it";
+                String content = sender.getUserName() + " sent you a new message. Please check it!";
                 Notification notification = FirebaseNotificationHelper.createNotification(title, content, sender.getAvatarURL(), "None", "None", "None", sender);
                 new FirebaseNotificationHelper(ChatDetailActivity.this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override
@@ -227,7 +260,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         publisher.observe(ChatDetailActivity.this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-                if (user!=null) {
+                if (user != null) {
                     handleChangedObserver();
                 }
             }
@@ -259,23 +292,33 @@ public class ChatDetailActivity extends AppCompatActivity {
         Intent intent=getIntent();
         if (isFromChatActivity(intent.getAction())) {
             handleIntentFromChatActivity(intent);
-        } else {
-            handleIntentFromProduntInfoActivity(intent);
+        }
+        else if (isFromHomeActivity(intent.getAction())) {
+            handleIntentFromHomeActivity(intent);
+        }
+        else {
+            handleIntentFromProductInfoActivity(intent);
         }
     }
 
-    private void handleIntentFromProduntInfoActivity(Intent intent) {
-        publisherId=intent.getStringExtra("publisherId");
+    private void handleIntentFromHomeActivity(Intent intent) {
+        User user = (User) getIntent().getSerializableExtra("publisher");
+        publisherId = user.getUserId();
+        notifyToObserver(publisher, user);
+    }
+
+    private void handleIntentFromProductInfoActivity(Intent intent) {
+        publisherId = intent.getStringExtra("publisherId");
         initPublisher(publisherId);
     }
 
     private void handleIntentFromChatActivity(Intent intent) {
-        User pulisherTemp= (User) intent.getSerializableExtra("publisher");
-        publisherId=pulisherTemp.getUserId();
-        notifyToObserver(publisher,pulisherTemp);
+        User pulisherTemp = (User) intent.getSerializableExtra("publisher");
+        publisherId = pulisherTemp.getUserId();
+        notifyToObserver(publisher, pulisherTemp);
     }
 
-    public <T> void notifyToObserver(MutableLiveData<T> mutableLiveData, T object) {
+    public void notifyToObserver(MutableLiveData<User> mutableLiveData, User object) {
         mutableLiveData.postValue(object);
     }
 
@@ -297,5 +340,7 @@ public class ChatDetailActivity extends AppCompatActivity {
         return action.equalsIgnoreCase("chatActivity");
     }
 
-
+    private boolean isFromHomeActivity(String action) {
+        return action.equalsIgnoreCase("homeActivity");
+    }
 }

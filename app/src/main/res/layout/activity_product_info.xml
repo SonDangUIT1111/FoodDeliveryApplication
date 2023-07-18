@@ -22,7 +22,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             app:srcCompat="@drawable/baseline_arrow_back_24" />
 
         <ImageButton
@@ -73,6 +72,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
@@ -91,7 +91,6 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             tools:context=".Activities.ProductInformation.ProductInfoActivity">
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -348,6 +347,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nested_scroll_view"
         app:layout_constraintWidth_percent="0.8" />
 
     <ProgressBar

@@ -11,11 +11,11 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/textView"
-        android:layout_width="210dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="35dp"
         android:fontFamily="@font/sfpro_semibold"
-        android:text="Delicious Food for you"
+        android:text="Delicious\nFood for you"
         android:textColor="#000000"
         android:textSize="36sp" />
 

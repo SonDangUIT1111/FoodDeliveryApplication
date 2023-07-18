@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fooddeliveryapplication.Activities.Feedback.FeedBackActivity;
+import com.example.fooddeliveryapplication.Activities.Home.ChatDetailActivity;
 import com.example.fooddeliveryapplication.Adapters.OrderAdapter.OrderDetailAdapter;
 import com.example.fooddeliveryapplication.Dialog.LoadingDialog;
+import com.example.fooddeliveryapplication.Helpers.FirebaseNotificationHelper;
 import com.example.fooddeliveryapplication.Model.Bill;
 import com.example.fooddeliveryapplication.Model.BillInfo;
+import com.example.fooddeliveryapplication.Model.Notification;
 import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ActivityOrderDetailBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class OrderDetailActivity extends AppCompatActivity {
     private ActivityOrderDetailBinding binding;
@@ -32,6 +36,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     private Bill currentBill;
     private LoadingDialog loadingDialog;
     private String userId;
+    private Notification notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         getWindow().setStatusBarColor(Color.parseColor("#E8584D"));
         getWindow().setNavigationBarColor(Color.parseColor("#E8584D"));
+
         //Lấy Intent
         Intent intent=getIntent();
         //Khởi tạo dữ liệu
@@ -48,6 +54,8 @@ public class OrderDetailActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
+
+        setNotificationAsRead();
     }
 
     @Override
@@ -67,6 +75,36 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
         initData();
 
+    }
+
+    private void setNotificationAsRead() {
+        notification = (Notification) getIntent().getSerializableExtra("notification");
+        if (notification != null) {
+            if (!notification.isRead()) {
+                notification.setRead(true);
+                new FirebaseNotificationHelper(OrderDetailActivity.this).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
+
+                    }
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+            }
+        }
     }
 
     private void initData() {
