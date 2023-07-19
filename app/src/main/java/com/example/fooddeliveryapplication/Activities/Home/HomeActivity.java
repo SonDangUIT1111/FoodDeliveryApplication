@@ -348,19 +348,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
                 int count = 0;
-                for (int i = 0; i<notificationList.size(); i++)
-                {
-                    if (!notificationList.get(i).isRead())
-                    {
+                for (int i = 0; i<notificationList.size(); i++) {
+                    if (!notificationList.get(i).isRead()) {
                         count++;
                     }
                 }
-                if (count > 0)
-                {
+                if (count > 0) {
                     binding.bottomNavigation.setCount(3, String.valueOf(count));
                 }
-                else if (count == 0)
-                {
+                else if (count == 0) {
                     binding.bottomNavigation.clearCount(3);
                 }
 
@@ -560,8 +556,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             intent.putExtra("publisher", notification.getPublisher());
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
-            builder.setContentIntent(pendingIntent);
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             Toast.makeText(this, notification.getPublisher().getUserName(), Toast.LENGTH_SHORT).show();
 

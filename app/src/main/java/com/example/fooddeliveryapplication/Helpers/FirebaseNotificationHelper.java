@@ -82,7 +82,7 @@ public class FirebaseNotificationHelper {
                 });
                 for (int i = 0;i < notificationList.size(); i++)
                 {
-                    if (notificationList.get(i).isNotified() == false) {
+                    if (!notificationList.get(i).isNotified()) {
                         notificationListToNotify.add(notificationList.get(i));
                         mReference.child("Notification").child(userId).child(notificationList.get(i).getNotificationId()).child("notified").setValue(true)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {

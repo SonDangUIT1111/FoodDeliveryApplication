@@ -57,38 +57,6 @@ public class ChatDetailActivity extends AppCompatActivity {
         registerForObserver();
         registerListenerForMessage();
         initData();
-
-        setNotificationAsRead();
-    }
-
-    private void setNotificationAsRead() {
-        notification = (Notification) getIntent().getSerializableExtra("notification");
-        if (notification != null) {
-            if (!notification.isRead()) {
-                notification.setRead(true);
-                new FirebaseNotificationHelper(ChatDetailActivity.this).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
-                    @Override
-                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
-
-                    }
-
-                    @Override
-                    public void DataIsInserted() {
-
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
-
-                    }
-                });
-            }
-        }
     }
 
     private void registerListenerForMessage() {
@@ -201,7 +169,13 @@ public class ChatDetailActivity extends AppCompatActivity {
                 User sender = snapshot.getValue(User.class);
                 String title = "New message";
                 String content = sender.getUserName() + " sent you a new message. Please check it!";
-                Notification notification = FirebaseNotificationHelper.createNotification(title, content, sender.getAvatarURL(), "None", "None", "None", sender);
+                Notification notification;
+                if (!sender.getAvatarURL().equals("")) {
+                    notification = FirebaseNotificationHelper.createNotification(title, content, sender.getAvatarURL(), "None", "None", "None", sender);
+                }
+                else {
+                    notification = FirebaseNotificationHelper.createNotification(title, content, "https://t4.ftcdn.net/jpg/01/18/03/35/360_F_118033506_uMrhnrjBWBxVE9sYGTgBht8S5liVnIeY.jpg", "None", "None", "None", sender);
+                }
                 new FirebaseNotificationHelper(ChatDetailActivity.this).addNotification(publisherId, notification, new FirebaseNotificationHelper.DataStatus() {
                     @Override
                     public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {

@@ -54,8 +54,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
         loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
-
-        setNotificationAsRead();
     }
 
     @Override
@@ -75,36 +73,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
         initData();
 
-    }
-
-    private void setNotificationAsRead() {
-        notification = (Notification) getIntent().getSerializableExtra("notification");
-        if (notification != null) {
-            if (!notification.isRead()) {
-                notification.setRead(true);
-                new FirebaseNotificationHelper(OrderDetailActivity.this).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
-                    @Override
-                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
-
-                    }
-
-                    @Override
-                    public void DataIsInserted() {
-
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
-
-                    }
-                });
-            }
-        }
     }
 
     private void initData() {

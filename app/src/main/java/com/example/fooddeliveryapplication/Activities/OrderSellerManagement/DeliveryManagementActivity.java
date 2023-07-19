@@ -64,37 +64,5 @@ public class DeliveryManagementActivity extends AppCompatActivity {
                 binding.tabLayoutDelivery.getTabAt(position).select();
             }
         });
-
-        setNotificationAsRead();
-    }
-
-    private void setNotificationAsRead() {
-        notification = (Notification) getIntent().getSerializableExtra("notification");
-        if (notification != null) {
-            if (!notification.isRead()) {
-                notification.setRead(true);
-                new FirebaseNotificationHelper(DeliveryManagementActivity.this).updateNotification(userId, notification, new FirebaseNotificationHelper.DataStatus() {
-                    @Override
-                    public void DataIsLoaded(List<Notification> notificationList, List<Notification> notificationListToNotify) {
-
-                    }
-
-                    @Override
-                    public void DataIsInserted() {
-
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
-
-                    }
-                });
-            }
-        }
     }
 }
