@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.fooddeliveryapplication.Adapters.Home.IntroAdapter;
 import com.example.fooddeliveryapplication.R;
@@ -23,6 +24,15 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        boolean isIntroShown = preferences.getBoolean("isIntroShown", false);
+        if (isIntroShown) {
+            startActivity(new Intent(IntroActivity.this, LoginActivity.class));
+            finish();
+            return;
+        }
+
         binding = ActivityIntroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -65,26 +75,10 @@ public class IntroActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        checkFirstTime();
-    }
-
-    private void checkFirstTime() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        boolean isFirstStart = sharedPreferences.getBoolean("isFirstStart", true);
-
-        if (!isFirstStart) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isFirstStart", false);
-            editor.apply();
-        }
-        else {
-            startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-            finish();
-        }
+        FirebaseAuth.getInstance().signOut();
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isIntroShown", true);
+        editor.apply();
     }
 }

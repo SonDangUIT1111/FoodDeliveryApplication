@@ -42,7 +42,8 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
         app:cardElevation="0dp"
-        android:backgroundTint="@color/colorPrimary">
+        android:backgroundTint="@color/colorPrimary"
+        android:id="@+id/item_container">
 
         <RelativeLayout
             android:layout_width="match_parent"

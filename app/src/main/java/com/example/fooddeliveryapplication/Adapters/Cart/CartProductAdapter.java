@@ -3,6 +3,7 @@ package com.example.fooddeliveryapplication.Adapters.Cart;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.example.fooddeliveryapplication.R;
 import com.example.fooddeliveryapplication.databinding.ItemCartProductBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -275,6 +277,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 }
                 else if (holder.binding.like.getTag().equals("liked")) {
                     FirebaseDatabase.getInstance().getReference().child("Favorites").child(userId).child(cartInfo.getProductId()).removeValue();
+                    new SuccessfulToast(mContext, "Removed from your favourite list").showToast();
                 }
             }
         });
@@ -374,6 +377,44 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
 
                         if (adapterItemListener != null) {
                             adapterItemListener.onCheckedItemCountChanged(checkedItemCount, checkedItemPrice, selectedItems);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
+        holder.binding.itemContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().child("Products").child(cartInfo.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Product product = snapshot.getValue(Product.class);
+                        if (product != null) {
+                            Intent intent = new Intent(mContext, ProductInfoActivity.class);
+                            intent.putExtra("productId", product.getProductId());
+                            intent.putExtra("productName", product.getProductName());
+                            intent.putExtra("productPrice", product.getProductPrice());
+                            intent.putExtra("productImage1", product.getProductImage1());
+                            intent.putExtra("productImage2", product.getProductImage2());
+                            intent.putExtra("productImage3", product.getProductImage3());
+                            intent.putExtra("productImage4", product.getProductImage4());
+                            intent.putExtra("ratingStar", product.getRatingStar());
+                            intent.putExtra("productDescription", product.getDescription());
+                            intent.putExtra("publisherId", product.getPublisherId());
+                            intent.putExtra("sold", product.getSold());
+                            intent.putExtra("productType", product.getProductType());
+                            intent.putExtra("remainAmount", product.getRemainAmount());
+                            intent.putExtra("ratingAmount", product.getRatingAmount());
+                            intent.putExtra("state", product.getState());
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("userName", userName);
+                            mContext.startActivity(intent);
                         }
                     }
 
