@@ -53,8 +53,7 @@ public class SignUpFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                User tmp=new User(name,task.getResult().getUser().getUid(),email,"",name,"01/01/2000",phone,
-                                        new SimpleDateFormat("dd/MM/yyyy").format(new Date()),"");
+                                User tmp = new User(task.getResult().getUser().getUid(), email, "", name, "01/01/2000", phone);
                                 Cart cart = new Cart(FirebaseDatabase.getInstance().getReference().push().getKey(), 0, 0, task.getResult().getUser().getUid());
 
                                 FirebaseDatabase.getInstance().getReference("Users").child(tmp.getUserId())

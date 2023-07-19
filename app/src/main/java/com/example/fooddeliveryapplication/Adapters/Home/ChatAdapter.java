@@ -95,7 +95,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     ArrayList<ItemChatRoom> tmp=new ArrayList<>();
                     key=key.toLowerCase();
                     for (ItemChatRoom item: bunchOfItemChatRooms) {
-                        if (item.getReceiver().getAccountName().toLowerCase().contains(key)) {
+                        if (item.getReceiver().getUserName().toLowerCase().contains(key)) {
                             tmp.add(item);
                         }
                     }

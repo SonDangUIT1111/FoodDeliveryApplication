@@ -3,37 +3,23 @@ package com.example.fooddeliveryapplication.Model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private String accountName;
     private String userId;
     private String email;
     private String avatarURL;
     private String userName;
     private String birthDate;
     private String phoneNumber;
-    private String registerDate;
-    private String saleRegisterDate;
 
     public User() {
     }
 
-    public User(String accountName, String userId, String email, String avatarURL, String userName, String birthDate, String phoneNumber, String registerDate, String saleRegisterDate) {
-        this.accountName = accountName;
+    public User(String userId, String email, String avatarURL, String userName, String birthDate, String phoneNumber) {
         this.userId = userId;
         this.email = email;
         this.avatarURL = avatarURL;
         this.userName = userName;
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
-        this.registerDate = registerDate;
-        this.saleRegisterDate = saleRegisterDate;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 
     public String getUserId() {
@@ -74,22 +60,6 @@ public class User implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getRegisterDate() {
-        return registerDate;
-    }
-
-    public void setRegisterDate(String registerDate) {
-        this.registerDate = registerDate;
-    }
-
-    public String getSaleRegisterDate() {
-        return saleRegisterDate;
-    }
-
-    public void setSaleRegisterDate(String saleRegisterDate) {
-        this.saleRegisterDate = saleRegisterDate;
     }
 
     public String getUserName() {

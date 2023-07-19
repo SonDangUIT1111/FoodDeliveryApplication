@@ -1,5 +1,7 @@
 package com.example.fooddeliveryapplication.Activities.Home;
 
+import static android.icu.util.ULocale.getName;
+
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -389,7 +391,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 View headerView = binding.navigationLeft.getHeaderView(0);
                 ShapeableImageView imgAvatarInNavigationBar = (ShapeableImageView) headerView.findViewById(R.id.imgAvatarInNavigationBar);
                 TextView txtNameInNavigationBar = (TextView) headerView.findViewById(R.id.txtNameInNavigationBar);
-                txtNameInNavigationBar.setText("Hi, "+ user.getUserName());
+                txtNameInNavigationBar.setText("Hi, " + getLastName(user.getUserName()));
                 Glide.with(HomeActivity.this).load(user.getAvatarURL()).placeholder(R.drawable.default_avatar).into(imgAvatarInNavigationBar);
             }
 
@@ -408,6 +410,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+
+    private String getLastName(String userName) {
+        userName = userName.trim();
+        String[] output = userName.split(" ");
+        return output[output.length - 1];
     }
 
     private void makeNotification(Notification notification) {
