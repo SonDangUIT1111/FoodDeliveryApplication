@@ -50,9 +50,9 @@ public class OrderAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Bill tmp=dsOrder.get(position);
-        ViewHolder viewHolder=(ViewHolder) holder;
-        if (type== OrderActivity.CURRENT_ORDER) {
+        Bill tmp = dsOrder.get(position);
+        ViewHolder viewHolder = (ViewHolder) holder;
+        if (type == OrderActivity.CURRENT_ORDER) {
             viewHolder.binding.btnSee.setText("Received");
             viewHolder.binding.btnSee.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,6 +100,14 @@ public class OrderAdapter extends RecyclerView.Adapter {
         else {
             viewHolder.binding.txtStatus.setTextColor(Color.parseColor("#48DC7D"));
             viewHolder.binding.btnSee.setText("Feedback & Rate");
+            if (tmp.isCheckAllComment()) {
+                viewHolder.binding.btnSee.setEnabled(false);
+                viewHolder.binding.btnSee.setBackgroundResource(R.drawable.background_feedback_disnable_button);
+            }
+            else {
+                viewHolder.binding.btnSee.setEnabled(true);
+                viewHolder.binding.btnSee.setBackgroundResource(R.drawable.background_feedback_enable_button);
+            }
             viewHolder.binding.btnSee.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -109,10 +117,6 @@ public class OrderAdapter extends RecyclerView.Adapter {
                     context.startActivity(intent);
                 }
             });
-            if (tmp.isCheckAllComment()) {
-                viewHolder.binding.btnSee.setEnabled(false);
-                viewHolder.binding.btnSee.setBackgroundResource(R.drawable.background_feedback_disnable_button);
-            }
         }
 
         viewHolder.binding.txtId.setText(tmp.getBillId()+"");

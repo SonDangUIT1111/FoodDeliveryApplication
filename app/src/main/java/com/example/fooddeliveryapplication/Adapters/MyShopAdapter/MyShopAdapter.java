@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.fooddeliveryapplication.Activities.MyShop.AddFoodActivity;
+import com.example.fooddeliveryapplication.Activities.ProductInformation.ProductInfoActivity;
 import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.FailToast;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
@@ -106,6 +107,31 @@ public class MyShopAdapter extends RecyclerView.Adapter {
                 }
                 Intent intent=new Intent(context, AddFoodActivity.class);
                 intent.putExtra("Product updating", product);
+                context.startActivity(intent);
+            }
+        });
+
+        viewHolder.binding.productContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ProductInfoActivity.class);
+                intent.putExtra("productId", product.getProductId());
+                intent.putExtra("productName", product.getProductName());
+                intent.putExtra("productPrice", product.getProductPrice());
+                intent.putExtra("productImage1", product.getProductImage1());
+                intent.putExtra("productImage2", product.getProductImage2());
+                intent.putExtra("productImage3", product.getProductImage3());
+                intent.putExtra("productImage4", product.getProductImage4());
+                intent.putExtra("ratingStar", product.getRatingStar());
+                intent.putExtra("productDescription", product.getDescription());
+                intent.putExtra("publisherId", product.getPublisherId());
+                intent.putExtra("sold", product.getSold());
+                intent.putExtra("productType", product.getProductType());
+                intent.putExtra("remainAmount", product.getRemainAmount());
+                intent.putExtra("ratingAmount", product.getRatingAmount());
+                intent.putExtra("state", product.getState());
+                intent.putExtra("userId", userId);
+                intent.putExtra("userName", product);
                 context.startActivity(intent);
             }
         });

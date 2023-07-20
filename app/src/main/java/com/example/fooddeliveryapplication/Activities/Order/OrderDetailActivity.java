@@ -117,9 +117,13 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
         loadingDialog.dismiss();
        //Nếu tất cả billInfo đã được feedback thì sẽ không cho người dùng feedback nữa
-       if (currentBill.isCheckAllComment()==true) {
+       if (currentBill.isCheckAllComment()) {
            binding.lnOderDetail.btn.setEnabled(false);
            binding.lnOderDetail.btn.setBackgroundResource(R.drawable.background_feedback_disnable_button);
+       }
+       else {
+           binding.lnOderDetail.btn.setEnabled(true);
+           binding.lnOderDetail.btn.setBackgroundResource(R.drawable.background_feedback_enable_button);
        }
        //Set sự kiện nút chuyển qua feedback cho product
        binding.lnOderDetail.btn.setOnClickListener(new View.OnClickListener() {
