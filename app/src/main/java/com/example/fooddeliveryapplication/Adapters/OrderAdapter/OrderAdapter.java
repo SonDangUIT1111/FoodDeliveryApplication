@@ -15,6 +15,7 @@ import com.example.fooddeliveryapplication.Activities.Order.OrderActivity;
 import com.example.fooddeliveryapplication.Activities.Order.OrderDetailActivity;
 import com.example.fooddeliveryapplication.CustomMessageBox.CustomAlertDialog;
 import com.example.fooddeliveryapplication.CustomMessageBox.SuccessfulToast;
+import com.example.fooddeliveryapplication.Helpers.FirebaseStatusOrderHelper;
 import com.example.fooddeliveryapplication.Model.BillInfo;
 import com.example.fooddeliveryapplication.Model.CurrencyFormatter;
 import com.example.fooddeliveryapplication.Model.Bill;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter {
     private Context context;
@@ -59,8 +61,27 @@ public class OrderAdapter extends RecyclerView.Adapter {
                     CustomAlertDialog.binding.btnYes.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            FirebaseDatabase.getInstance().getReference("Bills").child(tmp.getBillId()).child("orderStatus").setValue("Completed");
-                            new SuccessfulToast(context, "This order state has been updated to completed!").showToast();
+                            new FirebaseStatusOrderHelper().setShippingToCompleted(tmp.getBillId(), new FirebaseStatusOrderHelper.DataStatus() {
+                                @Override
+                                public void DataIsLoaded(List<Bill> bills, boolean isExistingBill) {
+
+                                }
+
+                                @Override
+                                public void DataIsInserted() {
+
+                                }
+
+                                @Override
+                                public void DataIsUpdated() {
+                                    new SuccessfulToast(context, "Your order has been changed to completed state!").showToast();
+                                }
+
+                                @Override
+                                public void DataIsDeleted() {
+
+                                }
+                            });
                             CustomAlertDialog.alertDialog.dismiss();
                         }
                     });

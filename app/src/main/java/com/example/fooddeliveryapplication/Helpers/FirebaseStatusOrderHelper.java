@@ -174,8 +174,7 @@ public class FirebaseStatusOrderHelper {
         mReferenceStatusOrder.child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (BillInfo info : billInfoList)
-                {
+                for (BillInfo info : billInfoList) {
                     int sold = snapshot.child(info.getProductId()).child("sold").getValue(int.class) + info.getAmount();
                     soldValueList.add(sold);
                 }
