@@ -54,7 +54,7 @@ Ngoài ra còn một số chức năng khác, các bạn có thể xem thử khi
 
 Cảm ơn các thành viên trong nhóm đã chung tay đóng góp và xây dựng nên ứng dụng hoàn chỉnh này. 
 
-|  Leader  |  Member | Member | Member | Member
+|  Leader  |  Member | Member | Member | Supporter
 | ------------- | ------------- | --------------------------|------------------------|-------------------------|
 |[![](https://avatars.githubusercontent.com/u/116157535?size=160)](https://github.com/SonDangUIT1111)|[![](https://avatars.githubusercontent.com/u/114270196?size=160)](https://github.com/MinhNhatQA15101910)|[![](https://avatars.githubusercontent.com/u/130426926?size=160)](https://github.com/TranQuangKhai288)|[![](https://avatars.githubusercontent.com/u/113348581?size=160)](https://github.com/Thuytrinhne) |[![](https://avatars.githubusercontent.com/u/96611889?size=160)](https://github.com/NATNgoc) |
 [Đặng Thái Sơn](https://github.com/SonDangUIT1111)|[Đỗ Minh Nhật](https://github.com/MinhNhatQA15101910)|[Trần Quang Khải](https://github.com/TranQuangKhai288)|[Nguyễn Thị Thùy Trinh](https://github.com/Thuytrinhne)|[Nguyễn Anh Tuấn Ngọc](https://github.com/NATNgoc)
