@@ -6,9 +6,6 @@
 ![image](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 ![image](https://img.shields.io/badge/Messenger-00B2FF?style=for-the-badge&logo=messenger&logoColor=white)
 
-![alt text](https://camo.githubusercontent.com/1686d6c857ddd6e94bc8454118e39d00afe8940c43ed478bcfce8b17725f76da/68747470733a2f2f666f7274686562616467652e636f6d2f696d616765732f6261646765732f6f70656e2d736f757263652e737667)
-![alt text](https://camo.githubusercontent.com/74c68997445423bb43aecd572d760067203b0a53e29f548413a2c4b495cde7b0/68747470733a2f2f666f7274686562616467652e636f6d2f696d616765732f6261646765732f6275696c742d62792d646576656c6f706572732e737667)
-
 FIVEST là ứng dụng mua bán đồ ăn trực tuyến đóng vai trò quan trọng trong nền kinh doanh sản phẩm tại thị trường hiện nay.
 ## 📚 Giới thiệu
 ![image](https://github.com/SonDangUIT1111/FoodDeliveryApplication/blob/main/UIApp/gioithieu.png)
